@@ -7,7 +7,7 @@ BUILD_DIR				= build/
 HEADER_DIR				= header/
 HEADER_FILE				= minishell.h
 
-DIR						= src/
+DIR						=	src/
 SRC			 			= 	main.c
 							
 OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)
@@ -36,7 +36,7 @@ clear:
 						$(CLEAR)
 						
 $(NAME): 				$(OBJECTS) $(LIB_DIR)$(LIBFT)
-						$(GCC) $(OBJECTS) -o $(NAME) $(LIB_DIR)$(LIBFT)
+						$(GCC) $(OBJECTS) -o $(NAME) $(LIB_DIR)$(LIBFT) -lreadline
 
 sanit :					$(OBJECTS) $(LIB_DIR)$(LIBFT)
 						$(GCC) $(SANITIZE) $(OBJECTS) -o $(NAME) $(LIB_DIR)$(LIBFT)
