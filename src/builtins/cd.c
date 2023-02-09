@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/09 14:16:15 by gclement         ###   ########.fr       */
+/*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
+/*   Updated: 2023/02/09 14:16:03 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../../header/minishell.h"
 
-# include "../libft/libft.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include </usr/include/readline/readline.h>
-# include </usr/include/readline/history.h>
-# include <signal.h>
-# include <dirent.h>
-# include <stdio.h>
-
-int	cd(char *arg);
-
-#endif
+int	cd(char *arg)
+{
+	if (chdir(arg) == -1)
+	{
+		printf("cd: no such file or directory: %s", arg);
+		return (-1);
+	}
+	else
+		return (1);
+}
