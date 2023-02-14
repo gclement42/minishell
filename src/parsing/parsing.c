@@ -6,40 +6,49 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/09 15:26:00 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/14 10:19:39 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../header/minishell.h"
+#include "minishell.h"
 
-int	parsing(char *cmd)
+void	builtins_parsing(char **arg)
+{
+	int	count;
+
+	count = count_nb_arg(arg);
+	if (ft_memcmp(arg[0], "cd", 2) == 0)
+	{
+		if (count > 2)
+			free_and_exit("minishell: cd : too many arguments", arg);
+		else if (count == 1)
+			cd("~");
+		else
+			cd(arg[1]);
+	}
+	if (ft_memcmp(arg[0], "pwd", 3) == 0)
+		ft_printf("pwd");
+	if (ft_memcmp(arg[0], "env", 3) == 0)
+	{
+		if (count > 1)
+			free_and_exit("minishell: cd : too many arguments", arg);
+		ft_printf("env");
+	}
+}
+
+char	**parsing(char *cmd, t_minish env)
 {
 	char	**split_cmd;
-	char	**argexec;
+	char	**arg_exec;
 
-	split_cmd = ft_split(cmd, " ");
-	argexec = set_argxec(split_cmd);
-	if (ft_)
-	return (0);
-}
-
-char	**set_argxec(char **cmd)
-{
-	char	**argxec;
-	int		x;
-
-	x = 0;
-	while (cmd[x])
-		x++;
-	argxec = malloc((x + 1) * sizeof(char *));
-	if (!argxec)
+	split_cmd = ft_split(cmd, ' ');
+	if (!split_cmd)
 		exit (EXIT_FAILURE);
-	x = 0;
-	while (cmd[x])
-	{
-		argxec[x] = cmd[x];
-		x++;
-	}
-	argxec[x] = NULL;
-	return (argxec);
+	arg_exec = set_argxec(split_cmd);
+	if (!arg_exec)
+		free_2d_array(arg_exec);
+	if (check_is_builtins(split_cmd[0], env) == 1)
+		builtins_parsing(arg_exec);
+	return (arg_exec);
 }
+
