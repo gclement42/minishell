@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/14 09:48:20 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/14 10:54:13 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ const char	**init_bultins_arr(void);
 int			check_is_builtins(const char *cmd, t_minish env);
 char		**set_argxec(char **cmd);
 int			count_nb_arg(char **arg);
+
+/* ---- Builtins parsing ---- */
+void		builtins_parsing(char **arg, int argc);
+void		exit_parsing(char **arg);
 
 /* ---- Memory Management ----*/
 void		*free_2d_array(char **ptr);
