@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/15 14:13:26 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/16 10:27:04 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,10 @@
 static	size_t	count_len(char *cmd, char c)
 {
 	size_t	i;
-	//char	*prompt;
 
 	i = 1;
 	while (cmd[i] != c && cmd[i])
 		i++;
-	// while (!cmd[i])
-	// {
-	// 	prompt = readline("quote>");
-	// 	if (prompt[0] == cmd[i])
-	// 		break ;
-	// }
 	return (i);
 }
 
@@ -87,9 +80,8 @@ static char	**parsing_true(char *cmd)
 			if (start < (size_t)i)
 				arg[y++] = ft_substr(cmd, start, i - start);
 			arg[y] = malloc_line(&i, cmd, &start);
-			if (!arg[y])
+			if (!arg[y++])
 				free_2d_array(arg);
-			y++;
 		}	
 		i++;
 	}
