@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:08:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/09 14:43:27 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/16 10:29:15 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/minishell.h"
+#include "minishell.h"
 
 void	free_list(t_env *lst)
 {
@@ -25,13 +25,18 @@ void	free_list(t_env *lst)
 	free(lst);
 }
 
-void print_list(t_env *list)
+void print_list(t_env **list)
 {
-	printf("%s\n", list->content);
-	while (list->next != NULL)
+	t_env	*temp;
+
+	temp = *list;
+	if (temp == NULL)
+		return ;
+	printf("%s=%s\n", temp->key, temp->content);
+	while (temp->next != NULL)
 	{
-		list = list->next;
-		printf("%s\n", list->content);
+		temp = temp->next;
+		printf("%s=%s\n", temp->key, temp->content);
 	}
 }
 
@@ -40,7 +45,7 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	t_env	*temp;
 
 	temp = *lst;
-	if ((*lst) == NULL)
+	if (temp == NULL)
 	{
 		*lst = new;
 		return ;
@@ -53,14 +58,36 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	}
 }
 
-t_env	*ft_lstnew_env(char *content)
+int	ft_lstlen(t_env *lst)
+{
+	int		x;
+	t_env	*temp;
+
+	x = 0;
+	temp = lst;
+	if (temp == NULL)
+		return (x);
+	else
+	{
+		x++;
+		while (temp->next != NULL)
+		{
+			temp = temp->next;
+			x++;
+		}
+	}
+	return (x);
+}
+
+t_env	*ft_lstnew_env(char *key, char *content)
 {
 	t_env	*ptr;
 
 	ptr = (void *)malloc(sizeof(t_env));
 	if (!ptr)
 		return (NULL);
+	ptr->key = key;
 	ptr->content = content;
-	ptr->next = NULL;
+    ptr->next = NULL;
 	return (ptr);
 }

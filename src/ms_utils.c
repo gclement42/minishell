@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:13:28 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/09 15:01:08 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/15 13:54:45 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/minishell.h"
+#include "minishell.h"
 
 char	*ft_strnstr_path(char *haystack, char *needle, size_t len)
 {
@@ -37,4 +37,28 @@ char	*ft_strnstr_path(char *haystack, char *needle, size_t len)
 		i++;
 	}
 	return (NULL);
+}
+
+void	*free_array(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i])
+	{
+		free(ptr[i]);
+		i++;
+	}
+	free(ptr);
+	return (NULL);
+}
+
+int	count_fist_word(char *env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i] != '=')
+		i++;
+	return (i);
 }
