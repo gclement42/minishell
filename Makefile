@@ -8,8 +8,8 @@ HEADER_DIR				= header/
 HEADER_FILE				= minishell.h
 
 DIR						=	src/
-SRC			 			= 	export.c	ms_utils.c	ms_utils_list.c main.c\
-							parsing/parsing.c parsing/init_arr.c parsing/parsing_utils.c memory_management.c\
+SRC			 			= 	export.c	ms_utils.c	ms_utils_list.c main.c memory_management.c\
+							parsing/parsing.c parsing/init_arr.c parsing/parsing_utils.c parsing/builtins_parsing.c parsing/list_utils.c\
 							builtins/cd.c
 							
 OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)

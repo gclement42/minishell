@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/14 10:54:13 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:36:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <signal.h>
+
+typedef enum s_marks {SPACES, QUOTE, DQUOTE}	t_marks;
+typedef enum s_type {CMD, OPT, ARG, PIPE, FILES, REDIRECT}	t_type;
 
 typedef struct s_env
 {
@@ -42,6 +45,14 @@ typedef struct s_minish
 	char		*dir;
 }	t_minish;
 
+typedef struct s_cmd
+{
+	char			*content;
+	t_marks			marks;
+	t_type			type;
+	struct s_cmd	*next;
+}	t_cmd;
+
 /* ---- Utils ---- */
 char		*ft_strnstr_path(char *haystack, char *needle, size_t len);
 
@@ -57,7 +68,15 @@ char		**parsing(char *cmd, t_minish env);
 const char	**init_bultins_arr(void);
 int			check_is_builtins(const char *cmd, t_minish env);
 char		**set_argxec(char **cmd);
-int			count_nb_arg(char **arg);
+size_t		count_len(char *cmd, char c);
+
+/* ---- Parsing list Utils ---- */
+void		*new_node_cmd\
+(char	*word, t_marks marks, t_type type, t_cmd **lst);
+t_cmd		*cmd_lst_last(t_cmd **lst);
+void		lst_cmd_add_back(t_cmd **lst, t_cmd *new);
+t_marks		get_marks(char c);
+char		*prompt_for_quote_termination(char *cmd, char c);
 
 /* ---- Builtins parsing ---- */
 void		builtins_parsing(char **arg, int argc);
