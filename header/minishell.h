@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/17 14:36:05 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/20 10:18:21 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,13 @@ t_cmd		*cmd_lst_last(t_cmd **lst);
 void		lst_cmd_add_back(t_cmd **lst, t_cmd *new);
 t_marks		get_marks(char c);
 char		*prompt_for_quote_termination(char *cmd, char c);
+
+/* ---- cut_cmd ---- */
+void		get_opt(char *cmd, int *i, t_cmd **lst);
+void		get_frst_word(char *cmd, int *i, t_cmd **lst);
+void		get_word(char *cmd, int *i, size_t *start, t_cmd **lst);
+void		get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
+void		get_file(char *cmd, int *i, t_cmd **lst);
 
 /* ---- Builtins parsing ---- */
 void		builtins_parsing(char **arg, int argc);
