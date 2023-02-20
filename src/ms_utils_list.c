@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:08:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/16 10:29:15 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/20 12:55:21 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,6 @@ t_env	*ft_lstnew_env(char *key, char *content)
 		return (NULL);
 	ptr->key = key;
 	ptr->content = content;
-    ptr->next = NULL;
+	ptr->next = NULL;
 	return (ptr);
 }

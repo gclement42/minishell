@@ -8,7 +8,9 @@ HEADER_DIR				= header/
 HEADER_FILE				= minishell.h
 
 DIR						=	src/
-SRC			 			= 	main_exec.c	ms_utils.c	ms_utils_list.c	builtins/cd.c	builtins/env.c	builtins/echo.c	builtins/export.c	builtins/pwd.c	builtins/builtins_utils.c
+SRC			 			= 	main_exec.c	ms_utils.c	ms_utils_list.c	\
+							builtins/cd.c	builtins/env.c	builtins/echo.c	builtins/export.c	\
+							builtins/pwd.c	builtins/builtins_utils.c	builtins/unset.c
 							
 OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)
 	

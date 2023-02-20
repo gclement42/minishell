@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/16 11:01:22 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/20 12:59:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_minish
 {
 	char	**env_tab;
 	t_env	**env_list;
-	char	**unset_tab;
+	t_env	**exp_list;
 	char	*path;
 	char	*cd_path;
 	char	*cmd_line;
@@ -59,8 +59,9 @@ int		ft_lstlen(t_env *lst);
 
 int		cd(t_minish *var);
 
-void	set_env(t_minish *var, t_env **env, char **envp);
+void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp);
 void	get_env(t_minish *var);
+char	**split_env_var(char *env_line);
 
 void	print_echo(int option, char *echo_line);
 
@@ -68,8 +69,10 @@ void	get_pwd(t_minish *var);
 
 void	export_env(t_minish *var, int arg);
 
+void	unset_env(t_minish *var);
 
 char	*get_cwd(void);
-static void	add_var_env(t_minish *var, char *key, char *content);
+void	add_var_env(t_env **lst, char *key, char *content);
+int		check_key(t_env **lst, char *key);
 
 #endif

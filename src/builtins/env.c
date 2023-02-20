@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/16 10:35:53 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/20 12:58:58 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,35 +59,63 @@ char	**split_env_var(char *env_line)
 		return (env);
 }
 
-static void	init_env(t_minish *var, t_env **env)
+static void	init_env(t_minish *var, t_env **env, t_env **exp)
 {
+	t_env	*key;
+	t_env	*ptr;
+	char	*cwd;
+
+	cwd = get_cwd();
+	key = ft_lstnew_env("PWD", cwd);
+	ptr = ft_lstnew_env("PWD", cwd);
+	if (!ptr || !key)
+		exit(1); //FREE
+	ft_lstadd_back_env(env, key);
+	ft_lstadd_back_env(exp, ptr);
+	key = ft_lstnew_env("SHLVL", "1");
+	ptr = ft_lstnew_env("SHLVL", "1");
+	if (!ptr || !key)
+		exit(1); //FREE
+	ft_lstadd_back_env(env, key);
+	ft_lstadd_back_env(exp, ptr);
+	key = ft_lstnew_env("_", "/usr/bin/env");
+	ptr = ft_lstnew_env("_", "/usr/bin/env");
+	if (!ptr || !key)
+		exit(1); //FREE
+	ft_lstadd_back_env(env, key);
+	ft_lstadd_back_env(exp, ptr);
 	var->env_list = env;
+	var->exp_list = env;
 }
 
-void	set_env(t_minish *var, t_env **env, char **envp)
+void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
 {
 	int		i;
 	char	**var_con;
 	t_env	*key;
+	t_env	*ptr;
 	
 	i = 0;
 	key = NULL;
-	if (envp)
+	while (envp && envp[i])
 	{
-		while (envp && envp[i])
-		{
-			var_con = split_env_var(envp[i]);
-			key = ft_lstnew_env(var_con[0], var_con[1]);
-			if (!key)
-				return ;
-			ft_lstadd_back_env(env, key);
-			i++;
-		}
+		var_con = split_env_var(envp[i]);
+		key = ft_lstnew_env(var_con[0], var_con[1]);
+		ptr = ft_lstnew_env(var_con[0], var_con[1]);
+		if (!key || !ptr)
+			exit(1); // FREE
+		ft_lstadd_back_env(env, key);
+		ft_lstadd_back_env(exp, ptr);
+		i++;
 	}
-	if (env)
-		var->env_list = env;
+	key = *env;
+	if (!key)
+		init_env(var, env, exp);
 	else
-		init_env(var, env);
+	{
+		var->env_list = env;
+		var->exp_list = exp;
+	}
 }
 
 void	get_env(t_minish *var)
