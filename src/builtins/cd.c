@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/15 14:34:50 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/21 15:02:33 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	update_pwd(t_minish *var)
 	char	*new_path;
 	char	*old_pwd;
 
-	temp = *(var->env_list);
+	temp = var->env_list;
 	temp_s = temp;
 	old_pwd = ft_strdup("OLD");
 	new_path = ft_strdup(var->cd_path);
@@ -37,7 +37,7 @@ static void	update_pwd(t_minish *var)
 		temp = temp->next;
 	}
 	temp = temp_s;
-	*(var->env_list) = temp;
+	var->env_list = temp;
 }
 
 static void	update_pwd_home(t_minish *var, char *home_dir)
@@ -46,7 +46,7 @@ static void	update_pwd_home(t_minish *var, char *home_dir)
 	t_env	*temp_s;
 	char	*old_pwd;
 
-	temp = *(var->env_list);
+	temp = var->env_list;
 	temp_s = temp;
 	old_pwd = ft_strdup("OLD");
 	if (!old_pwd)
@@ -65,7 +65,7 @@ static void	update_pwd_home(t_minish *var, char *home_dir)
 		temp = temp->next;
 	}
 	temp = temp_s;
-	*(var->env_list) = temp;	
+	var->env_list = temp;	
 }
 
 static int	cd_home	(t_minish *var)
@@ -73,7 +73,7 @@ static int	cd_home	(t_minish *var)
 	char	*home_dir;
 	t_env	*temp;
 	
-	temp = *(var->env_list);
+	temp = var->env_list;
 	while (temp)
 	{
 		if (ft_strnstr(temp->key, "USER_ZDOTDIR", 12))

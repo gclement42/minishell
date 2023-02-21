@@ -9,9 +9,8 @@ HEADER_FILE				= minishell.h
 
 DIR						=	src/
 
-SRC			 			= 	export.c	ms_utils.c	ms_utils_list.c main.c memory_management.c\
-							parsing/parsing.c parsing/init_arr.c parsing/parsing_utils.c parsing/builtins_parsing.c parsing/list_utils.c parsing/cut_cmd.c\
-							builtins/cd.c
+SRC			 			= 	ms_utils.c	ms_utils_list.c main_exec.c	\
+							builtins/cd.c	builtins/pwd.c	builtins/builtins_utils.c	builtins/echo.c builtins/env.c	builtins/unset.c builtins/export.c
 							
 OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)
 	
@@ -19,7 +18,7 @@ LIBFT					= libft.a
 LIB_DIR					= libft/
 
 	
-GCC						= gcc
+GCC						= cc
 CFLAGS					= -Wall -Werror -Wextra
 SANITIZE				= $(CFLAGS) -g3 -fsanitize=address
 

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/20 10:38:33 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/21 14:22:51 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,41 @@ int	check_key(t_env **lst, char *key)
 		temp = temp->next;
 	}
 	return (1);
+}
+
+void	modify_var(t_env **list, char *key, char *str)
+{
+	t_env	*temp;
+	int		len;
+
+	len = ft_strlen(key);
+	temp = *list;
+	while (temp)
+	{
+		if (ft_strncmp(key, temp->key, len) == 0)
+			temp->content = ft_strdup(str);
+		temp = temp->next;
+	}
+}
+
+int	get_shlvl(t_env **list)
+{
+	t_env	*temp;
+	int		res;
+
+	temp = *list;
+	res = 0;
+	if (check_key(list, "SHLVL") == 1)
+	{
+		while (temp)
+		{
+			if (ft_strncmp("SHLVL", temp->key, 6) == 0)
+			{
+				res = ft_atoi(temp->content);
+				return(res);
+			}
+			temp = temp->next;	
+		}
+	}
+	return (0);
 }

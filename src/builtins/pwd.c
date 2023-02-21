@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:19:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/16 15:08:42 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/21 15:02:56 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	get_pwd(t_minish *var)
 	t_env	*temp;
 	char	*str;
 
-	temp = *(var->env_list);
+	temp = var->env_list;
 	if (temp)
 	{
 		var->pwd = NULL;
-		if (check_key(var->env_list, "PWD") == 1)
+		if (check_key(&(var->env_list), "PWD") == 1)
 		{
 			while (temp->next)
 			{
