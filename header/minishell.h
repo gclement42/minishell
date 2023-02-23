@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/09 14:16:15 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/08 10:11:18 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,8 @@
 # include "../libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
-# include </usr/include/readline/readline.h>
-# include </usr/include/readline/history.h>
-# include <signal.h>
-# include <dirent.h>
-# include <stdio.h>
-
-int	cd(char *arg);
+#include <stdio.h>
+#include "/usr/include/readline/readline.h"
+#include "/usr/include/readline/history.h"
 
 #endif
