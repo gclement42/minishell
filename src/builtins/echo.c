@@ -1,29 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/08 10:11:14 by jlaisne          ###   ########.fr       */
+/*   Created: 2023/02/14 14:19:51 by jlaisne           #+#    #+#             */
+/*   Updated: 2023/02/14 15:04:39 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/minishell.h"
+#include "minishell.h"
 
-int main(int argc, char **argv, char *envp[])
+void	echo_no_backslash(char *echo_line)
 {
-    char    *cmd;
-    
-    (void)argc;
-    (void)argv;
-    (void)envp;
-    while (1)
-    {
-        cmd = readline("$> ");
-        if (ft_strncmp(cmd, "exit", 5))
-            break ;
-    }
-    return (0);
+	int	i;
+
+	i = 0;
+	while(echo_line[i])
+	{
+		ft_putchar_fd(echo_line[i], 1);
+		i++;
+	}
+}
+
+void	echo_backslash(char *echo_line)
+{
+	ft_putstr_fd(echo_line, 1);
+	ft_putchar_fd('\n', 1);
+}
+
+void	print_echo(int option, char *echo_line)
+{
+	if (option == 0)
+		echo_backslash(echo_line);
+	else
+		echo_no_backslash(echo_line);
 }

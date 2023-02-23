@@ -8,7 +8,10 @@ HEADER_DIR				= header/
 HEADER_FILE				= minishell.h
 
 DIR						=	src/
-SRC			 			= 	main.c
+
+SRC			 			= 	export.c	ms_utils.c	ms_utils_list.c main.c memory_management.c\
+							parsing/parsing.c parsing/init_arr.c parsing/parsing_utils.c parsing/builtins_parsing.c parsing/list_utils.c parsing/cut_cmd.c\
+							builtins/cd.c
 							
 OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)
 	
@@ -39,7 +42,7 @@ $(NAME): 				$(OBJECTS) $(LIB_DIR)$(LIBFT)
 						$(GCC) $(OBJECTS) -o $(NAME) $(LIB_DIR)$(LIBFT) -lreadline
 
 sanit :					$(OBJECTS) $(LIB_DIR)$(LIBFT)
-						$(GCC) $(SANITIZE) $(OBJECTS) -o $(NAME) $(LIB_DIR)$(LIBFT)
+						$(GCC) $(SANITIZE) $(OBJECTS) -o $(NAME) $(LIB_DIR)$(LIBFT) -lreadline
 
 lib:
 						@make -C $(LIB_DIR)
