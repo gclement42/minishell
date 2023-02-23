@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/23 11:13:53 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/23 14:20:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ static t_cmd	*parsing_true(char *cmd, t_cmd **lst)
 char	**parsing(char *cmd, t_minish env)
 {
 	t_cmd	*lst;
+	t_cmd	*tmp;
 	char	**split_cmd;
 	int		i;
-	//char	**arg_exec;
+	int		count;
 
-	(void) env;
 	i = 0;
 	lst = NULL;
 	split_cmd = ft_split(cmd, '|');
@@ -64,23 +64,18 @@ char	**parsing(char *cmd, t_minish env)
 		if (split_cmd[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	while (lst)
+	tmp = lst;
+	count = 0;
+	while (tmp)
 	{
-		// if (ft_strchr(lst->content, '$') != 0 &&
-		// 	(lst->marks == SPACES || lst->marks == DQUOTE))
-		// {
-		// 	lst = replace_variable(lst, env);
-		// }
-		printf("content = %s\n", lst->content);
-		printf("marks = %d\n", lst->marks);
-		printf("type = %d\n\n", lst->type);
-		lst = lst->next;
+		printf("content = %s\n", tmp->content);
+		printf("marks = %d\n", tmp->marks);
+		printf("type = %d\n\n", tmp->type);
+		if (tmp->type == ARG)
+			count++;
+		tmp = tmp->next;
 	}
-	// arg_exec = set_argxec(split_cmd);
-	// if (!arg_exec)
-	// 	free_2d_array(arg_exec);
-	// (void) env;
-	// if (check_is_builtins(split_cmd[0], env) == 1)
-	// 	builtins_parsing(arg_exec, count_nb_arg(arg_exec));
+	if (check_is_builtins(get_node(lst, CMD), env) == 1)
+		builtins_parsing(lst, count);
 	return (NULL);
 }

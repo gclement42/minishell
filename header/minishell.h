@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/23 11:12:51 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/23 14:19:20 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void		free_list(t_env *lst);
 /* ---- Parsing ---- */
 char		**parsing(char *cmd, t_minish env);
 const char	**init_bultins_arr(void);
-int			check_is_builtins(const char *cmd, t_minish env);
+int			check_is_builtins(t_cmd *node, t_minish env);
 char		**set_argxec(char **cmd);
 size_t		count_len(char *cmd, char c);
 
@@ -106,6 +106,7 @@ t_cmd		*cmd_lst_last(t_cmd **lst);
 void		lst_cmd_add_back(t_cmd **lst, t_cmd *new);
 t_marks		get_marks(char c);
 char		*prompt_for_quote_termination(char *cmd, char c);
+t_cmd		*get_node(t_cmd *lst, t_type type);
 
 /* ---- cut_cmd ---- */
 void		get_opt(char *cmd, int *i, t_cmd **lst);
@@ -115,7 +116,7 @@ void		get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
 void		get_file(char *cmd, int *i, t_cmd **lst);
 
 /* ---- Builtins parsing ---- */
-void		builtins_parsing(char **arg, int argc);
+void		builtins_parsing(t_cmd *lst, int argc);
 void		exit_parsing(char **arg);
 
 /* ---- Memory Management ----*/
