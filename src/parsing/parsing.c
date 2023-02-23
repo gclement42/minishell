@@ -6,16 +6,16 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/20 13:37:59 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/23 11:13:53 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cmd	*replace_variable(t_cmd *lst, t_minish env)
-{
-	return ;
-}
+// static t_cmd	*replace_variable(t_cmd *lst, t_minish env)
+// {
+// 	return ;
+// }
 
 static t_cmd	*parsing_true(char *cmd, t_cmd **lst)
 {
@@ -66,11 +66,11 @@ char	**parsing(char *cmd, t_minish env)
 	}
 	while (lst)
 	{
-		if (ft_strchr(lst->content, '$') != 0 &&\
-			(lst->marks == SPACES || lst->marks == DQUOTE))
-		{
-			lst = replace_variable(lst, env);
-		}
+		// if (ft_strchr(lst->content, '$') != 0 &&
+		// 	(lst->marks == SPACES || lst->marks == DQUOTE))
+		// {
+		// 	lst = replace_variable(lst, env);
+		// }
 		printf("content = %s\n", lst->content);
 		printf("marks = %d\n", lst->marks);
 		printf("type = %d\n\n", lst->type);

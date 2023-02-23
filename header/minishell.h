@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/20 12:59:25 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/23 11:12:51 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,7 @@ char		*ft_strnstr_path(char *haystack, char *needle, size_t len);
 
 /* ---- Utils list---- */
 void		ft_lstadd_back_env(t_env **lst, t_env *new);
-t_env		*ft_lstnew_env(char *content);
-void		print_list(t_env *list);
 void		free_list(t_env *lst);
-int			cd(char *arg);
 
 /* ---- Parsing ---- */
 char		**parsing(char *cmd, t_minish env);
@@ -124,5 +121,9 @@ void		exit_parsing(char **arg);
 /* ---- Memory Management ----*/
 void		*free_2d_array(char **ptr);
 void		free_and_exit(char *msg, char **arg);
+
+void	get_cmd_line(t_minish *var, t_env **lst);
+void	builtin_cmp(t_minish *var);
+void	init_struct(t_minish *var, char **envp);
 
 #endif
