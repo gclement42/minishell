@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 16:44:59 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/24 16:46:05 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/24 16:51:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,9 @@ int		wordcount(char const *str, char c);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*ft_lstnew_env(char *key, char *content);
 void	free_list(t_env *lst);
+
+void	get_cmd_line(t_minish *var, t_env **lst);
+void	builtin_cmp(t_minish *var);
+void	init_struct(t_minish *var, char **envp);
 
 #endif
