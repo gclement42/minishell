@@ -1,39 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/14 14:19:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/24 10:05:39 by jlaisne          ###   ########.fr       */
+/*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
+/*   Updated: 2023/02/24 16:19:01 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	echo_no_backslash(char *echo_line)
+void	exit_env(t_minish *var)
 {
-	int	i;
-
-	i = 0;
-	while(echo_line[i])
-	{
-		ft_putchar_fd(echo_line[i], 1);
-		i++;
-	}
-}
-
-void	echo_backslash(char *echo_line)
-{
-	ft_putstr_fd(echo_line, 1);
-	ft_putchar_fd('\n', 1);
-}
-
-void	print_echo(int option, char *echo_line)
-{
-	if (option == 0)
-		echo_backslash(echo_line);
+	if (var->cmd)
+		ft_putstr_fd("exit\n", 1);
 	else
-		echo_no_backslash(echo_line);
+		ft_putstr_fd("\n", 1);
+	exit(0);
 }

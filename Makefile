@@ -10,7 +10,7 @@ HEADER_FILE				= minishell.h
 DIR						=	src/
 
 SRC			 			= 	ms_utils.c	ms_utils_list.c main_exec.c	\
-							builtins/cd.c	builtins/pwd.c	builtins/builtins_utils.c	builtins/echo.c builtins/env.c	builtins/unset.c builtins/export.c
+							builtins/cd.c	builtins/pwd.c	builtins/builtins_utils.c	builtins/echo.c builtins/env.c	builtins/unset.c builtins/export.c	builtins/exit.c
 							
 OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)
 	
@@ -25,7 +25,7 @@ SANITIZE				= $(CFLAGS) -g3 -fsanitize=address
 RM 						= rm -rf
 CLEAR					= clear
 
-$(BUILD_DIR)%.o:		$(DIR)%.c $(HEADER_DIR)/$(HEADER_FILE)
+$(BUILD_DIR)%.o:		$(DIR)%.c $(HEADER_DIR)/$(HEADER_FILE) libft
 						@mkdir -p $(@D)
 						$(GCC) $(CFLAGS) -I$(HEADER_DIR) -I$(LIB_DIR) -I/usr/include -O3 -c $< -o $@
 

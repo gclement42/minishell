@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/21 15:04:02 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/24 14:04:44 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,10 @@ void	set_env(char **envp, t_env **env, t_env **exp)
 		return ;
 }
 
-void	get_env(t_minish *var)
+void	get_env(t_minish *var, t_env **add_env)
 {
 	print_list(&(var->env_list));
+	if (add_env)
+		print_list(add_env);
 	return ;
 }

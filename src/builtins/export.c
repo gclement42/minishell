@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/21 15:05:58 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/22 15:56:22 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,12 @@ static void	add_export(t_minish *var, char *env_var)
 	 	key_var[1] = ft_strdup("''");
 		if (!key_var[1])
 			exit(1); //FREE
-		add_var_env(&(var->exp_list), key_var[0], key_var[1]);
+		add_var_env(&var->exp_list, key_var[0], key_var[1]);
 	}
 	else
 	{
-		add_var_env(&(var->env_list), key_var[0], key_var[1]);
-		add_var_env(&(var->exp_list), key_var[0], key_var[1]);
+		add_var_env(&var->env_list, key_var[0], key_var[1]);
+		add_var_env(&var->exp_list, key_var[0], key_var[1]);
 	}
 }
 
@@ -88,16 +88,11 @@ void	export_env(t_minish *var)
 	char	**export_tab;
 
 	i = 1;
+	arg = wordcount(var->cmd, ' ');
 	export_tab = ft_split(var->cmd, ' ');
 	if (!export_tab)
 		exit(1); //FREE
-	arg = wordcount(var->cmd, ' ');
-	if (arg == 1)
-	{
-		print_export_list(&(var->exp_list));
-		return ;
-	}
-	else
+	if (arg != 1)
 	{
 		while (arg > 1)
 		{
@@ -106,4 +101,7 @@ void	export_env(t_minish *var)
 			i++;
 		}
 	}
+	else
+		print_export_list(&(var->exp_list));
+	
 }
