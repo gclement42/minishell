@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/23 14:20:05 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/24 13:34:30 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static t_cmd	*parsing_true(char *cmd, t_cmd **lst)
 	}
 	if (start < (size_t)i)
 	{
+		while (cmd[start] == ' ')
+			start ++;
 		word = ft_substr(cmd, start, ft_strlen(cmd) - start);
 		if (!word)
 			return (NULL);
