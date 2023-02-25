@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_base_and_count.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 15:11:35 by gclement          #+#    #+#             */
-/*   Updated: 2022/12/09 09:58:34 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/08 10:17:21 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	base_is_valid(char *base)
 		{
 			if (base[i] == base[i + j])
 				return (0);
-				j++;
+			j++;
 		}
 		i++;
 	}
@@ -91,12 +91,12 @@ int	ft_putnbr_base_and_count(va_list args, int type)
 	int				i;
 	long int		arg;
 
-	if (type == 'X' | type == 'x')
+	i = 0;
+	if ((type == 'X') | (type == 'x'))
 		arg = va_arg(args, unsigned int);
 	else
 		arg = va_arg(args, unsigned long);
-	i = 0;
-	if (arg == 0 && (type == 'x' | type == 'X'))
+	if (arg == 0 && ((type == 'x') | (type == 'X')))
 		return (ft_putchar_fd('0', 1), 1);
 	if (type == 'x')
 		return (ft_putnbr_base(arg, "0123456789abcdef", &i), i);
