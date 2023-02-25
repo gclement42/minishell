@@ -6,19 +6,19 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 13:56:32 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:54:34 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	t_env *create_tmp_lst_env(char **split_arg)
+static	t_env	*create_tmp_lst_env(char **split_arg)
 {
 	t_env	*env_lst;
 	t_env	*new;
 	char	**split_key_value;
 	int		i;
-	
+
 	env_lst = NULL;
 	i = 0;
 	while (ft_strchr(split_arg[i], '=') != 0)
@@ -67,6 +67,56 @@ t_env	*export_variable_parsing(t_cmd *lst)
 	return (env_lst);
 }
 
+char	*join_all_arg(t_cmd *lst)
+{
+	char	*arg_join;
+	char	*tmp;
+
+	lst = get_node(lst, ARG);
+	tmp = lst->content;
+	lst = lst->next;
+	arg_join = tmp;
+	while (lst && lst->type == ARG)
+	{
+		arg_join = ft_strjoin(tmp, lst->content);
+		if (!arg_join)
+			return (NULL);
+		free (tmp);
+		tmp = arg_join;
+		lst = lst->next;
+	}
+	return (arg_join);
+}
+
+static	void	echo_parsing(t_cmd *lst)
+{
+	int		i;
+	char	*arg_join;
+	int		opt;
+
+	i = 1;
+	lst = lst->next;
+	opt = 0;
+	if (lst->type == OPT)
+	{
+		opt = 1;
+		while (lst->content[i] == 'n')
+			i++;
+		if (lst->content[i])
+		{
+			lst->type = ARG;
+			opt = 0;
+		}
+	}
+	arg_join = join_all_arg(lst);
+	if (!arg_join)
+		exit (0);
+	if (opt == OPT)
+		print_echo(1, arg_join);
+	else
+		print_echo(0, arg_join);
+}
+
 // t_env *check_export_arg(t_env *lst)
 // [
 // 	t_env before;
@@ -80,23 +130,26 @@ t_env	*export_variable_parsing(t_cmd *lst)
 // 	}
 // ]
 
-void	builtins_parsing(t_cmd *lst, int argc)
+void	builtins_parsing(t_cmd *lst, int argc, t_minish *var)
 {
 	t_cmd	*cmd_node;
+	t_cmd	*arg_node;
 	t_env	*env_lst;
 
+	(void) env_lst;
 	cmd_node = get_node(lst, CMD);
+	arg_node = get_node(lst, ARG);
 	if (ft_memcmp(cmd_node->content, "cd", 2) == 0)
 	{
-		if (argc > 2)
+		if (argc > 1 || ft_strchr(arg_node->content, ' ') != 0)
 			return (ft_putstr_fd("minishell: cd : too many arguments\n", 2));
-		else if (argc == 1)
-			ft_putstr_fd("cd", 1);
+		else if (argc == 0)
+			cd(var, NULL);
 		else
-			ft_putstr_fd("cd", 1);
+			cd(var, arg_node->content);
 	}
 	if (ft_memcmp(cmd_node->content, "pwd", 3) == 0)
-		ft_printf("pwd");
+		get_pwd(var);
 	if (ft_memcmp(cmd_node->content, "env", 3) == 0)
 		env_lst = export_variable_parsing(lst);
 	// if (ft_memcmp(cmd_node, "unset", 5) == 0)
@@ -107,8 +160,8 @@ void	builtins_parsing(t_cmd *lst, int argc)
 	}
 	// if (ft_memcmp(cmd_node, "exit", 4) == 0)
 	// 	exit_parsing(arg);
-	// if (ft_memcmp(cmd_node, "echo", 4) == 0)
-	// 	echo_parsing(arg);
+	if (ft_memcmp(cmd_node->content, "echo", 4) == 0)
+		echo_parsing(cmd_node);
 }
 
 // void	exit_parsing(char **arg)

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/23 14:18:38 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/25 14:24:40 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,15 @@ char	**set_argxec(char **cmd)
 	return (argxec);
 }
 
-int	check_is_builtins(t_cmd *node, t_minish env)
+int	check_is_builtins(t_cmd *node, t_minish *env)
 {
 	int	i;
 
 	i = 0;
-	while (env.builtins[i])
+	while (env->builtins[i])
 	{
-		if (ft_strncmp(env.builtins[i], node->content, ft_strlen(env.builtins[i])) == 0)
+		if (ft_strncmp(env->builtins[i], node->content, \
+			ft_strlen(env->builtins[i])) == 0)
 			return (1);
 		i++;
 	}

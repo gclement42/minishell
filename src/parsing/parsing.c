@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 14:01:08 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:33:40 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ static t_cmd	*parsing_true(char *cmd, t_cmd **lst)
 	}
 	if (start < (size_t)i)
 	{
-		while (cmd[start] == ' ')
-			start ++;
 		word = ft_substr(cmd, start, ft_strlen(cmd) - start);
 		if (!word)
 			return (NULL);
@@ -48,7 +46,7 @@ static t_cmd	*parsing_true(char *cmd, t_cmd **lst)
 	return (*lst);
 }
 
-char	**parsing(char *cmd, t_minish env)
+char	**parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	t_cmd	*tmp;
@@ -78,6 +76,6 @@ char	**parsing(char *cmd, t_minish env)
 		tmp = tmp->next;
 	}
 	if (check_is_builtins(get_node(lst, CMD), env) == 1)
-		builtins_parsing(lst, count);
+		builtins_parsing(lst, count, env);
 	return (NULL);
 }

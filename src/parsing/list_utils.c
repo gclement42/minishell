@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:56:40 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/23 14:02:27 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/25 16:39:10 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	lst_cmd_add_back(t_cmd **lst, t_cmd *new)
 
 t_cmd	*get_node(t_cmd *lst, t_type type)
 {
-	while (lst == NULL && lst->type != type)
+	while (lst && lst->type != type)
 		lst = lst->next;
 	return (lst);
 }
