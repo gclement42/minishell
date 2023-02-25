@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:19:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 09:53:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:54:35 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	echo_no_backslash(char *echo_line)
 	int	i;
 
 	i = 0;
-	while(echo_line[i])
+	while (echo_line[i])
 	{
 		ft_putchar_fd(echo_line[i], 1);
 		i++;

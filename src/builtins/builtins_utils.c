@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:02:08 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:55:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ char	*get_cwd(void)
 {
 	char	*cwd;
 
-	if ((cwd = getcwd(NULL, 0)) == NULL)
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
 	{
 		if (errno == ERANGE)
 			stderr;
 		stderr;
 	}
-    return (cwd);
+	return (cwd);
 }
 
 void	add_var_env(t_env **lst, char *key, char *content)
@@ -31,7 +32,7 @@ void	add_var_env(t_env **lst, char *key, char *content)
 	t_env	*temp;
 	t_env	*ptr;
 	t_env	*last;
-	
+
 	len = ft_lstlen(*lst);
 	temp = *lst;
 	ptr = NULL;
@@ -92,9 +93,9 @@ int	get_shlvl(t_env **list)
 			if (ft_strncmp("SHLVL", temp->key, 6) == 0)
 			{
 				res = ft_atoi(temp->content);
-				return(res);
+				return (res);
 			}
-			temp = temp->next;	
+			temp = temp->next;
 		}
 	}
 	return (0);

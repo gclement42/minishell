@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 10:43:47 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 11:05:46 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	builtin_cmp(t_minish *var)
 	if (ft_strncmp(var->cmd, "pwd", 3) == 0)
 		get_pwd(var);
 	if (ft_strncmp(var->cmd, "env", 3) == 0)
-	 	get_env(var, NULL);
+	 	get_env(var, &var->env_list);
 	if (ft_strncmp(var->cmd, "echo", 4) == 0)
 	 	print_echo(0, var->cmd);
 	if (ft_strncmp(var->cmd, "export", 6) == 0)

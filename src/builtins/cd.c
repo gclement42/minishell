@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 09:53:13 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:53:24 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ int	cd(t_minish	*var)
 	}
 	else
 	{
-		if ((var->cd_path = getcwd(NULL, 0)) == NULL)
+		var->cd_path = getcwd(NULL, 0);
+		if (var->cd_path == NULL)
 		{
 			if (errno == ERANGE)
 				stderr;

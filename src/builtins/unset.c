@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 15:16:10 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 09:53:39 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:52:24 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	unset_env(t_minish *var)
 {
 	char	**unset_tab;
 	int		i;
-	
+
 	i = 1;
 	if (ft_strlen(var->cmd) == 5)
 		return ;

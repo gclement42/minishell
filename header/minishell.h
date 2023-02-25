@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 16:44:59 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:27:10 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:49:23 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	MINISHELL_H
+#ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include "../libft/libft.h"

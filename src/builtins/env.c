@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 09:53:23 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 11:05:31 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ void	set_env(char **envp, t_env **env, t_env **exp)
 	char	**var_con;
 	t_env	*ptr_env;
 	t_env	*ptr_exp;
-	
+
 	i = 0;
 	while (envp && envp[i])
 	{
 		var_con = split_env_var(envp[i]);
 		ptr_env = ft_lstnew_env(var_con[0], var_con[1]);
 		ptr_exp = ft_lstnew_env(var_con[0], var_con[1]);
-		if (!ptr_env|| !ptr_exp)
+		if (!ptr_env || !ptr_exp)
 			exit(1); // FREE
 		ft_lstadd_back_env(env, ptr_env);
 		ft_lstadd_back_env(exp, ptr_exp);
@@ -115,7 +115,6 @@ void	set_env(char **envp, t_env **env, t_env **exp)
 void	get_env(t_minish *var, t_env **add_env)
 {
 	print_list(&(var->env_list));
-	if (add_env)
-		print_list(add_env);
+	(void)add_env;
 	return ;
 }

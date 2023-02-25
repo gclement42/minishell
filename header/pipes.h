@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:38:00 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:49:01 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_pipex
 	int		status;
 }	t_pipex;
 
-int	pipex(int arg, char **argv, char **env);
+int		pipex(int arg, char **argv, char **env);
 
 /* ----- Utils -----*/
 void	join_slash(char **env);
