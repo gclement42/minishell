@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 16:44:59 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:16:03 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:27:10 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,14 @@
 # include </usr/include/readline/history.h>
 # include <errno.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <dirent.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+# include <fcntl.h>
 # include "exec.h"
 # include "typedef.h"
+# include "pipes.h"
 
 /* ---- Utils ---- */
 char	*ft_strnstr_path(char *haystack, char *needle, size_t len);
@@ -40,6 +43,7 @@ void	print_list(t_env **list);
 void	free_list(t_env *lst);
 int		ft_lstlen(t_env *lst);
 
+/* --- MAIN TEMPORAIRE --- */
 void	get_cmd_line(t_minish *var, t_env **lst);
 void	builtin_cmp(t_minish *var);
 void	init_struct(t_minish *var, char **envp);

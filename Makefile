@@ -7,12 +7,14 @@ BUILD_DIR				= build/
 HEADER_DIR				= header/
 HEADER_FILE				= minishell.h	\
 							exec.h	\
-							typedef.h
+							typedef.h	\
+							pipes.h
 
 DIR						=	src/
 SRC						=	parsing/parsing.c parsing/builtins_parsing.c	\
 							ms_utils.c	ms_utils_list.c main_exec.c memory_management.c	\
-                            builtins/cd.c    builtins/pwd.c    builtins/builtins_utils.c    builtins/echo.c builtins/env.c    builtins/unset.c builtins/export.c	builtins/exit.c
+                            builtins/cd.c    builtins/pwd.c    builtins/builtins_utils.c    builtins/echo.c builtins/env.c    builtins/unset.c builtins/export.c	builtins/exit.c	\
+							pipes/pipex_error.c	pipes/pipex_exec.c	pipes/pipex_main.c	pipes/pipex_utils.c
 							
 OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)
 	
@@ -39,7 +41,7 @@ mkbuild:
 clear:
 						$(CLEAR)
 						
-$(NAME): 				$(OBJECTS) $(LIB_DIR)$(LIBFT) $(addprefix $(HEADER_DIR), $(HEADER_FILE)) Makefile
+$(NAME): 				$(OBJECTS) $(LIB_DIR)$(LIBFT) Makefile
 						$(GCC) $(OBJECTS) -o $(NAME) $(LIB_DIR)$(LIBFT) -lreadline
 
 sanit :					$(OBJECTS) $(LIB_DIR)$(LIBFT)
