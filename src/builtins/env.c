@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/20 12:58:58 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 11:05:31 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 char	**get_var_env(char **env, char *env_line)
 {
@@ -59,7 +59,7 @@ char	**split_env_var(char *env_line)
 		return (env);
 }
 
-static void	init_env(t_minish *var, t_env **env, t_env **exp)
+static void	init_env(t_env **env, t_env **exp)
 {
 	t_env	*key;
 	t_env	*ptr;
@@ -79,47 +79,42 @@ static void	init_env(t_minish *var, t_env **env, t_env **exp)
 	ft_lstadd_back_env(env, key);
 	ft_lstadd_back_env(exp, ptr);
 	key = ft_lstnew_env("_", "/usr/bin/env");
-	ptr = ft_lstnew_env("_", "/usr/bin/env");
+	ptr = ft_lstnew_env("OLDPWD", "");
 	if (!ptr || !key)
 		exit(1); //FREE
 	ft_lstadd_back_env(env, key);
 	ft_lstadd_back_env(exp, ptr);
-	var->env_list = env;
-	var->exp_list = env;
 }
 
-void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
+void	set_env(char **envp, t_env **env, t_env **exp)
 {
 	int		i;
 	char	**var_con;
-	t_env	*key;
-	t_env	*ptr;
-	
+	t_env	*ptr_env;
+	t_env	*ptr_exp;
+
 	i = 0;
-	key = NULL;
 	while (envp && envp[i])
 	{
 		var_con = split_env_var(envp[i]);
-		key = ft_lstnew_env(var_con[0], var_con[1]);
-		ptr = ft_lstnew_env(var_con[0], var_con[1]);
-		if (!key || !ptr)
+		ptr_env = ft_lstnew_env(var_con[0], var_con[1]);
+		ptr_exp = ft_lstnew_env(var_con[0], var_con[1]);
+		if (!ptr_env || !ptr_exp)
 			exit(1); // FREE
-		ft_lstadd_back_env(env, key);
-		ft_lstadd_back_env(exp, ptr);
+		ft_lstadd_back_env(env, ptr_env);
+		ft_lstadd_back_env(exp, ptr_exp);
 		i++;
 	}
-	key = *env;
-	if (!key)
-		init_env(var, env, exp);
+	ptr_env = *env;
+	if (!ptr_env)
+		init_env(env, exp);
 	else
-	{
-		var->env_list = env;
-		var->exp_list = exp;
-	}
+		return ;
 }
 
-void	get_env(t_minish *var)
+void	get_env(t_minish *var, t_env **add_env)
 {
-	print_list(var->env_list);
+	print_list(&(var->env_list));
+	(void)add_env;
 	return ;
 }

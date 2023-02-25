@@ -6,86 +6,79 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/15 14:34:50 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:53:24 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static void	update_pwd(t_minish *var)
 {
 	t_env	*temp;
-	t_env	*temp_s;
-	char	*new_path;
 	char	*old_pwd;
 
-	temp = *(var->env_list);
-	temp_s = temp;
-	old_pwd = ft_strdup("OLD");
-	new_path = ft_strdup(var->cd_path);
-	if (!new_path || !old_pwd)
-		exit(1); // FREE
-	while (temp)
+	temp = var->env_list;
+	if ((check_key(&temp, "PWD") == 0) && (check_key(&temp, "OLDPWD") == 0))
 	{
-		if (ft_strnstr(temp->key, "PWD", 3))
+		old_pwd = NULL;
+		while (temp)
 		{
-			old_pwd = ft_strjoin(old_pwd, temp->content);
-			temp->content = new_path;
+			if (ft_strnstr(temp->key, "PWD", 4))
+			{
+				old_pwd = ft_strdup(temp->content);
+				if (!old_pwd)
+					exit(1); //FREE
+			}
+			temp = temp->next;
 		}
-		if (ft_strnstr(temp->key, "OLDPWD", 6))
-			temp->content = old_pwd;
-		temp = temp->next;
+		modify_var(&var->env_list, "PWD", var->cd_path);
+		modify_var(&var->env_list, "OLDPWD", old_pwd);
 	}
-	temp = temp_s;
-	*(var->env_list) = temp;
+	if ((check_key(&var->exp_list, "PWD") == 0))
+		add_var_env(&var->env_list, "PWD", var->cd_path);
+	if ((check_key(&var->exp_list, "OLDPWD") == 0))
+		add_var_env(&var->env_list, "OLDPWD", var->oldpwd);
 }
 
 static void	update_pwd_home(t_minish *var, char *home_dir)
 {
 	t_env	*temp;
-	t_env	*temp_s;
 	char	*old_pwd;
 
-	temp = *(var->env_list);
-	temp_s = temp;
-	old_pwd = ft_strdup("OLD");
-	if (!old_pwd)
-		exit(1); // FREE
-	while (temp)
+	temp = var->env_list;
+	if ((check_key(&temp, "PWD") == 0) && (check_key(&temp, "OLDPWD") == 0))
 	{
-		if (ft_strnstr(temp->key, "PWD", 3))
+		old_pwd = NULL;
+		while (temp)
 		{
-			old_pwd = ft_strjoin(old_pwd, temp->content);
-			temp->content = ft_strdup(home_dir);
-			if (!old_pwd || !temp->content)
-				exit (1); //FREE
+			if (ft_strnstr(temp->key, "PWD", 4))
+			{
+				old_pwd = ft_strdup(temp->content);
+				if (!old_pwd)
+					exit(1); //FREE
+			}
+			temp = temp->next;
 		}
-		if (ft_strnstr(temp->key, "OLDPWD", 6))
-			temp->content = old_pwd;
-		temp = temp->next;
+		modify_var(&var->env_list, "PWD", home_dir);
+		modify_var(&var->env_list, "OLDPWD", old_pwd);
 	}
-	temp = temp_s;
-	*(var->env_list) = temp;	
+	if ((check_key(&var->exp_list, "PWD") == 0))
+		add_var_env(&var->env_list, "PWD", var->cd_path);
+	if ((check_key(&var->exp_list, "OLDPWD") == 0))
+		add_var_env(&var->env_list, "OLDPWD", var->oldpwd);
 }
 
-static int	cd_home	(t_minish *var)
+static int	cd_home(t_minish *var)
 {
-	char	*home_dir;
-	t_env	*temp;
-	
-	temp = *(var->env_list);
-	while (temp)
+	if (chdir("/nfs/homes/gclement") == -1)
 	{
-		if (ft_strnstr(temp->key, "USER_ZDOTDIR", 12))
-			break;
-		temp = temp->next;
+		if (chdir("/nfs/homes/jlaisne") != -1)
+			update_pwd_home(var, "/nfs/homes/jlaisne");
+		else
+			exit(1);
 	}
-	home_dir = ft_strdup(temp->content);
-	if (!home_dir)
-		exit(1); //FREE
-	if (chdir(home_dir) == -1)
-	 	return (-1);
-	update_pwd_home(var, home_dir);
+	else
+		update_pwd_home(var, "/nfs/homes/gclement");
 	return (0);
 }
 
@@ -93,8 +86,9 @@ int	cd(t_minish	*var)
 {
 	char	**dir;
 
+	var->oldpwd = ft_strdup(get_cwd());
 	dir = ft_split(var->cmd, ' ');
-	if (!dir)
+	if (!dir || !var->oldpwd)
 		return (-1);
 	if (!dir[1])
 	{
@@ -105,11 +99,11 @@ int	cd(t_minish	*var)
 	{
 		printf("cd: no such file or directory: %s\n", dir[1]);
 		free_array(dir);
-		return (-1);
 	}
 	else
 	{
-		if ((var->cd_path = getcwd(NULL, 0)) == NULL)
+		var->cd_path = getcwd(NULL, 0);
+		if (var->cd_path == NULL)
 		{
 			if (errno == ERANGE)
 				stderr;
@@ -117,6 +111,7 @@ int	cd(t_minish	*var)
 		}
 		update_pwd(var);
 		free_array(dir);
-		return (1);
 	}
+	free(var->oldpwd);
+	return (1);
 }
