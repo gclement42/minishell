@@ -5,12 +5,13 @@ NAME					= minishell
 BUILD_DIR				= build/
 	
 HEADER_DIR				= header/
-HEADER_FILE				= minishell.h
+HEADER_FILE				= minishell.h	\
+							exec.h	\
+							typedef.h
 
 DIR						=	src/
-
-SRC			 			= 	ms_utils.c	ms_utils_list.c main.c  main_exec.c memory_management.c\
-							parsing/parsing.c parsing/init_arr.c parsing/parsing_utils.c parsing/builtins_parsing.c parsing/list_utils.c parsing/cut_cmd.c\
+SRC						=	parsing/parsing.c parsing/builtins_parsing.c	\
+							ms_utils.c	ms_utils_list.c main_exec.c memory_management.c	\
                             builtins/cd.c    builtins/pwd.c    builtins/builtins_utils.c    builtins/echo.c builtins/env.c    builtins/unset.c builtins/export.c	builtins/exit.c
 							
 OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)
@@ -26,7 +27,7 @@ SANITIZE				= $(CFLAGS) -g3 -fsanitize=address
 RM 						= rm -rf
 CLEAR					= clear
 
-$(BUILD_DIR)%.o:		$(DIR)%.c $(HEADER_DIR)/$(HEADER_FILE) libft
+$(BUILD_DIR)%.o:		$(DIR)%.c $(HEADER_DIR) libft
 						@mkdir -p $(@D)
 						$(GCC) $(CFLAGS) -I$(HEADER_DIR) -I$(LIB_DIR) -I/usr/include -O3 -c $< -o $@
 
@@ -38,7 +39,7 @@ mkbuild:
 clear:
 						$(CLEAR)
 						
-$(NAME): 				$(OBJECTS) $(LIB_DIR)$(LIBFT)
+$(NAME): 				$(OBJECTS) $(LIB_DIR)$(LIBFT) $(addprefix $(HEADER_DIR), $(HEADER_FILE)) Makefile
 						$(GCC) $(OBJECTS) -o $(NAME) $(LIB_DIR)$(LIBFT) -lreadline
 
 sanit :					$(OBJECTS) $(LIB_DIR)$(LIBFT)

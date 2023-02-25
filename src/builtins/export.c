@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/22 15:56:22 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 09:53:31 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 void 	print_export_list(t_env **list)
 {

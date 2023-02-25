@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/24 10:05:44 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:02:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 char	*get_cwd(void)
 {

@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/24 16:19:01 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 09:53:26 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 void	exit_env(t_minish *var)
 {

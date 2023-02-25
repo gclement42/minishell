@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/24 14:04:44 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 09:53:23 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 char	**get_var_env(char **env, char *env_line)
 {

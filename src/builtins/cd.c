@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/24 10:04:51 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 09:53:13 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static void	update_pwd(t_minish *var)
 {

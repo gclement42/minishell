@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 15:16:10 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/21 15:04:44 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 09:53:39 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static void	remove_var_env(t_minish *var, char *unset_tab)
 {
