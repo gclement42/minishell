@@ -6,11 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 15:16:10 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/16 15:37:07 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:52:24 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static void	remove_var_env(t_minish *var, char *unset_tab)
 {
@@ -18,7 +18,7 @@ static void	remove_var_env(t_minish *var, char *unset_tab)
 	t_env			*prev;
 	unsigned int	len;
 
-	temp = *(var->env_list);
+	temp = var->env_list;
 	len = ft_strlen(unset_tab);
 	prev = NULL;
 	while (temp)
@@ -40,7 +40,7 @@ void	unset_env(t_minish *var)
 {
 	char	**unset_tab;
 	int		i;
-	
+
 	i = 1;
 	if (ft_strlen(var->cmd) == 5)
 		return ;
@@ -51,7 +51,7 @@ void	unset_env(t_minish *var)
 			exit(1); //FREE
 		while (unset_tab[i])
 		{
-			if (check_key(var->env_list, unset_tab[i]) == 0)
+			if (check_key(&(var->env_list), unset_tab[i]) == 0)
 				remove_var_env(var, unset_tab[i]);
 			else
 				return ;

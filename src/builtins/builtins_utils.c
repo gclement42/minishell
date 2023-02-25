@@ -6,23 +6,24 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/20 10:38:33 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/25 10:55:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 char	*get_cwd(void)
 {
 	char	*cwd;
 
-	if ((cwd = getcwd(NULL, 0)) == NULL)
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
 	{
 		if (errno == ERANGE)
 			stderr;
 		stderr;
 	}
-    return (cwd);
+	return (cwd);
 }
 
 void	add_var_env(t_env **lst, char *key, char *content)
@@ -31,7 +32,7 @@ void	add_var_env(t_env **lst, char *key, char *content)
 	t_env	*temp;
 	t_env	*ptr;
 	t_env	*last;
-	
+
 	len = ft_lstlen(*lst);
 	temp = *lst;
 	ptr = NULL;
@@ -61,4 +62,41 @@ int	check_key(t_env **lst, char *key)
 		temp = temp->next;
 	}
 	return (1);
+}
+
+void	modify_var(t_env **list, char *key, char *str)
+{
+	t_env	*temp;
+	int		len;
+
+	len = ft_strlen(key);
+	temp = *list;
+	while (temp)
+	{
+		if (ft_strncmp(key, temp->key, len) == 0)
+			temp->content = ft_strdup(str);
+		temp = temp->next;
+	}
+}
+
+int	get_shlvl(t_env **list)
+{
+	t_env	*temp;
+	int		res;
+
+	temp = *list;
+	res = 0;
+	if (check_key(list, "SHLVL") == 1)
+	{
+		while (temp)
+		{
+			if (ft_strncmp("SHLVL", temp->key, 6) == 0)
+			{
+				res = ft_atoi(temp->content);
+				return (res);
+			}
+			temp = temp->next;
+		}
+	}
+	return (0);
 }

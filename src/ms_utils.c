@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:13:28 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/15 13:54:45 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/21 10:42:44 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,30 @@ int	count_fist_word(char *env)
 	while (env[i] != '=')
 		i++;
 	return (i);
+}
+
+int	wordcount(char const *str, char c)
+{
+	size_t	i;
+	int		count;
+
+	if (str == NULL)
+		return (0);
+	count = 0;
+	i = 0;
+	while (i <= ft_strlen(str))
+	{
+		while (str[i] == c)
+			i++;
+		if (str[i] != c && str[i])
+		{
+			count++;
+			while (str[i] != c && str[i])
+			i++;
+		}
+		i++;
+	}
+	if (i > 0 && count == 0)
+		count++;
+	return (count);
 }

@@ -6,16 +6,16 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/24 13:34:30 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/25 14:01:08 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static t_cmd	*replace_variable(t_cmd *lst, t_minish env)
-// {
-// 	return ;
-// }
+// // static t_cmd	*replace_variable(t_cmd *lst, t_minish env)
+// // {
+// // 	return ;
+// // }
 
 static t_cmd	*parsing_true(char *cmd, t_cmd **lst)
 {

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:08:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/20 12:55:21 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/21 14:49:59 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ void	free_list(t_env *lst)
 	free(lst);
 }
 
-void print_list(t_env **list)
+void	print_list(t_env **list)
 {
 	t_env	*temp;
 
 	temp = *list;
-	if (temp == NULL)
+	if (!temp)
 		return ;
 	printf("%s=%s\n", temp->key, temp->content);
 	while (temp->next != NULL)
