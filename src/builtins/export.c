@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 13:46:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/27 14:22:28 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	print_export_list(t_env **list)
 		{
 			if (temp->next)
 				temp = temp->next;
+			else
+				return ;
 		}
 		if (ft_strncmp(temp->content, "''", 3) != 0)
 			printf("declare -x %s=\"%s\"\n", temp->key, temp->content);

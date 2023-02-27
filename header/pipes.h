@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:49:01 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/27 15:59:06 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_pipex
 {
 	char	**env_cmd;
 	char	**arg;
+	int		*id;
 	int		file[2];
 	int		fd1;
 	int		fd2;
@@ -30,6 +31,7 @@ int		pipex(int arg, char **argv, char **env);
 /* ----- Utils -----*/
 void	join_slash(char **env);
 void	open_fd(t_pipex *var, char **argv);
+char	**lst_to_tab(t_env **list);
 
 /* ----- Error / Free / Close ---- */
 void	free_close(t_pipex *var);

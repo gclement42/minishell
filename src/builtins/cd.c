@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 10:53:24 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/27 16:40:53 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@ static void	update_pwd_home(t_minish *var, char *home_dir)
 
 static int	cd_home(t_minish *var)
 {
+	if (ft_strncmp(var->oldpwd, "/nfs/homes/gclement", 20) == 0 \
+		|| ft_strncmp(var->oldpwd, "/nfs/homes/jlaisne", 20) == 0)
+	{
+		if (check_key(&var->env_list, "OLDPWD") == 0)
+		{
+			modify_var(&var->env_list, "OLDPWD", var->oldpwd);
+			modify_var(&var->exp_list, "OLDPWD", var->oldpwd);
+			return (0);
+		}
+	}
 	if (chdir("/nfs/homes/gclement") == -1)
 	{
 		if (chdir("/nfs/homes/jlaisne") != -1)
@@ -87,6 +97,7 @@ int	cd(t_minish	*var)
 	char	**dir;
 
 	var->oldpwd = ft_strdup(get_cwd());
+	printf("%s\n", var->oldpwd);
 	dir = ft_split(var->cmd, ' ');
 	if (!dir || !var->oldpwd)
 		return (-1);

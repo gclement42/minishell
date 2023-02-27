@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 11:05:46 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/27 16:35:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
 					exit(1); //FREE
 				modify_var(&temp_env, "SHLVL", str_lvl);
 				modify_var(&temp_exp, "SHLVL", str_lvl);
+				free(str_lvl);
 			}
 			temp_env = temp_env->next;
 		}
@@ -81,7 +82,8 @@ static void	int_handler(int status)
 
 int	main(int argc, char **argv, char *envp[])
 {
-	t_minish			*var;
+	t_minish	*var;
+///	char		**tab;
 	
 	(void)argv;
 	var = malloc(sizeof(t_minish));
@@ -89,9 +91,11 @@ int	main(int argc, char **argv, char *envp[])
 		exit(1);
 	signal(SIGINT, &int_handler);
 	signal(SIGQUIT, &int_handler);
-	if (argc == 1)
+	if (argc > 1)
 	{
 		init_struct(var, envp);
+		//tab = lst_to_tab(&var->env_list);
+		//pipex(5, argv, tab);
 		while (1)
 		{
 			var->cmd = readline(">>");
@@ -100,7 +104,7 @@ int	main(int argc, char **argv, char *envp[])
 			builtin_cmp(var);
 			if (ft_strlen(var->cmd) > 0)
 			 	add_history(var->cmd);
-			// free(var.cmd);
+		// 	// free(var.cmd);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:35:58 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/27 16:26:29 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void	exec_command(t_pipex *var, char **env, char **cmd, char *envp[])
 			i++;
 		}
 		else
+		{
 			execution(var, exe, cmd, envp);
+		}
 	}
 }

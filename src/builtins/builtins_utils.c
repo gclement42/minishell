@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:55:07 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/27 13:45:38 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,11 @@ void	modify_var(t_env **list, char *key, char *str)
 	while (temp)
 	{
 		if (ft_strncmp(key, temp->key, len) == 0)
-			temp->content = ft_strdup(str);
+		{
+			temp->content = str;
+			if (!temp->content)
+				exit (1); // FREE
+		}	
 		temp = temp->next;
 	}
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 13:56:32 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/25 14:18:56 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parsing.h"
 
 static	t_env *create_tmp_lst_env(char **split_arg)
 {
@@ -86,6 +86,7 @@ void	builtins_parsing(t_cmd *lst, int argc)
 	t_env	*env_lst;
 
 	cmd_node = get_node(lst, CMD);
+	(void)env_lst;
 	if (ft_memcmp(cmd_node->content, "cd", 2) == 0)
 	{
 		if (argc > 2)

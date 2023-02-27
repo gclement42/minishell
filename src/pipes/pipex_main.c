@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:09:12 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:38:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/27 16:32:11 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,28 +77,48 @@ static void	child_bis_process(t_pipex *var, char **envp)
 	exit(0);
 }
 
+// static void	fork_init(t_pipex *var, int arg)
+// {
+// 	int	index;
+// 	int	i;
+
+// 	index = arg - 3;
+// 	i = 0;
+// 	var->id = malloc(sizeof(int) * index);
+// 	if (!var->id)
+// 		display_error(var->env_cmd, "Error in malloc");
+// 	while (i < index)
+// 	{
+// 		var->id[i] = fork();
+// 		if (var->id[i] == -1)
+// 			display_error(var->env_cmd, "Forking unsuccessful");
+// 		i++;
+// 	}
+// }
+
 int	pipex(int arg, char **argv, char **envp)
 {
-	int		id;
-	int		id_2;
 	t_pipex	var;
+	int		id;
+	int		id_1;
 
 	if (arg == 5)
 	{
 		init_struct_pipes(&var, argv, envp);
+		// fork_init(&var, arg);
 		id = fork();
 		if (id == -1)
 			display_error(var.env_cmd, "Forking unsuccessful");
 		if (id == 0)
 			child_process(&var, envp);
-		id_2 = fork();
-		if (id_2 == -1)
+		id_1 = fork();
+		if (id_1 == -1)
 			display_error(var.env_cmd, "Forking unsuccessful");
-		if (id_2 == 0)
+		if (id_1 == 0)
 			child_bis_process(&var, envp);
 		close_pipe(&var);
 		waitpid(id, &var.status, 0);
-		waitpid(id_2, &var.status, 0);
+		waitpid(id_1, &var.status, 0);
 	}
 	else
 		return (ft_putstr_fd("Wrong number of arguments!\n", 2), 3);
