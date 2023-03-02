@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/27 15:59:06 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:30:00 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,27 @@ typedef struct s_pipex
 {
 	char	**env_cmd;
 	char	**arg;
-	int		*id;
-	int		file[2];
-	int		fd1;
-	int		fd2;
+	int		*pipefds;
+	int		numpipes;
+	int		fdin;
+	int		fdout;
 	int		status;
 }	t_pipex;
 
-int		pipex(int arg, char **argv, char **env);
-
 /* ----- Utils -----*/
 void	join_slash(char **env);
-void	open_fd(t_pipex *var, char **argv);
-char	**lst_to_tab(t_env **list);
+
+/* ----- Open ----- */
+void	open_fd_in_out(t_pipex *var, char **argv);
+void	open_fd_in(t_pipex *var, char **argv);
+void	open_fd_out(t_pipex *var, char **argv);
 
 /* ----- Error / Free / Close ---- */
 void	free_close(t_pipex *var);
-void	close_pipe(t_pipex *var);
 void	free_tab(char **tab);
 void	display_error(char **tab, char *msg);
 void	display_error_cmd(char **tab, char *msg, char *cmd);
+void	close_pipes(t_pipex *var);
 
 /* ----- Exec functions ----- */
 char	**get_command(char *arg, char **env);

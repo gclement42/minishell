@@ -5,14 +5,46 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/18 17:09:12 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/27 16:32:11 by jlaisne          ###   ########.fr       */
+/*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
+/*   Updated: 2023/03/02 14:32:26 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-static void	init_struct_pipes(t_pipex *var, char **argv, char **envp)
+static int	*init_pipes(t_pipex *var)
+{
+	int	i;
+	int	*pipefds;
+
+	i = 0;
+	pipefds = malloc(sizeof(int) * (2 * var->numpipes));
+	while (i < var->numpipes)
+	{
+		if (pipe(pipefds + i * 2) < 0)
+		{
+			perror("couldn't pipe");
+				exit(EXIT_FAILURE);
+		}
+		i++;
+	}
+	return (pipefds);
+}
+
+void	close_pipes(t_pipex *var)
+{
+	int	i;
+
+	i = 0;
+	while (i < var->numpipes * 2)
+	{
+		close(var->pipefds[i]);
+		i++;
+	}
+	free(var->pipefds);
+}
+
+static void	init_struct_pipex(t_pipex *var, char **argv, char **envp, int argc)
 {
 	if (envp)
 	{
@@ -23,104 +55,71 @@ static void	init_struct_pipes(t_pipex *var, char **argv, char **envp)
 	else
 		exit(1);
 	var->arg = argv;
-	open_fd(var, argv);
-	if (pipe(var->file) == -1)
-	{
-		close_pipe(var);
-		display_error(var->env_cmd, "Pipe returned an error");
-	}
+	var->numpipes = argc - 1;
+	var->pipefds = init_pipes(var);
 }
 
-static void	child_process(t_pipex *var, char **envp)
+static void	child_proc(t_pipex *var, char **envp)
 {
-	char	**cmd;
-
-	close(var->fd2);
-	close(var->file[0]);
-	if (dup2(var->fd1, STDIN_FILENO) == -1)
-	{
-		close(var->file[1]);
-		free_close(var);
-	}
-	if (dup2(var->file[1], STDOUT_FILENO) == -1)
-	{
-		close(var->fd1);
-		free_close(var);
-	}
-	cmd = get_command(var->arg[2], var->env_cmd);
-	if (!cmd)
-		display_error(var->env_cmd, "Command tab not properly allocated");
-	exec_command(var, var->env_cmd, cmd, envp);
-	exit(0);
-}
-
-static void	child_bis_process(t_pipex *var, char **envp)
-{
-	char	**cmd;
-
-	close(var->fd1);
-	close(var->file[1]);
-	if (dup2(var->file[0], STDIN_FILENO) == -1)
-	{
-		close(var->fd2);
-		free_close(var);
-	}
-	if (dup2(var->fd2, STDOUT_FILENO) == -1)
-	{
-		close(var->file[0]);
-		free_close(var);
-	}
-	cmd = get_command(var->arg[3], var->env_cmd);
-	if (!cmd)
-		display_error(var->env_cmd, "Command tab not properly allocated");
-	exec_command(var, var->env_cmd, cmd, envp);
-	exit(0);
-}
-
-// static void	fork_init(t_pipex *var, int arg)
-// {
-// 	int	index;
-// 	int	i;
-
-// 	index = arg - 3;
-// 	i = 0;
-// 	var->id = malloc(sizeof(int) * index);
-// 	if (!var->id)
-// 		display_error(var->env_cmd, "Error in malloc");
-// 	while (i < index)
-// 	{
-// 		var->id[i] = fork();
-// 		if (var->id[i] == -1)
-// 			display_error(var->env_cmd, "Forking unsuccessful");
-// 		i++;
-// 	}
-// }
-
-int	pipex(int arg, char **argv, char **envp)
-{
-	t_pipex	var;
 	int		id;
-	int		id_1;
+	int		fd;
+	int		command;
+	char	**cmd;
 
-	if (arg == 5)
+	command = 1;
+	fd = 0;
+	while (var->arg[command] && command < 5)
 	{
-		init_struct_pipes(&var, argv, envp);
-		// fork_init(&var, arg);
 		id = fork();
 		if (id == -1)
-			display_error(var.env_cmd, "Forking unsuccessful");
+			perror("fork: ");
 		if (id == 0)
-			child_process(&var, envp);
-		id_1 = fork();
-		if (id_1 == -1)
-			display_error(var.env_cmd, "Forking unsuccessful");
-		if (id_1 == 0)
-			child_bis_process(&var, envp);
-		close_pipe(&var);
-		waitpid(id, &var.status, 0);
-		waitpid(id_1, &var.status, 0);
+		{
+			if(fd != 0 && fd != 2 * var->numpipes) // command != 0 for in
+			{
+				if(dup2(var->pipefds[fd - 2], 0) < 0)
+				{
+					perror(" dup2");
+					exit(EXIT_FAILURE);
+				}
+			}
+			if (var->arg[command + 1] && command != 4) // command != command max - 1 for out 
+			{
+				if(dup2(var->pipefds[fd + 1], 1) < 0)
+				{
+					perror("dup2");
+					exit(EXIT_FAILURE);
+				}
+			}
+			close_pipes(var);
+			cmd = get_command(var->arg[command], var->env_cmd);
+			if (!cmd)
+				display_error(var->env_cmd, "Command tab not properly allocated");
+			exec_command(var, var->env_cmd, cmd, envp);
+		}
+		command++;
+		fd += 2;
 	}
-	else
-		return (ft_putstr_fd("Wrong number of arguments!\n", 2), 3);
-	return (free_tab(var.env_cmd), 0);
+}
+
+void	pipex(int argc, char **argv, char **envp)
+{
+	t_pipex	var;
+	int		i;
+	
+	init_struct_pipex(&var, argv, envp, argc);
+	if (argc == 7)
+		open_fd_in_out(&var, argv);
+	if (argc == 6)
+		open_fd_out(&var, argv);
+	if (argc == 5)
+		open_fd_in(&var, argv);
+	child_proc(&var, envp);
+	close_pipes(&var);
+	i = 0;
+	while (i < var.numpipes + 1)
+	{
+		wait(&var.status);
+		i++;
+	}
 }

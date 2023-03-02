@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/27 16:26:29 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:30:20 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,18 @@ char	**get_path(char *envp[])
 	return (tab);
 }
 
-static void	check_cmd(char **cmd, char **envp, char **env)
+static void	execution(t_pipex *var, char *exec, char **cmd, char **envp)
+{
+	if (execve(exec, cmd, envp) == -1)
+	{
+		perror("exec");
+		close_pipes(var);
+		free_tab(var->env_cmd);
+		free(exec);
+	}
+}
+
+static void	check_cmd(t_pipex *var, char **cmd, char **envp, char **env)
 {
 	if (!cmd[0])
 	{
@@ -53,19 +64,7 @@ static void	check_cmd(char **cmd, char **envp, char **env)
 	}
 	if (access(cmd[0], X_OK) != -1)
 	{
-		execve(cmd[0], cmd, envp);
-		perror(">");
-	}		
-}
-
-static void	execution(t_pipex *var, char *exec, char **cmd, char **envp)
-{
-	if (execve(exec, cmd, envp) == -1)
-	{
-		close_pipe(var);
-		free_tab(var->env_cmd);
-		free(exec);
-		perror("exec");
+		execution(var, cmd[0], cmd, envp);
 	}
 }
 
@@ -75,7 +74,7 @@ void	exec_command(t_pipex *var, char **env, char **cmd, char *envp[])
 	char	*exe;
 
 	i = 0;
-	check_cmd(cmd, envp, env);
+	check_cmd(var, cmd, envp, env);
 	while (env[i])
 	{
 		exe = ft_strjoin(env[i], cmd[0]);
@@ -93,8 +92,6 @@ void	exec_command(t_pipex *var, char **env, char **cmd, char *envp[])
 			i++;
 		}
 		else
-		{
 			execution(var, exe, cmd, envp);
-		}
 	}
 }
