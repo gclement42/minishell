@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 14:37:35 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:47:20 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,11 @@ char	**parsing(char *cmd, t_minish *env)
 	int		i;
 	int		count;
 
+	if (cmd[0] == '\0')
+		return (NULL);
 	i = 0;
 	lst = NULL;
-	split_cmd = ft_split(cmd, '|');
+	split_cmd = ft_split(cmd, '|'); //protect
 	while (split_cmd[i])
 	{
 		lst = parsing_true(split_cmd[i], &lst);

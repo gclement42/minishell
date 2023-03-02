@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 14:39:54 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:41:10 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,7 @@ static int	cd_home(t_minish *var)
 int	cd(t_minish *var, char *path)
 {
 	var->oldpwd = ft_strdup(get_cwd());
-	dir = ft_split(var->cmd, ' ');
-	if (!dir || !var->oldpwd)
+	if (!var->oldpwd)
 		return (-1);
 	if (!path)
 	{
