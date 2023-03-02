@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 17:29:28 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/02 10:16:56 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,10 @@ void	get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	type = ARG;
 	if (*start < ((size_t)*i))
 	{
-		// while (cmd[*start] == ' ')
-		// 	*start += 1;
 		word = ft_substr(cmd, *start, *i - *start);
 		if (!word)
 			return ;
-		new_node_cmd(word, SPACES, type, lst);
+		get_word_with_space(word, lst);
 	}
 	len = count_len(&cmd[*i], cmd[*i]);
 	if (cmd[*i + len] != cmd[*i])

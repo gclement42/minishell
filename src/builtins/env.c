@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 11:05:31 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/28 14:08:28 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,6 @@ void	set_env(char **envp, t_env **env, t_env **exp)
 void	get_env(t_minish *var, t_env **add_env)
 {
 	print_list(&(var->env_list));
-	(void)add_env;
+	print_list(add_env);
 	return ;
 }

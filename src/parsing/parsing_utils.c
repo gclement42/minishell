@@ -6,32 +6,12 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 14:24:40 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/28 11:26:41 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**set_argxec(char **cmd)
-{
-	char	**argxec;
-	int		x;
-
-	x = 0;
-	while (cmd[x])
-		x++;
-	argxec = malloc((x + 1) * sizeof(char *));
-	if (!argxec)
-		exit (EXIT_FAILURE);
-	x = 0;
-	while (cmd[x])
-	{
-		argxec[x] = cmd[x];
-		x++;
-	}
-	argxec[x] = NULL;
-	return (argxec);
-}
 
 int	check_is_builtins(t_cmd *node, t_minish *env)
 {
@@ -94,4 +74,19 @@ char	*prompt_for_quote_termination(char *cmd, char c)
 	free (content);
 	free (cmd);
 	return (cmd_join);
+}
+
+char	*search_key(t_env *lst_env, char *key)
+{
+	char	*res;
+
+	res = NULL;
+	while (lst_env)
+	{
+		res = ft_strnstr(lst_env->key, key, ft_strlen(key));
+		if (res && !res[ft_strlen(key) + 1])
+			return (lst_env->content);
+		lst_env = lst_env->next;
+	}
+	return (NULL);
 }

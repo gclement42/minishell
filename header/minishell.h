@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 13:58:38 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/25 14:20:40 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include "exec.h"
 # include "typedef.h"
 # include "pipes.h"
+# include "parsing.h"
 
 /* ---- Utils ---- */
 char	*ft_strnstr_path(char *haystack, char *needle, size_t len);

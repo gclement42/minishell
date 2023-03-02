@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:55:07 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/01 10:33:25 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	modify_var(t_env **list, char *key, char *str)
 	temp = *list;
 	while (temp)
 	{
-		if (ft_strncmp(key, temp->key, len) == 0)
+		if (ft_strncmp(key, temp->key, len + 1) == 0)
 			temp->content = ft_strdup(str);
 		temp = temp->next;
 	}
