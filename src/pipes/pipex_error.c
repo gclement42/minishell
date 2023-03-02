@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:42:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:35:54 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:30:14 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,4 @@ void	free_close(t_pipex *var)
 	close(STDERR_FILENO);
 	close(STDOUT_FILENO);
 	exit(1);
-}
-
-void	close_pipe(t_pipex *var)
-{
-	close(var->file[0]);
-	close(var->file[1]);
-	close(var->fd1);
-	close(var->fd2);
-	close(STDIN_FILENO);
-	close(STDERR_FILENO);
-	close(STDOUT_FILENO);
 }

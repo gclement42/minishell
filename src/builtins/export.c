@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/01 10:29:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:36:33 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	print_export_list(t_env **list)
 		{
 			if (temp->next)
 				temp = temp->next;
+			else
+				return ;
 		}
 		if (ft_strncmp(temp->content, "''", 3) != 0)
 			printf("declare -x %s=\"%s\"\n", temp->key, temp->content);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 15:13:02 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:37:57 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
 					exit(1); //FREE
 				modify_var(&temp_env, "SHLVL", str_lvl);
 				modify_var(&temp_exp, "SHLVL", str_lvl);
+				free(str_lvl);
 			}
 			temp_env = temp_env->next;
 		}
@@ -63,7 +64,7 @@ static void	int_handler(int status)
 
 int	main(int argc, char **argv, char *envp[])
 {
-	t_minish			*var;
+	t_minish	*var;
 
 	(void)argv;
 	var = malloc(sizeof(t_minish));

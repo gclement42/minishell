@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/28 14:08:28 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:36:19 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**split_env_var(char *env_line)
 
 	env = ft_split(env_line, '=');
 	if (!env)
-		exit (1); // FREE
+		return (NULL); // FREE
 	i = 0;
 	while (env[i])
 		i++;
@@ -97,6 +97,8 @@ void	set_env(char **envp, t_env **env, t_env **exp)
 	while (envp && envp[i])
 	{
 		var_con = split_env_var(envp[i]);
+		if (!var_con)
+			exit (1);
 		ptr_env = ft_lstnew_env(var_con[0], var_con[1]);
 		ptr_exp = ft_lstnew_env(var_con[0], var_con[1]);
 		if (!ptr_env || !ptr_exp)

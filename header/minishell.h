@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 14:20:40 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:35:00 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	*ft_strnstr_path(char *haystack, char *needle, size_t len);
 void	*free_array(char **ptr);
 int		count_fist_word(char *env);
 int		wordcount(char const *str, char c);
+void	exit_free(t_minish *var);
 
 /* ---- Utils list---- */
 void	ft_lstadd_back_env(t_env **lst, t_env *new);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:57:20 by gclement          #+#    #+#             */
-/*   Updated: 2023/01/07 14:30:43 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:21:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char	**ft_split(char const *s, char c)
 	size_t			l;
 	int				row;
 	char			**ptr;
+	char			*str;
 
 	put_value(&i, &row);
 	ptr = create_2d_array(wordcount(s, c));
@@ -90,7 +91,8 @@ char	**ft_split(char const *s, char c)
 			l++;
 		if ((l - i) > 0)
 		{
-			ptr[row] = ft_substr(s, i, (l - i));
+			str = ft_substr(s, i, (l - i));
+			ptr[row] = str;
 			if (!ptr[row++])
 				return (free_array(&*ptr));
 		}
