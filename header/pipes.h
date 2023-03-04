@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:30:00 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 15:07:02 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ typedef struct s_pipex
 	int		fdout;
 	int		status;
 }	t_pipex;
+
+
+void	pipex(int argc, char **argv, char **envp);
 
 /* ----- Utils -----*/
 void	join_slash(char **env);

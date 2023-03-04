@@ -6,11 +6,31 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 13:50:16 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/03 13:34:18 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
+{
+	char	*new_content;
+
+	while (lst)
+	{
+		if (lst->content[0] == '$' && lst->marks != QUOTE)
+		{
+			new_content = search_key(env->env_list, &lst->content[1]);
+			free(lst->content);
+			if (new_content)
+				lst->content = new_content;
+			else
+				lst->content = " ";
+		}
+		lst = lst->next;
+	}
+	return (lst);
+}
 
 static int	is_all_spaces(char *word)
 {
@@ -50,4 +70,56 @@ void	get_word_with_space(char *word, t_cmd **lst)
 		return ;
 	}
 	new_node_cmd(word, SPACES, ARG, lst);
+}
+
+/* Manque les retour a la ligne */
+char	*prompt_for_quote_termination(char *cmd, char c)
+{
+	char	*prompt;
+	char	*content;
+	char	*cmd_join;
+	char	*tmp;
+	int		i;
+
+	prompt = "dquote>";
+	if (c == '\'')
+		prompt = "quote>";
+	content = readline(prompt);
+	cmd_join = ft_strjoin(cmd, content);
+	i = ft_strlen(cmd_join);
+	while (cmd_join[i - 1] != c)
+	{
+		free(content);
+		content = readline(prompt);
+		tmp = ft_strjoin(cmd_join, content);
+		free(cmd_join);
+		cmd_join = tmp;
+		i = ft_strlen(cmd_join);
+	}
+	free (content);
+	free (cmd);
+	return (cmd_join);
+}
+
+char	**prompt_for_heredoc(char *cmd, char *eof)
+{
+	char	*content;
+	char	*tmp;
+	int		i;
+
+	content = readline(">");
+	cmd_join = ft_strjoin(cmd, content);
+	i = ft_strlen(cmd_join);
+	while (cmd_join[i - 1] != c)
+	{
+		free(content);
+		content = readline(">");
+		tmp = ft_strjoin(cmd_join, content);
+		free(cmd_join);
+		cmd_join = tmp;
+		i = ft_strlen(cmd_join);
+	}
+	free (content);
+	free (cmd);
+	return (cmd_join);
 }
