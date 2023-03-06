@@ -98,8 +98,6 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	return (*lst);
 }
 
-
-
 static	t_cmd *create_lst_cmd(char *cmd)
 {
 	char	**split_cmd;
@@ -121,17 +119,55 @@ static	t_cmd *create_lst_cmd(char *cmd)
 	return (lst);
 }
 
+void	search_if_heredoc(t_cmd *lst, int pipe_fd[2])
+{
+	char	*line;
+
+	while (lst)
+	{
+		if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0 
+			&& lst->type == REDIRECT)
+		{
+			pipe(pipe_fd);
+			//close(pipe_fd[1]);
+			line = readline(">");
+			while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
+			{
+				line[ft_strlen(line)] = '\n';
+				if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
+				{
+					perror("minishell");
+					close(pipe_fd[0]);
+					return ;
+				}
+				free (line);
+				line = readline(">");
+			}
+			close(pipe_fd[1]);
+		}
+		lst = lst->next;
+	}
+	char buffer[1024];
+	int	n;
+	while ((n = read(pipe_fd[0], buffer, 1024)) > 0) 
+	{
+        printf("read %d bytes from the pipe: %s\n", n, buffer);
+    }
+}
+
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	int		arg_count;
 	char	**arr_exec;
+	int 	pipe_fd[2];
 
 	if (cmd[0] == '\0')
 		return ;
 	(void) arr_exec;
 	lst = create_lst_cmd(cmd);
 	replace_variable(lst, env);
+	search_if_heredoc(lst, pipe_fd);
 	arg_count = count_type_in_lst(lst, ARG);
 	if (check_is_builtins(get_node(lst, CMD), env) == 1)
 		builtins_router(lst, arg_count, env);

@@ -100,26 +100,3 @@ char	*prompt_for_quote_termination(char *cmd, char c)
 	free (cmd);
 	return (cmd_join);
 }
-
-char	**prompt_for_heredoc(char *cmd, char *eof)
-{
-	char	*content;
-	char	*tmp;
-	int		i;
-
-	content = readline(">");
-	cmd_join = ft_strjoin(cmd, content);
-	i = ft_strlen(cmd_join);
-	while (cmd_join[i - 1] != c)
-	{
-		free(content);
-		content = readline(">");
-		tmp = ft_strjoin(cmd_join, content);
-		free(cmd_join);
-		cmd_join = tmp;
-		i = ft_strlen(cmd_join);
-	}
-	free (content);
-	free (cmd);
-	return (cmd_join);
-}
