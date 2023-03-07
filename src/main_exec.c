@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 14:46:29 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/07 13:06:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ void	init_struct(t_minish *var, char **envp)
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
 }
 
-static void	int_handler(int status)
+void	int_handler(int status)
 {
+	struct termios term;
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	if (status == SIGINT)
 	{
 		printf("\n"); // Move to a new line
@@ -59,19 +61,23 @@ static void	int_handler(int status)
 		rl_redisplay();		
 	}
 	if (status == SIGQUIT)
-		return ;
+	{
+		// tcgetattr(STDIN_FILENO, &term);
+   		// term.c_lflag |= 0;
+		// tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	}
 }
 
 int	main(int argc, char **argv, char *envp[])
 {
 	t_minish	*var;
 
-	(void)argv;
 	var = malloc(sizeof(t_minish));
 	if (!var)
 		exit(1);
 	signal(SIGINT, &int_handler);
 	signal(SIGQUIT, &int_handler);
+	(void)argv;
 	var->builtins = init_bultins_arr();
 	if (argc == 1)
 	{

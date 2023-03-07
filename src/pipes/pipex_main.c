@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:32:26 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 15:57:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	child_proc(t_pipex *var, char **envp)
 					exit(EXIT_FAILURE);
 				}
 			}
-			if (var->arg[command + 1] && command != 4) // command != command max - 1 for out 
+			if (var->arg[command + 1]) // command != command max - 1 for out 
 			{
 				if(dup2(var->pipefds[fd + 1], 1) < 0)
 				{
@@ -107,6 +107,7 @@ void	pipex(int argc, char **argv, char **envp)
 	t_pipex	var;
 	int		i;
 	
+
 	init_struct_pipex(&var, argv, envp, argc);
 	if (argc == 7)
 		open_fd_in_out(&var, argv);

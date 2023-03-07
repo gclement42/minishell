@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:35:00 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/07 11:17:42 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <signal.h>
 # include <sys/ioctl.h>
 # include <fcntl.h>
+# include <termios.h>
 # include "exec.h"
 # include "typedef.h"
 # include "pipes.h"
@@ -45,6 +46,7 @@ void	print_list(t_env **list);
 void	free_list(t_env *lst);
 int		ft_lstlen(t_env *lst);
 
+void	int_handler(int status);
 
 void	get_cmd_line(t_minish *var, t_env **lst);
 void	builtin_cmp(t_minish *var);
