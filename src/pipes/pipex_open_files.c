@@ -6,15 +6,15 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/07 13:07:03 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/07 13:10:31 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-void	open_fd_in(t_pipex *var, char **argv)
+void	open_fd_in(t_pipex *var, char *filename)
 {
-	var->fdin = open(argv[1], O_RDONLY, 0777);
+	var->fdin = open(filename, O_RDONLY, 0777);
 	if (var->fdin == -1)
 		perror("infile");
 	if(dup2(var->fdin, STDIN_FILENO) < 0)
@@ -24,9 +24,9 @@ void	open_fd_in(t_pipex *var, char **argv)
 	}
 }
 
-void	open_fd_out(t_pipex *var, char **argv)
+void	open_fd_out(t_pipex *var, char *filename)
 {
-	var->fdout = open(argv[5], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	var->fdout = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (var->fdout == -1)
 	{
 		perror("outfile");

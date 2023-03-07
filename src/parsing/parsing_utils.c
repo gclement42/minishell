@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 14:37:32 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 19:13:49 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,34 +48,6 @@ t_marks	get_marks(char c)
 		return (SPACES);
 }
 
-char	*prompt_for_quote_termination(char *cmd, char c)
-{
-	char	*prompt;
-	char	*content;
-	char	*cmd_join;
-	char	*tmp;
-	int		i;
-
-	prompt = "dquote>";
-	if (c == '\'')
-		prompt = "quote>";
-	content = readline(prompt);
-	cmd_join = ft_strjoin(cmd, content);
-	i = ft_strlen(cmd_join);
-	while (cmd_join[i - 1] != c)
-	{
-		free(content);
-		content = readline(prompt);
-		tmp = ft_strjoin(cmd_join, content);
-		free(cmd_join);
-		cmd_join = tmp;
-		i = ft_strlen(cmd_join);
-	}
-	free (content);
-	free (cmd);
-	return (cmd_join);
-}
-
 char	*search_key(t_env *lst_env, char *key)
 {
 	char	*res;
@@ -89,4 +61,21 @@ char	*search_key(t_env *lst_env, char *key)
 		lst_env = lst_env->next;
 	}
 	return (NULL);
+}
+
+int	count_type_in_lst(t_cmd *lst, t_type type)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		printf("content = %s\n", lst->content);
+		printf("marks = %d\n", lst->marks);
+		printf("type = %d\n\n", lst->type);
+		if (lst->type == type)
+			count++;
+		lst = lst->next;
+	}
+	return (count);
 }

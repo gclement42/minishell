@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:54:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/07 13:10:48 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	join_slash(char **env);
 
 /* ----- Open ----- */
 void	open_fd_in_out(t_pipex *var, char **argv);
-void	open_fd_in(t_pipex *var, char **argv);
-void	open_fd_out(t_pipex *var, char **argv);
+void	open_fd_in(t_pipex *var, char *filename);
+void	open_fd_out(t_pipex *var, char *filename);
 
 /* ----- Error / Free / Close ---- */
 void	free_close(t_pipex *var);
