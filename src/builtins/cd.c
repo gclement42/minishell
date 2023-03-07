@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/27 16:40:53 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:41:10 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,25 +92,18 @@ static int	cd_home(t_minish *var)
 	return (0);
 }
 
-int	cd(t_minish	*var)
+int	cd(t_minish *var, char *path)
 {
-	char	**dir;
-
 	var->oldpwd = ft_strdup(get_cwd());
-	printf("%s\n", var->oldpwd);
-	dir = ft_split(var->cmd, ' ');
-	if (!dir || !var->oldpwd)
+	if (!var->oldpwd)
 		return (-1);
-	if (!dir[1])
+	if (!path)
 	{
 		cd_home(var);
 		return (0);
 	}
-	if (chdir(dir[1]) == -1)
-	{
-		printf("cd: no such file or directory: %s\n", dir[1]);
-		free_array(dir);
-	}
+	if (chdir(path) == -1)
+		printf("cd: no such file or directory: %s\n", path);
 	else
 	{
 		var->cd_path = getcwd(NULL, 0);
@@ -121,7 +114,6 @@ int	cd(t_minish	*var)
 			stderr;
 		}
 		update_pwd(var);
-		free_array(dir);
 	}
 	free(var->oldpwd);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/01 10:28:43 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:36:33 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,68 +61,51 @@ void	sort_export(t_env **list)
 	}
 }
 
-static void	replace_content(t_minish *var, char **key_var)
+static void	replace_content(t_minish *var, t_env *new_var)
 {
-	if (!key_var[1])
+	if (!new_var->content)
 	{
-		key_var[1] = ft_strdup("''");
-		if (!key_var[1])
+		new_var->content = ft_strdup("''");
+		if (!new_var->content)
 			exit(1); //FREE
-		modify_var(&var->exp_list, key_var[0], key_var[1]);
+		modify_var(&var->exp_list, new_var->key, new_var->content);
 	}
 	else
 	{
-		modify_var(&var->exp_list, key_var[0], key_var[1]);
-		modify_var(&var->env_list, key_var[0], key_var[1]);
+		modify_var(&var->exp_list, new_var->key, new_var->content);
+		modify_var(&var->env_list, new_var->key, new_var->content);
 	}	
 }
 
-static void	add_export(t_minish *var, char *env_var)
+static void	add_export(t_minish *var, t_env *new_var)
 {
-	char	**key_var;
-
-	key_var = ft_split(env_var, '=');
-	if (!key_var)
-		exit(1); //FREE
-	if (check_key(&var->exp_list, key_var[0]) == 1)
+	while (new_var)
 	{
-		if (!key_var[1])
+		if (check_key(&var->exp_list, new_var->key) == 1)
 		{
-			key_var[1] = ft_strdup("''");
-			if (!key_var[1])
-				exit(1); //FREE
-			add_var_env(&var->exp_list, key_var[0], key_var[1]);
+			if (!new_var->content)
+			{
+				new_var->content = ft_strdup("''");
+				if (!new_var->content)
+					exit(1); //FREE
+				add_var_env(&var->exp_list, new_var->key, new_var->content);
+			}
+			else
+			{
+				add_var_env(&var->env_list, new_var->key, new_var->content);
+				add_var_env(&var->exp_list, new_var->key, new_var->content);
+			}
 		}
 		else
-		{
-			add_var_env(&var->env_list, key_var[0], key_var[1]);
-			add_var_env(&var->exp_list, key_var[0], key_var[1]);
-		}
+			replace_content(var, new_var);
+		new_var = new_var->next;
 	}
-	else
-		replace_content(var, key_var);
 }
 
-void	export_env(t_minish *var)
+void	export_env(t_minish *var, t_env *new_var, int argc)
 {
-	int		i;
-	int		arg;
-	char	**export_tab;
-
-	i = 1;
-	arg = wordcount(var->cmd, ' ');
-	export_tab = ft_split(var->cmd, ' ');
-	if (!export_tab)
-		exit(1); //FREE
-	if (arg != 1)
-	{
-		while (arg > 1)
-		{
-			add_export(var, export_tab[i]);
-			arg--;
-			i++;
-		}
-	}
+	if (argc != 0)
+		add_export(var, new_var);
 	else
 		print_export_list(&(var->exp_list));
 }

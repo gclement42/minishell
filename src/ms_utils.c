@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:13:28 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/21 10:42:44 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/02/27 18:55:59 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	wordcount(char const *str, char c)
 		{
 			count++;
 			while (str[i] != c && str[i])
-			i++;
+				i++;
 		}
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:30:00 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/07 11:08:26 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,16 @@ typedef struct s_pipex
 	int		status;
 }	t_pipex;
 
+
+void	pipex(int argc, char **arg_exec, char **envp, t_pipex var);
+
 /* ----- Utils -----*/
 void	join_slash(char **env);
 
 /* ----- Open ----- */
 void	open_fd_in_out(t_pipex *var, char **argv);
-void	open_fd_in(t_pipex *var, char **argv);
-void	open_fd_out(t_pipex *var, char **argv);
+void	open_fd_in(t_pipex *var, char *filename);
+void	open_fd_out(t_pipex *var, char *filename);
 
 /* ----- Error / Free / Close ---- */
 void	free_close(t_pipex *var);

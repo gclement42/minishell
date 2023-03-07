@@ -6,44 +6,38 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 14:18:56 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:37:21 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-static	t_env *create_tmp_lst_env(char **split_arg)
+static	t_env	*create_tmp_lst_env(char *arg)
 {
-	t_env	*env_lst;
 	t_env	*new;
 	char	**split_key_value;
 	int		i;
-	
-	env_lst = NULL;
+
 	i = 0;
-	while (ft_strchr(split_arg[i], '=') != 0)
+	if (arg[0] == '=')
+		new = ft_lstnew_env(NULL, &arg[1]);
+	else
 	{
-		if (split_arg[i][0] == '=')
-			new = ft_lstnew_env(NULL, &split_arg[i][1]);
-		else
-		{
-			split_key_value = split_env_var(split_arg[i]);
-			if (!split_key_value)
-				return (NULL);
-			new = ft_lstnew_env(split_key_value[0], split_key_value[1]);
-		}
-		if (!new)
-			exit (0);
-		ft_lstadd_back_env(&env_lst, new);
-		i++;
+		split_key_value = split_env_var(arg);
+		if (!split_key_value)
+			return (NULL);
+		new = ft_lstnew_env(split_key_value[0], split_key_value[1]);
 	}
-	return (env_lst);
+	if (!new)
+		return (NULL);
+	i++;
+	return (new);
 }
 
-t_env	*export_variable_parsing(t_cmd *lst)
+t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 {
 	t_env	*env_lst;
-	char	**split_arg;
+	t_env	*new;
 
 	env_lst = NULL;
 	while (lst)
@@ -55,64 +49,56 @@ t_env	*export_variable_parsing(t_cmd *lst)
 		}
 		if (lst->type == ARG && ft_strchr(lst->content, '=') != 0)
 		{
-			split_arg = ft_split(lst->content, ' ');
-			if (!split_arg)
-				exit (0);
-			env_lst = create_tmp_lst_env(split_arg);
-			if (!env_lst)
-				exit (0);
+			new = create_tmp_lst_env(lst->content);
+			if (!new)
+				return (NULL);
+			if (ft_strnstr(cmd_name, "export", 6) != 0 && new->key == NULL)
+				free (new);
+			else
+				ft_lstadd_back_env(&env_lst, new);
 		}
 		lst = lst->next;
 	}
 	return (env_lst);
 }
 
-// t_env *check_export_arg(t_env *lst)
-// [
-// 	t_env before;
-// 	while (lst)
-// 	{
-// 		if (!lst->key)
-// 		{
-// 			l
-// 		}
-// 			lst = lst->next;
-// 	}
-// ]
-
-void	builtins_parsing(t_cmd *lst, int argc)
+void	unset_parsing(t_minish *var, t_cmd *lst)
 {
-	t_cmd	*cmd_node;
-	t_env	*env_lst;
+	int		i;
 
-	cmd_node = get_node(lst, CMD);
-	(void)env_lst;
-	if (ft_memcmp(cmd_node->content, "cd", 2) == 0)
+	i = 0;
+	while (lst)
 	{
-		if (argc > 2)
-			return (ft_putstr_fd("minishell: cd : too many arguments\n", 2));
-		else if (argc == 1)
-			ft_putstr_fd("cd", 1);
-		else
-			ft_putstr_fd("cd", 1);
+		while (lst->content[i])
+		{
+			if (ft_isalpha(lst->content[i]) == 0 && lst->content[i] != '$')
+			{
+				printf("minishell : unset : %s : not a valid identifier\n", \
+				lst->content);
+				break ;
+			}
+			i++;
+		}
+		remove_var_env(var, lst->content);
+		lst = lst->next;
 	}
-	if (ft_memcmp(cmd_node->content, "pwd", 3) == 0)
-		ft_printf("pwd");
-	if (ft_memcmp(cmd_node->content, "env", 3) == 0)
-		env_lst = export_variable_parsing(lst);
-	// if (ft_memcmp(cmd_node, "unset", 5) == 0)
-	// 	unset_parsing(arg);
-	if (ft_memcmp(cmd_node, "export", 6) == 0)
-	{
-		env_lst = export_variable_parsing(lst);
-	}
-	// if (ft_memcmp(cmd_node, "exit", 4) == 0)
-	// 	exit_parsing(arg);
-	// if (ft_memcmp(cmd_node, "echo", 4) == 0)
-	// 	echo_parsing(arg);
 }
 
-// void	exit_parsing(char **arg)
-// {
-// 	printf("%d", ft_atoi(arg[1]));
-// }
+void	exit_parsing(t_minish *var, t_cmd *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst->content[i])
+	{
+		if (!(lst->content[i] >= '0' && lst->content[i] <= '9'))
+		{
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(lst->content, 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			break ;
+		}
+		i++;
+	}
+	exit_env(var);
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cut_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 14:17:25 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 19:17:46 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,13 @@ void	get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 {
 	size_t	len;
 	char	*word;
-	t_type	type;
 
-	type = ARG;
-	if (*start < ((size_t)*i))
+	if (*start < ((size_t)*i) && cmd[*start] != '"' && cmd[*start] != '\'')
 	{
-		while (cmd[*start] == ' ')
-			*start += 1;
 		word = ft_substr(cmd, *start, *i - *start);
 		if (!word)
 			return ;
-		new_node_cmd(word, SPACES, type, lst);
+		get_word_with_space(word, lst);
 	}
 	len = count_len(&cmd[*i], cmd[*i]);
 	if (cmd[*i + len] != cmd[*i])
@@ -82,10 +78,13 @@ void	get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	word = ft_substr(cmd, *i + 1, (count_len(&cmd[*i], cmd[*i]) - 1));
 	if (!word)
 		return ;
-	if (new_node_cmd(word, get_marks(cmd[*i]), type, lst) == NULL)
+	if (new_node_cmd(word, get_marks(cmd[*i]), ARG, lst) == NULL)
 		return ;
-	*i += len + 1;
-	*start = *i + 1;
+	if (cmd[*i + len + 1] != '\'' && cmd[*i + len + 1] != '"')
+		*i += len + 1;
+	else
+		*i += len;
+	*start = *i;
 }
 
 void	get_frst_word(char *cmd, int *i, t_cmd **lst)

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/01 10:26:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:46:29 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
 	temp_exp = *exp_l;
 	if (check_key(&temp_env, "SHLVL") == 0)
 	{
-		while(temp_env)
+		while (temp_env)
 		{
 			if (ft_strnstr(temp_env->key, "SHLVL", 6))
 			{
@@ -49,24 +49,6 @@ void	init_struct(t_minish *var, char **envp)
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
 }
 
-void	builtin_cmp(t_minish *var)
-{
-	if (ft_strncmp(var->cmd, "exit", 5) == 0)
-		exit_env(var);
-	if (ft_strncmp(var->cmd, "cd ", 2) == 0)
-	 	cd(var);
-	if (ft_strncmp(var->cmd, "pwd", 3) == 0)
-		get_pwd(var);
-	if (ft_strncmp(var->cmd, "env", 3) == 0)
-	 	get_env(var, &var->env_list);
-	if (ft_strncmp(var->cmd, "echo", 4) == 0)
-	 	print_echo(0, var->cmd);
-	if (ft_strncmp(var->cmd, "export", 6) == 0)
-	 	export_env(var);
-	if (ft_strncmp(var->cmd, "unset", 5) == 0)
-	 	unset_env(var);
-}
-
 static void	int_handler(int status)
 {
 	if (status == SIGINT)
@@ -83,13 +65,14 @@ static void	int_handler(int status)
 int	main(int argc, char **argv, char *envp[])
 {
 	t_minish	*var;
-	
+
 	(void)argv;
 	var = malloc(sizeof(t_minish));
 	if (!var)
 		exit(1);
 	signal(SIGINT, &int_handler);
 	signal(SIGQUIT, &int_handler);
+	var->builtins = init_bultins_arr();
 	if (argc == 1)
 	{
 		init_struct(var, envp);
@@ -98,9 +81,9 @@ int	main(int argc, char **argv, char *envp[])
 			var->cmd = readline(">>");
 			if (var->cmd == NULL)
 				exit_env(var);
-			builtin_cmp(var);
+			parsing(var->cmd, var);
 			if (ft_strlen(var->cmd) > 0)
-			 	add_history(var->cmd);
+				add_history(var->cmd);
 			// free(var.cmd);
 		}
 	}

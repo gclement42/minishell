@@ -3,44 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 14:17:32 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/02 19:13:49 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-char	**set_argxec(char **cmd)
-{
-	char	**argxec;
-	int		x;
 
-	x = 0;
-	while (cmd[x])
-		x++;
-	argxec = malloc((x + 1) * sizeof(char *));
-	if (!argxec)
-		exit (EXIT_FAILURE);
-	x = 0;
-	while (cmd[x])
-	{
-		argxec[x] = cmd[x];
-		x++;
-	}
-	argxec[x] = NULL;
-	return (argxec);
-}
-
-int	check_is_builtins(t_cmd *node, t_minish env)
+int	check_is_builtins(t_cmd *node, t_minish *env)
 {
 	int	i;
 
 	i = 0;
-	while (env.builtins[i])
+	while (env->builtins[i])
 	{
-		if (ft_strncmp(env.builtins[i], node->content, ft_strlen(env.builtins[i])) == 0)
+		if (ft_strncmp(env->builtins[i], node->content, \
+			ft_strlen(env->builtins[i])) == 0)
 			return (1);
 		i++;
 	}
@@ -67,30 +48,34 @@ t_marks	get_marks(char c)
 		return (SPACES);
 }
 
-char	*prompt_for_quote_termination(char *cmd, char c)
+char	*search_key(t_env *lst_env, char *key)
 {
-	char	*prompt;
-	char	*content;
-	char	*cmd_join;
-	char	*tmp;
-	int		i;
+	char	*res;
 
-	prompt = "dquote>";
-	if (c == '\'')
-		prompt = "quote>";
-	content = readline(prompt);
-	cmd_join = ft_strjoin(cmd, content);
-	i = ft_strlen(cmd_join);
-	while (cmd_join[i - 1] != c)
+	res = NULL;
+	while (lst_env)
 	{
-		free(content);
-		content = readline(prompt);
-		tmp = ft_strjoin(cmd_join, content);
-		free(cmd_join);
-		cmd_join = tmp;
-		i = ft_strlen(cmd_join);
+		res = ft_strnstr(lst_env->key, key, ft_strlen(key));
+		if (res && !res[ft_strlen(key) + 1])
+			return (lst_env->content);
+		lst_env = lst_env->next;
 	}
-	free (content);
-	free (cmd);
-	return (cmd_join);
+	return (NULL);
+}
+
+int	count_type_in_lst(t_cmd *lst, t_type type)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		printf("content = %s\n", lst->content);
+		printf("marks = %d\n", lst->marks);
+		printf("type = %d\n\n", lst->type);
+		if (lst->type == type)
+			count++;
+		lst = lst->next;
+	}
+	return (count);
 }

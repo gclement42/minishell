@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:32:26 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/07 11:07:44 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	init_struct_pipex(t_pipex *var, char **argv, char **envp, int argc)
 	else
 		exit(1);
 	var->arg = argv;
-	var->numpipes = argc - 1;
+	var->numpipes = argc;
 	var->pipefds = init_pipes(var);
 }
 
@@ -75,9 +75,9 @@ static void	child_proc(t_pipex *var, char **envp)
 			perror("fork: ");
 		if (id == 0)
 		{
-			if(fd != 0 && fd != 2 * var->numpipes) // command != 0 for in
+			if (fd != 0 && fd != 2 * var->numpipes) // command != 0 for in
 			{
-				if(dup2(var->pipefds[fd - 2], 0) < 0)
+				if (dup2(var->pipefds[fd - 2], 0) < 0)
 				{
 					perror(" dup2");
 					exit(EXIT_FAILURE);
@@ -85,7 +85,7 @@ static void	child_proc(t_pipex *var, char **envp)
 			}
 			if (var->arg[command + 1] && command != 4) // command != command max - 1 for out 
 			{
-				if(dup2(var->pipefds[fd + 1], 1) < 0)
+				if (dup2(var->pipefds[fd + 1], 1) < 0)
 				{
 					perror("dup2");
 					exit(EXIT_FAILURE);
@@ -102,18 +102,13 @@ static void	child_proc(t_pipex *var, char **envp)
 	}
 }
 
-void	pipex(int argc, char **argv, char **envp)
+void	pipex(int argc, char **arg_exec, char **envp, t_pipex var)
 {
-	t_pipex	var;
 	int		i;
-	
-	init_struct_pipex(&var, argv, envp, argc);
-	if (argc == 7)
-		open_fd_in_out(&var, argv);
-	if (argc == 6)
-		open_fd_out(&var, argv);
-	if (argc == 5)
-		open_fd_in(&var, argv);
+
+	if (!arg_exec)
+		return ;
+	init_struct_pipex(&var, arg_exec, envp, argc);
 	child_proc(&var, envp);
 	close_pipes(&var);
 	i = 0;
