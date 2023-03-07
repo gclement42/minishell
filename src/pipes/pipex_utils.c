@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:32:21 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/07 13:36:39 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,3 @@ char	**get_command(char *arg, char **env)
 		display_error(env, "Error in malloc");
 	return (cmd);
 }
-
-// void	open_fd(t_pipex *var, char **argv)
-// {
-// 	var->fd1 = open(argv[1], O_RDONLY, 0777);
-// 	if (var->fd1 == -1)
-// 		perror("infile");
-// 	var->fd2 = open(var->arg[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-// 	if (var->fd2 == -1)
-// 	{
-// 		perror("outfile");
-// 		close(var->fd2);
-// 		free_close(var);
-// 		exit(0);
-// 	}
-// }

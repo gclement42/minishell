@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 10:14:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 14:14:57 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/07 15:01:50 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_pipex
+{
+	char	**env_cmd;
+	int		*pipefds;
+	int		numpipes;
+	int		fdin;
+	int		fdout;
+	int		status;
+}	t_pipex;
+
 typedef struct s_minish
 {
 	char		**env_tab;
@@ -44,6 +54,7 @@ typedef struct s_minish
 	char		**arg_exec;
 	t_env		*env_list;
 	t_env		*exp_list;
+	t_pipex		*var;
 	char		*path;
 	char		*cd_path;
 	char		*cmd_line;

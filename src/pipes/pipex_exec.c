@@ -6,13 +6,13 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:30:20 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/07 15:07:10 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-char	**get_path(char *envp[])
+char	**get_path(char **envp)
 {
 	char	*path;
 	char	**tab;
@@ -39,14 +39,15 @@ char	**get_path(char *envp[])
 	return (tab);
 }
 
-static void	execution(t_pipex *var, char *exec, char **cmd, char **envp)
+static void	execution(t_pipex *var, char *path, char **cmd, char **envp)
 {
-	if (execve(exec, cmd, envp) == -1)
+	printf("here\n");
+	if (execve(path, cmd, envp) == -1)
 	{
 		perror("exec");
 		close_pipes(var);
 		free_tab(var->env_cmd);
-		free(exec);
+		free(path);
 	}
 }
 

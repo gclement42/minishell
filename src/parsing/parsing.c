@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/07 13:06:39 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/07 14:56:04 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,28 +157,56 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
 				open_fd_in(var, lst->next->content);
 			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
-				open_fd_out(var, lst->next->content);
+				open_fd_out(var, lst->next->content, 0);
+			if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
+				open_fd_out(var, lst->next->content, 1);
 		}
 		lst = lst->next;
 	}
 }
 
+char	**lst_to_tab(t_env **lst)
+{
+	t_env	*temp;
+	char	*hold;
+	int		len;
+	int		i;
+	char 	**tab;
+
+	temp = *lst;
+	len = ft_lstlen(*lst);
+	i = 0;
+	tab = malloc(sizeof(char *) * (len + 1));
+	if (!tab)
+		return (NULL);
+	while (temp)
+	{
+		hold = ft_strjoin(temp->key, "=");
+		if (!hold)
+			return(NULL);
+		tab[i] = ft_strjoin(hold, temp->content);
+		if (!tab[i])
+			return(NULL);
+		i++;
+		temp = temp->next;
+	}
+	tab[i] = '\0';
+	return (tab);
+}
+
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
-	int		arg_count;
-	t_pipex	cmd_env;
 	int 	pipe_fd[2];
 
 	if (cmd[0] == '\0')
 		return ;
 	lst = create_lst_cmd(cmd);
 	replace_variable(lst, env);
-	arg_count = count_type_in_lst(lst, ARG);
-	search_if_redirect(&cmd_env, lst, pipe_fd);
-	if (check_is_builtins(get_node(lst, CMD), env) == 1)
-		builtins_router(lst, arg_count, env);
-	else
-		pipex(2, create_arr_exec(lst), env->env_tab, cmd_env);	
+	search_if_redirect(env->var, lst, pipe_fd);
+	env->env_tab = lst_to_tab(&env->env_list);
+	if (!env->env_tab)
+		exit (1); //FREE
+	pipex(env, lst);
 	return ;
 }
