@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/03 10:41:16 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:06:39 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,62 +119,66 @@ static	t_cmd *create_lst_cmd(char *cmd)
 	return (lst);
 }
 
-void	search_if_heredoc(t_cmd *lst, int pipe_fd[2])
+void	create_heredoc(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 {
 	char	*line;
+	
+	if (pipe(pipe_fd) < 0)
+	{
+		perror("minishell");
+		exit (0);
+	}
+	//close(pipe_fd[1]);
+	line = readline(">");
+	while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
+	{
+		line[ft_strlen(line)] = '\n';
+		if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
+		{
+			perror("minishell");
+			close(pipe_fd[0]);
+			return ;
+		}
+		free (line);
+		line = readline(">");
+	}
+	close(pipe_fd[1]);
+	var->fdin = pipe_fd[0];
+}
 
+void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
+{
 	while (lst)
 	{
-		if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0 
-			&& lst->type == REDIRECT)
+		if (lst->type == REDIRECT)
 		{
-			pipe(pipe_fd);
-			//close(pipe_fd[1]);
-			line = readline(">");
-			while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
-			{
-				line[ft_strlen(line)] = '\n';
-				if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
-				{
-					perror("minishell");
-					close(pipe_fd[0]);
-					return ;
-				}
-				free (line);
-				line = readline(">");
-			}
-			close(pipe_fd[1]);
+			if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
+				create_heredoc(var ,lst, pipe_fd);
+			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
+				open_fd_in(var, lst->next->content);
+			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
+				open_fd_out(var, lst->next->content);
 		}
 		lst = lst->next;
 	}
-	char buffer[1024];
-	int	n;
-	while ((n = read(pipe_fd[0], buffer, 1024)) > 0) 
-	{
-        printf("read %d bytes from the pipe: %s\n", n, buffer);
-    }
 }
 
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	int		arg_count;
-	char	**arr_exec;
+	t_pipex	cmd_env;
 	int 	pipe_fd[2];
 
 	if (cmd[0] == '\0')
 		return ;
-	(void) arr_exec;
 	lst = create_lst_cmd(cmd);
 	replace_variable(lst, env);
-	search_if_heredoc(lst, pipe_fd);
 	arg_count = count_type_in_lst(lst, ARG);
+	search_if_redirect(&cmd_env, lst, pipe_fd);
 	if (check_is_builtins(get_node(lst, CMD), env) == 1)
 		builtins_router(lst, arg_count, env);
-	// else
-	// {
-	// 	arr_exec = create_arr_exec(lst);
-	// 	pipex(2, arr_exec, env->env_list);
-	// }		
+	else
+		pipex(2, create_arr_exec(lst), env->env_tab, cmd_env);	
 	return ;
 }

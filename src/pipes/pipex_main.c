@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 15:11:44 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/07 11:07:44 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	init_struct_pipex(t_pipex *var, char **argv, char **envp, int argc)
 	else
 		exit(1);
 	var->arg = argv;
-	var->numpipes = argc - 1;
+	var->numpipes = argc;
 	var->pipefds = init_pipes(var);
 }
 
@@ -102,11 +102,12 @@ static void	child_proc(t_pipex *var, char **envp)
 	}
 }
 
-void	pipex(int argc, char **arg_exec, char **envp)
+void	pipex(int argc, char **arg_exec, char **envp, t_pipex var)
 {
-	t_pipex	var;
 	int		i;
 
+	if (!arg_exec)
+		return ;
 	init_struct_pipex(&var, arg_exec, envp, argc);
 	child_proc(&var, envp);
 	close_pipes(&var);
