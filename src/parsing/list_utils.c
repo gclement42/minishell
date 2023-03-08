@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:56:40 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 14:37:29 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/08 13:57:59 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,8 @@ t_cmd	*get_node(t_cmd *lst, t_type type)
 {
 	while (lst && lst->type != type)
 		lst = lst->next;
-	return (lst);
+	if (lst && lst->type == type)
+		return (lst);
+	else
+		return (NULL);
 }

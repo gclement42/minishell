@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 19:17:46 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:09:56 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,21 @@ void	get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	*start = *i;
 }
 
+/* Surement des leaks ici */
 void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 {
 	size_t	len;
 	char	*word;
+	int		x;
 
+	x = 0;
 	len = count_len(&cmd[*i], ' ');
-	word = ft_substr(&cmd[*i], 0, len);
+	word = ft_substr(cmd, 0, len);
 	if (!word)
 		return ;
-	new_node_cmd(word, get_marks(cmd[*i]), CMD, lst);
+	while (word[x] == ' ')
+		x++;
+	new_node_cmd(&word[x], get_marks(cmd[*i]), CMD, lst);
 	*i += len;
 }
 

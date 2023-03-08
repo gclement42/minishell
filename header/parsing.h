@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/07 13:40:27 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/08 17:08:46 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void		get_word_with_space(char *word, t_cmd **lst);
 t_cmd		*replace_variable(t_cmd *lst, t_minish *env);
 char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
+void		search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2]);
 
 /* cmd list utils */
 void		*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst);
@@ -43,6 +44,8 @@ size_t		count_len(char *cmd, char c);
 t_marks		get_marks(char c);
 char		*search_key(t_env *lst_env, char *key);
 int			count_type_in_lst(t_cmd *lst, t_type type);
+int			check_is_valid_identifier(char *str, char *cmd);
+char		**ft_strtok(char const *str, char *delimiters);
 
 
 void		parsing(char *cmd, t_minish *env);
@@ -55,6 +58,7 @@ void		cd_parsing(t_cmd *lst, int argc, t_minish *var);
 void		echo_parsing(t_cmd *lst);
 void		unset_parsing(t_minish *var, t_cmd *lst);
 void		exit_parsing(t_minish *var, t_cmd *lst);
+void		export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst);
 
 #endif
 

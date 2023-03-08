@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/07 11:17:42 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/08 17:07:55 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	*free_array(char **ptr);
 int		count_fist_word(char *env);
 int		wordcount(char const *str, char c);
 void	exit_free(t_minish *var);
+char	**lst_to_tab(t_env **lst);
 
 /* ---- Utils list---- */
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -51,5 +52,7 @@ void	int_handler(int status);
 void	get_cmd_line(t_minish *var, t_env **lst);
 void	builtin_cmp(t_minish *var);
 void	init_struct(t_minish *var, char **envp);
+
+void	*free_2d_array(char **ptr);
 
 #endif
