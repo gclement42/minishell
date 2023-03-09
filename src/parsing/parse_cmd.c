@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/08 17:08:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:20:39 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	get_word_with_space(char *word, t_cmd **lst)
 		}
 		return ;
 	}
-	new_node_cmd(word, SPACES, ARG, lst);
 }
 
 /* Manque les retour a la ligne */

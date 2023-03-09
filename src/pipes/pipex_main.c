@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 13:15:12 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 13:09:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void    child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 			duplicate_fd(count, fd, var, lst);
 			close_pipes(var);
 			if (check_is_builtins(get_node(lst, CMD), env) == 1)
-			{
+      {
 				builtins_router(lst, count_type_in_lst(lst, ARG), env);
 				exit(0);
 			}
@@ -89,7 +89,7 @@ void    child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 				exec_command(var, var->env_cmd, cmd, envp);
 			}
 		}
-		count += 1;
+		count++;
 		fd += 2;
 		lst = lst_next(lst);
 	}
