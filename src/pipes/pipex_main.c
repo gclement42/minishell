@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/07 15:13:28 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 09:51:37 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	close_pipes(t_pipex *var)
 void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 {
 	env->var->numpipes = count_type_in_lst(lst, PIPE);
+	printf("%d\n", env->var->numpipes);
 	if (env->var->numpipes > 0)
 		env->var->pipefds = init_pipes(env->var);
 	if (envp)
@@ -56,6 +57,60 @@ void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 		if (!env->var->env_cmd)
 			display_error(env->var->env_cmd, "Env tab not properly allocated");
 	}
+}
+
+void	duplicate_redir(int count, int fd, t_pipex *var)
+{
+	if (var->fdin)
+	{
+		if (var->numpipes != 0 && fd != 0 && fd != 2 * var->numpipes && count != 0) // command != 0 for in
+		{
+			if (dup2(var->pipefds[fd - 2], STDIN_FILENO) < 0)
+			{
+				perror(" dup2");
+				exit(EXIT_FAILURE);
+			}
+		}
+	}
+	if (var->fdout)
+	{
+		if (var->numpipes != 0 && count + 1 < var->numpipes && count != var->numpipes - 2) // command != command max - 1 for out 
+		{
+			if (dup2(var->pipefds[fd + 1], STDOUT_FILENO) < 0)
+			{
+				perror("dup2");
+				exit(EXIT_FAILURE);
+			}
+		}	
+	}	
+}
+
+void	duplicate_fd(int count, int fd, t_pipex *var)
+{
+	if (!var->fdin)
+	{
+		if (var->numpipes != 0 && fd != 0 && fd != 2 * var->numpipes) // command != 0 for in
+		{
+			if (dup2(var->pipefds[fd - 2], STDIN_FILENO) < 0)
+			{
+				perror(" dup2");
+				exit(EXIT_FAILURE);
+			}
+		}
+	}
+	else if (!var->fdout)
+	{
+		if (var->numpipes != 0 && count + 1 < var->numpipes) // command != command max - 1 for out 
+		{
+			if (dup2(var->pipefds[fd + 1], STDOUT_FILENO) < 0)
+			{
+				perror("dup2");
+				exit(EXIT_FAILURE);
+			}
+		}	
+	}
+	else
+		duplicate_redir(count, fd, var);
 }
 
 void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
@@ -74,22 +129,7 @@ void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 			perror("fork: ");
 		if (id == 0)
 		{
-			if (var->numpipes != 0 && fd != 0 && fd != 2 * var->numpipes) // command != 0 for in
-			{
-				if (dup2(var->pipefds[fd - 2], STDIN_FILENO) < 0)
-				{
-					perror(" dup2");
-					exit(EXIT_FAILURE);
-				}
-			}
-			if (var->numpipes != 0 && count + 1 < var->numpipes) // command != command max - 1 for out 
-			{
-				if (dup2(var->pipefds[fd + 1], STDOUT_FILENO) < 0)
-				{
-					perror("dup2");
-					exit(EXIT_FAILURE);
-				}
-			}
+			duplicate_fd(count, fd, var);
 			close_pipes(var);
 			if (check_is_builtins(get_node(lst, CMD), env) == 1)
 			{
