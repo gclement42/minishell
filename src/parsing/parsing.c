@@ -6,11 +6,11 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 09:59:05 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:11:26 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 {
@@ -109,31 +109,30 @@ static	t_cmd *create_lst_cmd(char *cmd)
 	int		x;
 	
 	i = 0;
-	x = -1;
 	lst = NULL;
 	split_by_pipe = ft_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);
 	while (split_by_pipe[i])
 	{
+		x = -1;
 		tok_split = ft_strtok(split_by_pipe[i], ";&");
 		if (!tok_split)
 			return (NULL);
 		while (tok_split[++x])
 			lst = parse_cmd(tok_split[x], &lst);
-		i++;
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
+		i++;
 	}
+	count_type_in_lst(lst, CMD);
 	return (free_2d_array(split_by_pipe), lst);
 }
-
-
 
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
-	int 	pipe_fd[2];
+	//int 	pipe_fd[2];
 
 	if (cmd[0] == '\0')
 		return ;
@@ -141,7 +140,8 @@ void	parsing(char *cmd, t_minish *env)
 	if (!lst)
 		exit (0);
 	replace_variable(lst, env);
-	search_if_redirect(env->var, lst, pipe_fd);
+	//search_if_redirect(env->var, lst, pipe_fd);
+	count_type_in_lst(lst, PIPE);
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/08 17:10:13 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 12:24:03 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
 {
+	t_env *tmp;
+	
 	if (!env || env->key[0] == '#')
 	{
 		if (lst && check_is_valid_identifier(lst->content, "export") == 0)
@@ -24,9 +26,11 @@ void export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
 	while (env && lst && lst->type != PIPE)
 	{
 		if (check_is_valid_identifier(lst->content, "export") == 0)
-			break ;
+			return ;
+		tmp = env->next;
+		env->next = NULL;
 		export_env(var, env, argc);
-		env = env->next;
+		env = tmp;
 		lst = lst->next;
 	}
 }

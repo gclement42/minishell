@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:35:29 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 12:12:40 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*get_cwd(void)
 
 void	add_var_env(t_env **lst, char *key, char *content)
 {
+	printf("%s = add var env\n", key);
 	int		len;
 	t_env	*temp;
 	t_env	*ptr;

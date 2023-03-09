@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:36:33 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 12:12:14 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	sort_export(t_env **list)
 
 static void	replace_content(t_minish *var, t_env *new_var)
 {
+	printf("%s = replace content\n", new_var->key);
 	if (!new_var->content)
 	{
 		new_var->content = ft_strdup("''");

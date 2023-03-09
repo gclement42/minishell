@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 09:51:37 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 13:09:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 	int		count;
 
 	fd = 0;
-	count = 0;
-	while (count <= var->numpipes)
+	count = 1;
+	while (lst)
 	{
 		id = fork();
 		if (id == -1)
@@ -132,15 +132,25 @@ void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 			duplicate_fd(count, fd, var);
 			close_pipes(var);
 			if (check_is_builtins(get_node(lst, CMD), env) == 1)
-			{
 				builtins_router(lst, count_type_in_lst(lst, ARG), env);
-				break ;
+			else
+			{
+				cmd = create_arr_exec(lst);
+				if (!cmd)
+					display_error(var->env_cmd, "Command tab not properly allocated");
+				exec_command(var, var->env_cmd, cmd, envp);
 			}
-			cmd = create_arr_exec(lst);
-			if (!cmd)
-				display_error(var->env_cmd, "Command tab not properly allocated");
-			exec_command(var, var->env_cmd, cmd, envp);
 		}
+		if (get_node(lst, PIPE) != NULL)
+		{
+			lst = get_node(lst, PIPE);
+			if (lst && lst->next)
+				lst = lst->next;
+			else
+				lst = NULL;
+		}
+		else
+			lst = NULL;
 		count++;
 		fd += 2;
 	}

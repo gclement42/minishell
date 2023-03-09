@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 16:05:30 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/08 16:46:09 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 11:20:42 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,11 @@ char	**ft_strtok(char const *str, char *delimiters)
 		}
 	}
 	if (start < i)
-		ptr[row++] = ft_substr(str, start, i - start);
+	{
+		ptr[row] = ft_substr(str, start, i - start);
 			if (!ptr[row])
 				return (free_2d_array(ptr), NULL);
+		row++;
+	}
 	return (ptr[row] = NULL, ptr);
 }

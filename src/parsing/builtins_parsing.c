@@ -6,20 +6,27 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/08 17:10:35 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:02:38 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 int	check_is_valid_identifier(char *str, char *cmd)
 {
 	int	i;
 
 	i = 0;
+	if (ft_isalnum(str[i]) == 0)
+	{
+		printf("minishell : %s : %s : not a valid identifier\n", \
+			cmd, str);
+		return (0);
+	}
+	i++;
 	while (str[i])
 	{
-		if (ft_isalpha(str[i]) == 0 && \
+		if ((ft_isalpha(str[i]) == 0 && ft_isdigit(str[i]) == 0) && \
 			str[i] != '$' && str[i] != '#' && str[i] != '=')
 		{
 			printf("minishell : %s : %s : not a valid identifier\n", \
