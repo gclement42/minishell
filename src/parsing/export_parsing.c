@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   export_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
 /*   Updated: 2023/03/09 12:24:03 by gclement         ###   ########.fr       */

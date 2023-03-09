@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
 /*   Updated: 2023/03/09 13:11:26 by gclement         ###   ########.fr       */
@@ -115,12 +115,15 @@ static	t_cmd *create_lst_cmd(char *cmd)
 		return (NULL);
 	while (split_by_pipe[i])
 	{
-		x = -1;
+		x = 0;
 		tok_split = ft_strtok(split_by_pipe[i], ";&");
 		if (!tok_split)
 			return (NULL);
-		while (tok_split[++x])
+		while (tok_split[x])
+		{
 			lst = parse_cmd(tok_split[x], &lst);
+			x++;
+		}
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 		i++;
@@ -138,7 +141,7 @@ void	parsing(char *cmd, t_minish *env)
 		return ;
 	lst = create_lst_cmd(cmd);
 	if (!lst)
-		exit (0);
+		exit (0); //FREE
 	replace_variable(lst, env);
 	//search_if_redirect(env->var, lst, pipe_fd);
 	count_type_in_lst(lst, PIPE);
@@ -150,5 +153,4 @@ void	parsing(char *cmd, t_minish *env)
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
 	else
 		pipex(env, lst);
-	return ;
 }

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtok.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 16:05:30 by gclement          #+#    #+#             */
 /*   Updated: 2023/03/09 11:20:42 by gclement         ###   ########.fr       */

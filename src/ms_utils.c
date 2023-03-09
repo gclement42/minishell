@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:13:28 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/03/09 10:10:35 by gclement         ###   ########.fr       */
@@ -95,7 +95,7 @@ char	**lst_to_tab(t_env **lst)
 	char	*hold;
 	int		len;
 	int		i;
-	char 	**tab;
+	char	**tab;
 
 	temp = *lst;
 	len = ft_lstlen(*lst);
