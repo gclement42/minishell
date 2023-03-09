@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:13:28 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/27 18:55:59 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 10:33:09 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,33 @@ int	wordcount(char const *str, char c)
 	if (i > 0 && count == 0)
 		count++;
 	return (count);
+}
+
+char	**lst_to_tab(t_env **lst)
+{
+	t_env	*temp;
+	char	*hold;
+	int		len;
+	int		i;
+	char	**tab;
+
+	temp = *lst;
+	len = ft_lstlen(*lst);
+	i = 0;
+	tab = malloc(sizeof(char *) * (len + 1));
+	if (!tab)
+		return (NULL);
+	while (temp)
+	{
+		hold = ft_strjoin(temp->key, "=");
+		if (!hold)
+			return(NULL);
+		tab[i] = ft_strjoin(hold, temp->content);
+		if (!tab[i])
+			return(NULL);
+		i++;
+		temp = temp->next;
+	}
+	tab[i] = '\0';
+	return (tab);
 }

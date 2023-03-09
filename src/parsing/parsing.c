@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 09:59:05 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 12:02:39 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,26 +109,27 @@ static	t_cmd *create_lst_cmd(char *cmd)
 	int		x;
 	
 	i = 0;
-	x = -1;
 	lst = NULL;
 	split_by_pipe = ft_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);
 	while (split_by_pipe[i])
 	{
+		x = 0;
 		tok_split = ft_strtok(split_by_pipe[i], ";&");
 		if (!tok_split)
 			return (NULL);
-		while (tok_split[++x])
+		while (tok_split[x])
+		{
 			lst = parse_cmd(tok_split[x], &lst);
+			x++;
+		}
 		i++;
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
 	return (free_2d_array(split_by_pipe), lst);
 }
-
-
 
 void	parsing(char *cmd, t_minish *env)
 {
@@ -139,7 +140,7 @@ void	parsing(char *cmd, t_minish *env)
 		return ;
 	lst = create_lst_cmd(cmd);
 	if (!lst)
-		exit (0);
+		exit (0); //FREE
 	replace_variable(lst, env);
 	search_if_redirect(env->var, lst, pipe_fd);
 	env->env_tab = lst_to_tab(&env->env_list);
@@ -150,5 +151,4 @@ void	parsing(char *cmd, t_minish *env)
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
 	else
 		pipex(env, lst);
-	return ;
 }
