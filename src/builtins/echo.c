@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:19:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/25 10:54:35 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 15:50:29 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	echo_no_backslash(char *echo_line)
 	int	i;
 
 	i = 0;
+	if (!echo_line)
+		return ;
 	while (echo_line[i])
 	{
 		ft_putchar_fd(echo_line[i], 1);

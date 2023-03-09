@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 13:20:55 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:00:55 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 	*i = tmp;
 }
 
-void	get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
+void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 {
 	size_t	len;
 	char	*word;
@@ -69,22 +69,23 @@ void	get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	{
 		word = ft_substr(cmd, *start, *i - *start);
 		if (!word)
-			return ;
-		get_word_with_space(word, lst);
+			return (NULL);
+		get_word_with_space(word, lst, 0);
 	}
 	len = count_len(&cmd[*i], cmd[*i]);
-	if (cmd[*i + len] != cmd[*i])
-		cmd = prompt_for_quote_termination(cmd, cmd[*i]);
+	if (!cmd[*i + len])
+		*i -= 1;
 	word = ft_substr(cmd, *i + 1, (count_len(&cmd[*i], cmd[*i]) - 1));
 	if (!word)
-		return ;
+		return (NULL);
 	if (new_node_cmd(word, get_marks(cmd[*i]), ARG, lst) == NULL)
-		return ;
+		return (NULL);
 	if (cmd[*i + len + 1] != '\'' && cmd[*i + len + 1] != '"')
 		*i += len + 1;
 	else
 		*i += len;
 	*start = *i;
+	return (lst);
 }
 
 /* Surement des leaks ici */

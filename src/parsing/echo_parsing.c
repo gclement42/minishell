@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 10:42:27 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 15:48:38 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,37 @@ char	*join_all_arg(t_cmd *lst)
 	return (arg_join);
 }
 
-void	echo_parsing(t_cmd *lst)
+void	check_opt(t_cmd *opt)
 {
 	int		i;
-	char	*arg_join;
-	int		opt;
-
+	
 	i = 1;
-	lst = lst->next;
-	opt = 0;
-	if (lst->type == OPT)
+	while (opt->content[i] == 'n')
+		i++;
+	if (opt->content[i])
+		opt->type = ARG;
+}
+
+void	echo_parsing(t_cmd *lst)
+{
+	char	*arg_join;
+	t_cmd	*opt;
+
+	arg_join = NULL;
+	if (lst->next)
+		lst = lst->next;
+	else
+		return (print_echo(0, NULL));
+	opt = get_node(lst, OPT);
+	if (opt)
+		check_opt(opt);
+	if (get_node(lst, ARG))
 	{
-		opt = 1;
-		while (lst->content[i] == 'n')
-			i++;
-		if (lst->content[i])
-		{
-			lst->type = ARG;
-			opt = 0;
-		}
+		arg_join = join_all_arg(lst);
+		if (!arg_join)
+			exit (0);
 	}
-	arg_join = join_all_arg(lst);
-	if (!arg_join)
-		exit (0);
-	if (opt == OPT)
+	if (get_node(lst, OPT))
 		print_echo(1, arg_join);
 	else
 		print_echo(0, arg_join);

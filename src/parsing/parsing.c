@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 13:11:26 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:01:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 		word = ft_substr(cmd, start, ft_strlen(cmd) - start);
 		if (!word)
 			return (NULL);
-		get_word_with_space(word, lst);
+		get_word_with_space(word, lst, 1);
 	}
 	return (*lst);
 }
@@ -103,10 +103,8 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 static	t_cmd *create_lst_cmd(char *cmd)
 {
 	char	**split_by_pipe;
-	char	**tok_split;
 	t_cmd	*lst;
 	int		i;
-	int		x;
 	
 	i = 0;
 	lst = NULL;
@@ -115,20 +113,11 @@ static	t_cmd *create_lst_cmd(char *cmd)
 		return (NULL);
 	while (split_by_pipe[i])
 	{
-		x = 0;
-		tok_split = ft_strtok(split_by_pipe[i], ";&");
-		if (!tok_split)
-			return (NULL);
-		while (tok_split[x])
-		{
-			lst = parse_cmd(tok_split[x], &lst);
-			x++;
-		}
+		lst = parse_cmd(split_by_pipe[i], &lst);
+		i++;
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
-		i++;
 	}
-	count_type_in_lst(lst, CMD);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
@@ -144,7 +133,6 @@ void	parsing(char *cmd, t_minish *env)
 		exit (0); //FREE
 	replace_variable(lst, env);
 	//search_if_redirect(env->var, lst, pipe_fd);
-	count_type_in_lst(lst, PIPE);
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE
