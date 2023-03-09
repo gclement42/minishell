@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/07 14:35:47 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 13:10:28 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ void	init_struct(t_minish *var, char **envp)
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
 }
 
-// void	int_handler(int status)
+// void	signal_handler(int status)
 // {
-// 	// struct termios term;
-//     // tcsetattr(STDIN_FILENO, TCSANOW, &term);
 // 	if (status == SIGINT)
 // 	{
 // 		printf("\n"); // Move to a new line
@@ -62,9 +60,7 @@ void	init_struct(t_minish *var, char **envp)
 // 	}
 // 	if (status == SIGQUIT)
 // 	{
-// 		// tcgetattr(STDIN_FILENO, &term);
-//    		// term.c_lflag |= 0;
-// 		// tcsetattr(STDIN_FILENO, TCSANOW, &term);
+// 		return ;
 // 	}
 // }
 
@@ -79,18 +75,19 @@ int	main(int argc, char **argv, char *envp[])
 	// signal(SIGQUIT, &int_handler);
 	(void)argv;
 	var->builtins = init_bultins_arr();
+	//signal_handler;
 	if (argc == 1)
 	{
 		init_struct(var, envp);
 		while (1)
 		{
+			//signal_handler;
 			var->cmd = readline(">>");
 			if (var->cmd == NULL)
 				exit_env(var);
 			parsing(var->cmd, var);
 			if (ft_strlen(var->cmd) > 0)
 				add_history(var->cmd);
-			// free(var.cmd);
 		}
 	}
 }
