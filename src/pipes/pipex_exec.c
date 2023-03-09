@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/07 15:07:10 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/07 15:55:31 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	**get_path(char **envp)
 
 static void	execution(t_pipex *var, char *path, char **cmd, char **envp)
 {
-	printf("here\n");
 	if (execve(path, cmd, envp) == -1)
 	{
 		perror("exec");
