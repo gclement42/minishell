@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/03 13:34:18 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:08:23 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,23 @@ char	*prompt_for_quote_termination(char *cmd, char c)
 	free (content);
 	free (cmd);
 	return (cmd_join);
+}
+
+void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
+{
+	while (lst)
+	{
+		if (lst->type == REDIRECT)
+		{
+			if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
+				create_heredoc(var ,lst, pipe_fd);
+			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
+				open_fd_in(var, lst->next->content);
+			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
+				open_fd_out(var, lst->next->content, 0);
+			if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
+				open_fd_out(var, lst->next->content, 1);
+		}
+		lst = lst->next;
+	}
 }

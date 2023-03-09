@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/07 14:56:04 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 09:59:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	cmd_node = get_node(lst, CMD);
 	arg_node = get_node(lst, ARG);
 	cmd_len = ft_strlen(cmd_node->content);
-	env_lst = export_variable_parsing(lst, cmd_node->content);
+	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0
+		|| ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
+		env_lst = export_variable_parsing(lst, cmd_node->content);
 	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0)
 		cd_parsing(arg_node, argc, var);
 	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0)
@@ -31,11 +33,11 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 		get_env(var, &env_lst);
 	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0)
 		unset_parsing(var, arg_node);
-	if (ft_memcmp(cmd_node->content, "export", 6) == 0)
-		export_env(var, env_lst, argc);
-	if (ft_memcmp(cmd_node->content, "echo", 4) == 0)
+	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
+		export_parsing(var, argc, env_lst, arg_node);
+	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0)
 		echo_parsing(cmd_node);
-	if (ft_memcmp(cmd_node->content, "exit", 4) == 0)
+	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0)
 		exit_parsing(var, arg_node);
 }
 
@@ -88,7 +90,7 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 			get_redirect(cmd, &i, lst, &start);
 		i++;
 	}
-	if (start < (size_t)i && cmd[start])
+	if (start < (size_t)i - 1 && cmd[start])
 	{
 		word = ft_substr(cmd, start, ft_strlen(cmd) - start);
 		if (!word)
@@ -100,99 +102,33 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 
 static	t_cmd *create_lst_cmd(char *cmd)
 {
-	char	**split_cmd;
+	char	**split_by_pipe;
+	char	**tok_split;
 	t_cmd	*lst;
 	int		i;
+	int		x;
 	
 	i = 0;
+	x = -1;
 	lst = NULL;
-	split_cmd = ft_split(cmd, '|');
-	if (!split_cmd)
-		exit (0);
-	while (split_cmd[i])
+	split_by_pipe = ft_split(cmd, '|');
+	if (!split_by_pipe)
+		return (NULL);
+	while (split_by_pipe[i])
 	{
-		lst = parse_cmd(split_cmd[i], &lst);
+		tok_split = ft_strtok(split_by_pipe[i], ";&");
+		if (!tok_split)
+			return (NULL);
+		while (tok_split[++x])
+			lst = parse_cmd(tok_split[x], &lst);
 		i++;
-		if (split_cmd[i])
+		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	return (lst);
+	return (free_2d_array(split_by_pipe), lst);
 }
 
-void	create_heredoc(t_pipex *var, t_cmd *lst, int pipe_fd[2])
-{
-	char	*line;
-	
-	if (pipe(pipe_fd) < 0)
-	{
-		perror("minishell");
-		exit (0);
-	}
-	//close(pipe_fd[1]);
-	line = readline(">");
-	while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
-	{
-		line[ft_strlen(line)] = '\n';
-		if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
-		{
-			perror("minishell");
-			close(pipe_fd[0]);
-			return ;
-		}
-		free (line);
-		line = readline(">");
-	}
-	close(pipe_fd[1]);
-	var->fdin = pipe_fd[0];
-}
 
-void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
-{
-	while (lst)
-	{
-		if (lst->type == REDIRECT)
-		{
-			if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
-				create_heredoc(var ,lst, pipe_fd);
-			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
-				open_fd_in(var, lst->next->content);
-			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
-				open_fd_out(var, lst->next->content, 0);
-			if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
-				open_fd_out(var, lst->next->content, 1);
-		}
-		lst = lst->next;
-	}
-}
-
-char	**lst_to_tab(t_env **lst)
-{
-	t_env	*temp;
-	char	*hold;
-	int		len;
-	int		i;
-	char 	**tab;
-
-	temp = *lst;
-	len = ft_lstlen(*lst);
-	i = 0;
-	tab = malloc(sizeof(char *) * (len + 1));
-	if (!tab)
-		return (NULL);
-	while (temp)
-	{
-		hold = ft_strjoin(temp->key, "=");
-		if (!hold)
-			return(NULL);
-		tab[i] = ft_strjoin(hold, temp->content);
-		if (!tab[i])
-			return(NULL);
-		i++;
-		temp = temp->next;
-	}
-	tab[i] = '\0';
-	return (tab);
-}
 
 void	parsing(char *cmd, t_minish *env)
 {
@@ -202,11 +138,17 @@ void	parsing(char *cmd, t_minish *env)
 	if (cmd[0] == '\0')
 		return ;
 	lst = create_lst_cmd(cmd);
+	if (!lst)
+		exit (0);
 	replace_variable(lst, env);
 	search_if_redirect(env->var, lst, pipe_fd);
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE
-	pipex(env, lst);
+	if (count_type_in_lst(lst, PIPE) == 0 
+		&& check_is_builtins(get_node(lst, CMD), env))
+		builtins_router(lst, count_type_in_lst(lst, ARG), env);
+	else
+		pipex(env, lst);
 	return ;
 }

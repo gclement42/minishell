@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 14:37:21 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/08 17:10:35 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+int	check_is_valid_identifier(char *str, char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isalpha(str[i]) == 0 && \
+			str[i] != '$' && str[i] != '#' && str[i] != '=')
+		{
+			printf("minishell : %s : %s : not a valid identifier\n", \
+			cmd, str);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
 
 static	t_env	*create_tmp_lst_env(char *arg)
 {
@@ -40,12 +59,13 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 	t_env	*new;
 
 	env_lst = NULL;
-	while (lst)
+	while (lst && lst->type != PIPE)
 	{
 		if (lst->type == OPT)
 		{
 			ft_putstr_fd("env : invalid option --", 2);
 			ft_putstr_fd(lst->content, 2);
+			return (NULL);
 		}
 		if (lst->type == ARG && ft_strchr(lst->content, '=') != 0)
 		{
@@ -62,34 +82,12 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 	return (env_lst);
 }
 
-void	unset_parsing(t_minish *var, t_cmd *lst)
-{
-	int		i;
-
-	i = 0;
-	while (lst)
-	{
-		while (lst->content[i])
-		{
-			if (ft_isalpha(lst->content[i]) == 0 && lst->content[i] != '$')
-			{
-				printf("minishell : unset : %s : not a valid identifier\n", \
-				lst->content);
-				break ;
-			}
-			i++;
-		}
-		remove_var_env(var, lst->content);
-		lst = lst->next;
-	}
-}
-
 void	exit_parsing(t_minish *var, t_cmd *lst)
 {
 	int	i;
 
 	i = 0;
-	while (lst->content[i])
+	while (lst && lst->content[i])
 	{
 		if (!(lst->content[i] >= '0' && lst->content[i] <= '9'))
 		{
@@ -101,4 +99,31 @@ void	exit_parsing(t_minish *var, t_cmd *lst)
 		i++;
 	}
 	exit_env(var);
+}
+
+void	create_heredoc(t_pipex *var, t_cmd *lst, int pipe_fd[2])
+{
+	char	*line;
+	
+	if (pipe(pipe_fd) < 0)
+	{
+		perror("minishell");
+		exit (0);
+	}
+	//close(pipe_fd[1]);
+	line = readline(">");
+	while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
+	{
+		line[ft_strlen(line)] = '\n';
+		if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
+		{
+			perror("minishell");
+			close(pipe_fd[0]);
+			return ;
+		}
+		free (line);
+		line = readline(">");
+	}
+	close(pipe_fd[1]);
+	var->fdin = pipe_fd[0];
 }

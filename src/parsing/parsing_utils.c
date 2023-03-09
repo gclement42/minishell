@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/07 14:24:31 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/08 15:56:07 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
 
 int	check_is_builtins(t_cmd *node, t_minish *env)
 {
@@ -21,7 +20,7 @@ int	check_is_builtins(t_cmd *node, t_minish *env)
 	while (env->builtins[i])
 	{
 		if (ft_strncmp(env->builtins[i], node->content, \
-			ft_strlen(env->builtins[i])) == 0)
+			ft_strlen(node->content)) == 0)
 			return (1);
 		i++;
 	}
@@ -70,9 +69,9 @@ int	count_type_in_lst(t_cmd *lst, t_type type)
 	count = 0;
 	while (lst)
 	{
-		// printf("content = %s\n", lst->content);
-		// printf("marks = %d\n", lst->marks);
-		// printf("type = %d\n\n", lst->type);
+		printf("content = %s\n", lst->content);
+		printf("marks = %d\n", lst->marks);
+		printf("type = %d\n\n", lst->type);
 		if (lst->type == type)
 			count++;
 		lst = lst->next;
