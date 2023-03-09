@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/08 17:08:46 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 10:00:19 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_cmd		*replace_variable(t_cmd *lst, t_minish *env);
 char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
 void		search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2]);
+void		create_heredoc(t_pipex *var, t_cmd *lst, int pipe_fd[2]);
 
 /* cmd list utils */
 void		*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst);

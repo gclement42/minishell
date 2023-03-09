@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/08 17:10:31 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 09:59:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ static	t_cmd *create_lst_cmd(char *cmd)
 	lst = NULL;
 	split_by_pipe = ft_split(cmd, '|');
 	if (!split_by_pipe)
-		return (NULL)
+		return (NULL);
 	while (split_by_pipe[i])
 	{
 		tok_split = ft_strtok(split_by_pipe[i], ";&");
@@ -125,7 +125,7 @@ static	t_cmd *create_lst_cmd(char *cmd)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	return (free_2d_array(split_by_pipe), free_2d_array(tok_split), lst);
+	return (free_2d_array(split_by_pipe), lst);
 }
 
 
