@@ -6,26 +6,57 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 16:05:07 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/10 13:30:01 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static	char *join_new_content(char *new_content, char *content, int size)
+{
+	char	*str;
+	
+	if (size > 0)
+	{
+		str = malloc((size + 1) * sizeof(char));
+		if (!str)
+			return (NULL);
+		str = ft_memcpy(str, content, size);
+		str[size] = '\0';
+		free(content);
+		content = ft_strjoin(str, new_content);
+		if (!content)
+			return (NULL);
+	}
+	else
+	{
+		free(content);
+		if (new_content)
+			content = new_content;
+		else
+			content = " ";
+	}
+	return (content);
+}
+
 t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
 {
 	char	*new_content;
+	int		i;
 
 	while (lst)
 	{
-		if (lst->content[0] == '$' && lst->marks != QUOTE)
+		i = 0;
+		while (lst->content[i])
 		{
-			new_content = search_key(env->env_list, &lst->content[1]);
-			free(lst->content);
-			if (new_content)
-				lst->content = new_content;
-			else
-				lst->content = " ";
+			if (lst->content[i] == '$' && lst->marks != QUOTE)
+			{
+				new_content = search_key(env->env_list, &lst->content[i + 1]);
+				lst->content = join_new_content(new_content, lst->content, i);
+				if (!lst->content)
+					return (NULL);
+			}
+			i++;
 		}
 		lst = lst->next;
 	}
@@ -70,35 +101,6 @@ void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
 		return ;
 	}
 	new_node_cmd(word, SPACES, ARG, lst);
-}
-
-/* Manque les retour a la ligne */
-char	*prompt_for_quote_termination(char *cmd, char c)
-{
-	char	*prompt;
-	char	*content;
-	char	*cmd_join;
-	char	*tmp;
-	int		i;
-
-	prompt = "dquote>";
-	if (c == '\'')
-		prompt = "quote>";
-	content = readline(prompt);
-	cmd_join = ft_strjoin(cmd, content);
-	i = ft_strlen(cmd_join);
-	while (cmd_join[i - 1] != c)
-	{
-		free(content);
-		content = readline(prompt);
-		tmp = ft_strjoin(cmd_join, content);
-		free(cmd_join);
-		cmd_join = tmp;
-		i = ft_strlen(cmd_join);
-	}
-	free (content);
-	free (cmd);
-	return (cmd_join);
 }
 
 void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
