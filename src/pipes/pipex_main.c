@@ -77,7 +77,7 @@ void    child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 			duplicate_fd(count, fd, var, lst);
 			close_pipes(var);
 			if (check_is_builtins(get_node(lst, CMD), env) == 1)
-      {
+      		{
 				builtins_router(lst, count_type_in_lst(lst, ARG), env);
 				exit(0);
 			}
@@ -99,9 +99,6 @@ void    child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 
 void	pipex(t_minish *env, t_cmd *lst)
 {
-	env->var = malloc(sizeof(t_pipex));
-	if (!env->var)
-		exit (1); //FREE
 	init_struct_pipex(env, env->env_tab, lst);
-	child_proc(env, env->var, env->env_tab, lst);
+	child_proc(env, env->var, env->env_tab, get_node(lst, CMD));
 }

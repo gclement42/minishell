@@ -63,9 +63,7 @@ static void	check_cmd(t_pipex *var, char **cmd, char **envp, char **env)
 		display_error_cmd(cmd, "command not found", cmd[0]);
 	}
 	if (access(cmd[0], X_OK) != -1)
-	{
 		execution(var, cmd[0], cmd, envp);
-	}
 }
 
 void	exec_command(t_pipex *var, char **env, char **cmd, char *envp[])

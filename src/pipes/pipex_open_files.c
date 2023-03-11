@@ -27,7 +27,7 @@ void	open_fd_in(t_pipex *var, char *filename)
 void	open_fd_out(t_pipex *var, char *filename, int redirect)
 {
 	if (redirect == 0)
-		var->fdout = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		var->fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else
 		var->fdout = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (var->fdout == -1)

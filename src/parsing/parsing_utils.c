@@ -69,9 +69,9 @@ int	count_type_in_lst(t_cmd *lst, t_type type)
 	count = 0;
 	while (lst)
 	{
-		printf("content = %s\n", lst->content);
-		printf("marks = %d\n", lst->marks);
-		printf("type = %d\n\n", lst->type);
+		// printf("content = %s\n", lst->content);
+		// printf("marks = %d\n", lst->marks);
+		// printf("type = %d\n\n", lst->type);
 		if (lst->type == type)
 			count++;
 		lst = lst->next;

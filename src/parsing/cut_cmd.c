@@ -97,7 +97,7 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 
 	x = 0;
 	len = count_len(&cmd[*i], ' ');
-	word = ft_substr(cmd, 0, len);
+	word = ft_substr(cmd, *i, len);
 	if (!word)
 		return ;
 	while (word[x] == ' ')

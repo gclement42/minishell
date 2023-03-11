@@ -117,7 +117,7 @@ void	create_heredoc(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 		perror("minishell");
 		exit (0);
 	}
-	//close(pipe_fd[1]);
+	close(pipe_fd[0]);
 	line = readline(">");
 	while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
 	{
@@ -125,7 +125,7 @@ void	create_heredoc(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 		if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
 		{
 			perror("minishell");
-			close(pipe_fd[0]);
+			//close(pipe_fd[0]);
 			return ;
 		}
 		free (line);

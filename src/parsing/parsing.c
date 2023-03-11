@@ -48,12 +48,13 @@ char	**create_arr_exec(t_cmd *cmd)
 	int		len;
 	int		x;
 
-	len = 0;
-	x = 0;
+	len = 1;
+	x = -1;
 	tmp = cmd;
+	tmp = tmp->next;
 	while (tmp)
 	{
-		if (tmp->type == PIPE)
+		if (tmp->type != ARG && tmp->type != OPT)
 			break;
 		len++;
 		tmp = tmp->next;
@@ -61,14 +62,12 @@ char	**create_arr_exec(t_cmd *cmd)
 	arr_exec = malloc((len + 1) * sizeof(char *));
 	if (!arr_exec)
 		return (NULL);
-	while (x < len)
+	while (++x < len)
 	{
 		arr_exec[x] = cmd->content;
 		cmd = cmd->next;
-		x++;
 	}
-	arr_exec[x] = NULL;
-	return (arr_exec);
+	return (arr_exec[x] = NULL, arr_exec);
 }
 
 static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
@@ -79,6 +78,7 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 
 	i = 0;
 	get_redirect(cmd, &i, lst, &start);
+	printf("%d\n\n", i);
 	get_frst_word(cmd, &i, lst);
 	get_opt(cmd, &i, lst);
 	start = i;
@@ -124,15 +124,18 @@ static	t_cmd *create_lst_cmd(char *cmd)
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
-	//int 	pipe_fd[2];
+	int 	pipe_fd[2];
 
 	if (cmd[0] == '\0')
 		return ;
 	lst = create_lst_cmd(cmd);
 	if (!lst)
 		exit (0); //FREE
+	env->var = malloc(sizeof(t_pipex));
+	if (!env->var)
+		exit (1); //FREE
 	replace_variable(lst, env);
-	//search_if_redirect(env->var, lst, pipe_fd);
+	search_if_redirect(env->var, lst, pipe_fd);
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE

@@ -108,6 +108,8 @@ char	**lst_to_tab(t_env **lst)
 		hold = ft_strjoin(temp->key, "=");
 		if (!hold)
 			return(NULL);
+		if (!temp->content)
+			temp->content = " ";
 		tab[i] = ft_strjoin(hold, temp->content);
 		if (!tab[i])
 			return(NULL);
