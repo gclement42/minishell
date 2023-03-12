@@ -112,7 +112,7 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
 				open_fd_in(var, lst->next->content);
 			else if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
-				create_heredoc(var ,lst, pipe_fd);
+				create_heredoc(lst, pipe_fd);
 			else if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
 				open_fd_out(var, lst->next->content, 0);
 			else if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)

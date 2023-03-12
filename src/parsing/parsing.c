@@ -78,7 +78,6 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 
 	i = 0;
 	get_redirect(cmd, &i, lst, &start);
-	printf("%d\n\n", i);
 	get_frst_word(cmd, &i, lst);
 	get_opt(cmd, &i, lst);
 	start = i;
