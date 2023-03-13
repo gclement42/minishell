@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 15:00:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 16:00:38 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,6 @@ void	init_struct(t_minish *var, char **envp)
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
 }
 
-// void	signal_handler(int status)
-// {
-// 	if (status == SIGINT)
-// 	{
-// 		printf("\n"); // Move to a new line
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();		
-// 	}
-// 	if (status == SIGQUIT)
-// 	{
-// 		return ;
-// 	}
-// }
-
 int	main(int argc, char **argv, char *envp[])
 {
 	t_minish	*var;
@@ -71,23 +56,25 @@ int	main(int argc, char **argv, char *envp[])
 	var = malloc(sizeof(t_minish));
 	if (!var)
 		exit(1);
-	// signal(SIGINT, &int_handler);
-	// signal(SIGQUIT, &int_handler);
 	(void)argv;
+	init_sigaction();
 	var->builtins = init_bultins_arr();
-	//signal_handler;
 	if (argc == 1)
 	{
 		init_struct(var, envp);
 		while (1)
 		{
-			//signal_handler;
-			var->cmd = readline(">>");
-			if (var->cmd == NULL)
-				exit_env(var);
-			parsing(var->cmd, var);
-			if (ft_strlen(var->cmd) > 0)
-				add_history(var->cmd);
+			init_sigaction();
+			while (1)
+			{
+				var->cmd = readline(">>");
+				if (var->cmd == NULL)
+					exit_env(var);
+				parsing(var->cmd, var);
+				if (ft_strlen(var->cmd) > 0)
+					add_history(var->cmd);
+			}
+			rl_clear_history();
 		}
 	}
 }
