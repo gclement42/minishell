@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 12:23:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/13 13:10:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ char	**get_command(char *arg, char **env)
 		display_error(env, "Error in malloc");
 	return (cmd);
 }
-
 
 void	wait_id(t_pipex *var)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/08 17:07:55 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 15:31:53 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <dirent.h>
-# include <signal.h>
 # include <sys/ioctl.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <termios.h>
 # include "exec.h"
 # include "typedef.h"
@@ -47,7 +47,8 @@ void	print_list(t_env **list);
 void	free_list(t_env *lst);
 int		ft_lstlen(t_env *lst);
 
-void	int_handler(int status);
+void	signal_handler(int status);
+void	init_sigaction(void);
 
 void	get_cmd_line(t_minish *var, t_env **lst);
 void	builtin_cmp(t_minish *var);

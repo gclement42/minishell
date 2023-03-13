@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 11:17:03 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 12:36:28 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,6 @@ void	init_struct(t_minish *var, char **envp)
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
 }
 
-// void	int_handler(int status)
-// {
-// 	// struct termios term;
-//     // tcsetattr(STDIN_FILENO, TCSANOW, &term);
-// 	if (status == SIGINT)
-// 	{
-// 		printf("\n"); // Move to a new line
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();		
-// 	}
-// 	if (status == SIGQUIT)
-// 	{
-// 		// tcgetattr(STDIN_FILENO, &term);
-//    		// term.c_lflag |= 0;
-// 		// tcsetattr(STDIN_FILENO, TCSANOW, &term);
-// 	}
-// }
-
 int	main(int argc, char **argv, char *envp[])
 {
 	t_minish	*var;
@@ -75,22 +56,25 @@ int	main(int argc, char **argv, char *envp[])
 	var = malloc(sizeof(t_minish));
 	if (!var)
 		exit(1);
-	// signal(SIGINT, &int_handler);
-	// signal(SIGQUIT, &int_handler);
 	(void)argv;
+	init_sigaction();
 	var->builtins = init_bultins_arr();
 	if (argc == 1)
 	{
 		init_struct(var, envp);
 		while (1)
 		{
-			var->cmd = readline(">>");
-			// if (var->cmd == NULL)
-			// 	exit_env(var);
-			parsing(var->cmd, var);
-			if (ft_strlen(var->cmd) > 0)
-				add_history(var->cmd);
-			// free(var.cmd);
+			init_sigaction();
+			while (1)
+			{
+				var->cmd = readline(">>");
+				if (var->cmd == NULL)
+					exit_env(var);
+				parsing(var->cmd, var);
+				if (ft_strlen(var->cmd) > 0)
+					add_history(var->cmd);
+			}
+			rl_clear_history();
 		}
 	}
 }

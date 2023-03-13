@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 13:42:02 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:50:22 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,25 +126,32 @@ void	parsing(char *cmd, t_minish *env)
 	t_cmd	*lst;
 	pid_t	pid;
 	int 	pipe_fd[2];
+	int		id;
 
 	if (!cmd || cmd[0] == '\0')
 		return ;
-	pid = fork();
-	if (pid == 0)
+	lst = create_lst_cmd(cmd);
+	if (!lst)
+		exit (0); //FREE
+	env->var = malloc(sizeof(t_pipex));
+	if (!env->var)
+		exit (1); //FREE
+	replace_variable(lst, env);
+	if (count_type_in_lst(lst, PIPE) == 0 
+		&& check_is_builtins(get_node(lst, CMD), env))
+		builtins_router(lst, count_type_in_lst(lst, ARG), env);
+	else
 	{
-		lst = create_lst_cmd(cmd, env);
-		if (!lst)
-			exit (0); //FREE
-		env->var = malloc(sizeof(t_pipex));
-		if (!env->var)
-			exit (1); //FREE
-		search_if_redirect(env->var, lst, pipe_fd);
-		if (count_type_in_lst(lst, PIPE) == 0 
-			&& check_is_builtins(get_node(lst, CMD), env))
-			builtins_router(lst, count_type_in_lst(lst, ARG), env);
-		else
+		id = fork();
+		if (id < 0)
+			exit (1); // FREE
+		if (id == 0)
+		{
+			init_sigaction();
+			search_if_redirect(env->var, lst, pipe_fd);
 			pipex(env, lst);
-		exit (0);
+			exit(0);
+		}
 	}
-	wait (NULL);
+	wait(NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/13 13:40:36 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:45:15 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,14 @@ int	*init_pipes(t_pipex *var)
 		if (pipe(pipefds + i * 2) < 0)
 		{
 			perror("couldn't pipe");
-				exit(EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		}
 		i++;
 	}
 	return (pipefds);
 }
 
-void	close_pipes(t_pipex *var)
-{
-	int	i;
-
-	i = 0;
-	while (i < var->numpipes * 2)
-	{
-		close(var->pipefds[i]);
-		i++;
-	}
-}
-
-void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
+static void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 {
 	env->var->numpipes = count_type_in_lst(lst, PIPE);
 	if (env->var->numpipes > 0)
@@ -77,28 +65,29 @@ void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 	}
 }
 
-static void    child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
+static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 {
-    int        id;
-    int        fd;
+	int		id;
+	int		fd;
 
-    fd = 0;
-    while (lst)
-    {
-        id = fork();
-        if (id == -1)
-            perror("fork: ");
-        else if (id == 0)
-        {
-            duplicate_fd(fd, var, lst);
-            close_pipes(var);
-            execute_child(env, var, lst, envp);
-        }
-        fd += 2;
-        lst = lst_next(lst);
-    }
-    close_pipes(env->var);
-    wait_id(var);
+	fd = 0;
+	while (lst)
+	{
+		id = fork();
+		init_sigaction();
+		if (id == -1)
+			perror("fork: ");
+		else if (id == 0)
+		{
+			duplicate_fd(fd, var, lst);
+			close_pipes(var);
+			execute_child(env, var, lst, envp);
+		}
+		fd += 2;
+		lst = lst_next(lst);
+	}
+	close_pipes(env->var);
+	wait_id(var);
 }
 
 void	pipex(t_minish *env, t_cmd *lst)

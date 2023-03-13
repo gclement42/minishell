@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/13 13:39:43 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:37:50 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	pipex(t_minish *env, t_cmd *lst);
 void	join_slash(char **env);
 t_cmd	*lst_next(t_cmd *lst);
 void	wait_id(t_pipex *var);
+void	close_pipes(t_pipex *var);
 
 /* ----- Open ----- */
 void	open_fd_in(t_pipex *var, char *filename);
@@ -39,6 +40,6 @@ void	exec_command(t_pipex *var, char **env, char **cmd, char *envp[]);
 char	**get_path(char *envp[]);
 /* ----- Dup ----- */
 
-void    duplicate_fd(int fd, t_pipex *var, t_cmd *lst);
+void	duplicate_fd(int fd, t_pipex *var, t_cmd *lst);
 
 #endif
