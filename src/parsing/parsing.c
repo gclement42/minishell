@@ -99,7 +99,7 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	return (*lst);
 }
 
-static	t_cmd *create_lst_cmd(char *cmd)
+static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 {
 	char	**split_by_pipe;
 	t_cmd	*lst;
@@ -117,16 +117,18 @@ static	t_cmd *create_lst_cmd(char *cmd)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
+	replace_variable(lst, env);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
+	pid_t	pid;
 	int 	pipe_fd[2];
 	int		id;
 
-	if (cmd[0] == '\0')
+	if (!cmd || cmd[0] == '\0')
 		return ;
 	lst = create_lst_cmd(cmd);
 	if (!lst)
@@ -135,9 +137,6 @@ void	parsing(char *cmd, t_minish *env)
 	if (!env->var)
 		exit (1); //FREE
 	replace_variable(lst, env);
-	env->env_tab = lst_to_tab(&env->env_list);
-	if (!env->env_tab)
-		exit (1); //FREE
 	if (count_type_in_lst(lst, PIPE) == 0 
 		&& check_is_builtins(get_node(lst, CMD), env))
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);

@@ -12,7 +12,26 @@
 
 #include "pipes.h"
 
-static int	*init_pipes(t_pipex *var)
+static void    execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
+{
+    char    **cmd;
+
+    close_pipes(var);
+    if (check_is_builtins(get_node(lst, CMD), env) == 1)
+    {
+        builtins_router(lst, count_type_in_lst(lst, ARG), env);
+        exit(0); // FREE
+    }
+    else
+    {
+        cmd = create_arr_exec(lst);
+        if (!cmd)
+            display_error(var->env_cmd, "Command tab not properly allocated");
+        exec_command(var, var->env_cmd, cmd, envp);
+    }
+}
+
+int	*init_pipes(t_pipex *var)
 {
 	int	i;
 	int	*pipefds;
@@ -46,25 +65,6 @@ static void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 	}
 }
 
-static void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
-{
-	char	**cmd;
-
-	close_pipes(var);
-	if (check_is_builtins(get_node(lst, CMD), env) == 1)
-	{
-		builtins_router(lst, count_type_in_lst(lst, ARG), env);
-		exit(0); // FREE
-	}
-	else
-	{
-		cmd = create_arr_exec(lst);
-		if (!cmd)
-			display_error(var->env_cmd, "Command tab not properly allocated");
-		exec_command(var, var->env_cmd, cmd, envp);
-	}
-}
-
 static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 {
 	int		id;
@@ -92,6 +92,9 @@ static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 
 void	pipex(t_minish *env, t_cmd *lst)
 {
+	env->env_tab = lst_to_tab(&env->env_list);
+	if (!env->env_tab)
+		exit (1); //FREE
 	if (get_node(lst, CMD) != NULL)
 	{
 		init_struct_pipex(env, env->env_tab, lst);
