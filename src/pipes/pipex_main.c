@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 15:32:36 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/13 12:35:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,19 @@ static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 		else if (id == 0)
 		{
 			duplicate_fd(count, fd, var, lst);
-			execute_child(env, var, lst, envp);
+			close_pipes(var);
+			if (check_is_builtins(get_node(lst, CMD), env) == 1)
+      {
+				builtins_router(lst, count_type_in_lst(lst, ARG), env);
+				exit(0);
+			}
+			else
+			{
+				cmd = create_arr_exec(lst);
+				if (!cmd)
+					display_error(var->env_cmd, "Command tab not properly allocated");
+				exec_command(var, var->env_cmd, cmd, envp);
+			}
 		}
 		count++;
 		fd += 2;
@@ -93,9 +105,9 @@ static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 
 void	pipex(t_minish *env, t_cmd *lst)
 {
-	env->var = malloc(sizeof(t_pipex));
-	if (!env->var)
-		exit (1); //FREE
-	init_struct_pipex(env, env->env_tab, lst);
-	child_proc(env, env->var, env->env_tab, lst);
+	if (get_node(lst, ARG) != NULL)
+	{
+		init_struct_pipex(env, env->env_tab, lst);
+		child_proc(env, env->var, env->env_tab, get_node(lst, CMD));
+	}
 }

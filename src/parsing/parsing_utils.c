@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 13:12:39 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:29:01 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 int	check_is_builtins(t_cmd *node, t_minish *env)
 {
-	int	i;
+	int		i;
+	size_t	len;
 
 	i = 0;
 	while (env->builtins[i])
 	{
+		len = ft_strlen(node->content);
 		if (ft_strncmp(env->builtins[i], node->content, \
-			ft_strlen(node->content)) == 0)
+			len) == 0 && ft_strlen(env->builtins[i]) == len)
 			return (1);
 		i++;
 	}

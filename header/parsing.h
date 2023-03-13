@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 10:16:26 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:00:38 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ void		builtins_router(t_cmd *lst, int argc, t_minish *var);
 /* cut cmd*/
 void		get_opt(char *cmd, int *i, t_cmd **lst);
 void		get_frst_word(char *cmd, int *i, t_cmd **lst);
-void		get_word(char *cmd, int *i, size_t *start, t_cmd **lst);
+void		*get_word(char *cmd, int *i, size_t *start, t_cmd **lst);
 void		get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
 void		get_file(char *cmd, int *i, t_cmd **lst);
-void		get_word_with_space(char *word, t_cmd **lst);
+void		get_word_with_space(char *word, t_cmd **lst, int is_eol);
 
 /* parse cmd */
 t_cmd		*replace_variable(t_cmd *lst, t_minish *env);
 char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
 void		search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2]);
-void		create_heredoc(t_pipex *var, t_cmd *lst, int pipe_fd[2]);
+void		create_heredoc(t_cmd *lst, int pipe_fd[2]);
 
 /* cmd list utils */
 void		*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 13:11:26 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:26:37 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0
 		|| ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
 		env_lst = export_variable_parsing(lst, cmd_node->content);
-	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0 && cmd_len == 2)
 		cd_parsing(arg_node, argc, var);
-	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0 && cmd_len == 3)
 		get_pwd(var);
-	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)
 		get_env(var, &env_lst);
-	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0 && cmd_len == 5)
 		unset_parsing(var, arg_node);
-	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0 && cmd_len == 6)
 		export_parsing(var, argc, env_lst, arg_node);
-	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0 && cmd_len == 4)
 		echo_parsing(cmd_node);
-	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
 		exit_parsing(var, arg_node);
 }
 
@@ -48,12 +48,13 @@ char	**create_arr_exec(t_cmd *cmd)
 	int		len;
 	int		x;
 
-	len = 0;
-	x = 0;
+	len = 1;
+	x = -1;
 	tmp = cmd;
+	tmp = tmp->next;
 	while (tmp)
 	{
-		if (tmp->type == PIPE)
+		if (tmp->type != ARG && tmp->type != OPT)
 			break;
 		len++;
 		tmp = tmp->next;
@@ -61,14 +62,12 @@ char	**create_arr_exec(t_cmd *cmd)
 	arr_exec = malloc((len + 1) * sizeof(char *));
 	if (!arr_exec)
 		return (NULL);
-	while (x < len)
+	while (++x < len)
 	{
 		arr_exec[x] = cmd->content;
 		cmd = cmd->next;
-		x++;
 	}
-	arr_exec[x] = NULL;
-	return (arr_exec);
+	return (arr_exec[x] = NULL, arr_exec);
 }
 
 static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
@@ -95,7 +94,7 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 		word = ft_substr(cmd, start, ft_strlen(cmd) - start);
 		if (!word)
 			return (NULL);
-		get_word_with_space(word, lst);
+		get_word_with_space(word, lst, 1);
 	}
 	return (*lst);
 }
@@ -103,10 +102,8 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 static	t_cmd *create_lst_cmd(char *cmd)
 {
 	char	**split_by_pipe;
-	char	**tok_split;
 	t_cmd	*lst;
 	int		i;
-	int		x;
 	
 	i = 0;
 	lst = NULL;
@@ -115,36 +112,29 @@ static	t_cmd *create_lst_cmd(char *cmd)
 		return (NULL);
 	while (split_by_pipe[i])
 	{
-		x = 0;
-		tok_split = ft_strtok(split_by_pipe[i], ";&");
-		if (!tok_split)
-			return (NULL);
-		while (tok_split[x])
-		{
-			lst = parse_cmd(tok_split[x], &lst);
-			x++;
-		}
+		lst = parse_cmd(split_by_pipe[i], &lst);
+		i++;
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
-		i++;
 	}
-	count_type_in_lst(lst, CMD);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
-	//int 	pipe_fd[2];
+	int 	pipe_fd[2];
 
 	if (cmd[0] == '\0')
 		return ;
 	lst = create_lst_cmd(cmd);
 	if (!lst)
 		exit (0); //FREE
+	env->var = malloc(sizeof(t_pipex));
+	if (!env->var)
+		exit (1); //FREE
 	replace_variable(lst, env);
-	//search_if_redirect(env->var, lst, pipe_fd);
-	count_type_in_lst(lst, PIPE);
+	search_if_redirect(env->var, lst, pipe_fd);
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE

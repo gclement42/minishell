@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 11:04:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/09 15:32:01 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	sort_export(t_env **list)
 
 static void	replace_content(t_minish *var, t_env *new_var)
 {
-	printf("%s = replace content\n", new_var->key);
 	if (!new_var->content)
 	{
 		new_var->content = ft_strdup("''");

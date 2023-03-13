@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 13:02:38 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:13:44 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,29 +108,43 @@ void	exit_parsing(t_minish *var, t_cmd *lst)
 	exit_env(var);
 }
 
-void	create_heredoc(t_pipex *var, t_cmd *lst, int pipe_fd[2])
+void	create_heredoc(t_cmd *lst, int pipe_fd[2])
 {
 	char	*line;
+	pid_t	pid;
 	
 	if (pipe(pipe_fd) < 0)
 	{
-		perror("minishell");
+		perror("pipe");
 		exit (0);
 	}
-	//close(pipe_fd[1]);
-	line = readline(">");
-	while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
+	pid = fork();
+	if (pid < 0)
+		return (perror("fork"), exit(0));
+	if (pid == 0)
 	{
-		line[ft_strlen(line)] = '\n';
-		if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
-		{
-			perror("minishell");
-			close(pipe_fd[0]);
-			return ;
-		}
-		free (line);
+		close(pipe_fd[0]);
 		line = readline(">");
+		while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
+		{
+			if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
+			{
+				perror("write");
+				//close(pipe_fd[0]);
+				return ;
+			}
+			if (write(pipe_fd[1], "\n", 1) < 0)
+				perror("write");
+			free (line);
+			line = readline(">");
+		}
+		exit (0);
 	}
+	wait (NULL);
 	close(pipe_fd[1]);
-	var->fdin = pipe_fd[0];
+	if(dup2(pipe_fd[0], STDIN_FILENO) < 0)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
 }
