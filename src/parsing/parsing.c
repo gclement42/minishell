@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 11:26:37 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:50:22 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	int 	pipe_fd[2];
+	int		id;
 
 	if (cmd[0] == '\0')
 		return ;
@@ -134,7 +135,6 @@ void	parsing(char *cmd, t_minish *env)
 	if (!env->var)
 		exit (1); //FREE
 	replace_variable(lst, env);
-	search_if_redirect(env->var, lst, pipe_fd);
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE
@@ -142,5 +142,17 @@ void	parsing(char *cmd, t_minish *env)
 		&& check_is_builtins(get_node(lst, CMD), env))
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
 	else
-		pipex(env, lst);
+	{
+		id = fork();
+		if (id < 0)
+			exit (1); // FREE
+		if (id == 0)
+		{
+			init_sigaction();
+			search_if_redirect(env->var, lst, pipe_fd);
+			pipex(env, lst);
+			exit(0);
+		}
+	}
+	wait(NULL);
 }

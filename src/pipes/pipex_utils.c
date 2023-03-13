@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 15:23:27 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/13 13:10:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,4 @@ t_cmd	*lst_next(t_cmd *lst)
 	else
 		lst = NULL;
 	return (lst);
-}
-
-void	close_pipes(t_pipex *var)
-{
-	int	i;
-
-	i = 0;
-	while (i < var->numpipes * 2)
-	{
-		close(var->pipefds[i]);
-		i++;
-	}
 }
