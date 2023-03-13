@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 12:25:53 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/13 13:39:43 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ void	exec_command(t_pipex *var, char **env, char **cmd, char *envp[]);
 char	**get_path(char *envp[]);
 /* ----- Dup ----- */
 
-void	duplicate_fd(int count, int fd, t_pipex *var, t_cmd *lst);
+void    duplicate_fd(int fd, t_pipex *var, t_cmd *lst);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 11:26:37 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:42:02 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	return (*lst);
 }
 
-static	t_cmd *create_lst_cmd(char *cmd)
+static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 {
 	char	**split_by_pipe;
 	t_cmd	*lst;
@@ -117,30 +117,34 @@ static	t_cmd *create_lst_cmd(char *cmd)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
+	replace_variable(lst, env);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
+	pid_t	pid;
 	int 	pipe_fd[2];
 
-	if (cmd[0] == '\0')
+	if (!cmd || cmd[0] == '\0')
 		return ;
-	lst = create_lst_cmd(cmd);
-	if (!lst)
-		exit (0); //FREE
-	env->var = malloc(sizeof(t_pipex));
-	if (!env->var)
-		exit (1); //FREE
-	replace_variable(lst, env);
-	search_if_redirect(env->var, lst, pipe_fd);
-	env->env_tab = lst_to_tab(&env->env_list);
-	if (!env->env_tab)
-		exit (1); //FREE
-	if (count_type_in_lst(lst, PIPE) == 0 
-		&& check_is_builtins(get_node(lst, CMD), env))
-		builtins_router(lst, count_type_in_lst(lst, ARG), env);
-	else
-		pipex(env, lst);
+	pid = fork();
+	if (pid == 0)
+	{
+		lst = create_lst_cmd(cmd, env);
+		if (!lst)
+			exit (0); //FREE
+		env->var = malloc(sizeof(t_pipex));
+		if (!env->var)
+			exit (1); //FREE
+		search_if_redirect(env->var, lst, pipe_fd);
+		if (count_type_in_lst(lst, PIPE) == 0 
+			&& check_is_builtins(get_node(lst, CMD), env))
+			builtins_router(lst, count_type_in_lst(lst, ARG), env);
+		else
+			pipex(env, lst);
+		exit (0);
+	}
+	wait (NULL);
 }
