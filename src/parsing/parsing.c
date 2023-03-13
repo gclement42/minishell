@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 16:01:05 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:26:37 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0
 		|| ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
 		env_lst = export_variable_parsing(lst, cmd_node->content);
-	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0 && cmd_len == 2)
 		cd_parsing(arg_node, argc, var);
-	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0 && cmd_len == 3)
 		get_pwd(var);
-	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)
 		get_env(var, &env_lst);
-	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0 && cmd_len == 5)
 		unset_parsing(var, arg_node);
-	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0 && cmd_len == 6)
 		export_parsing(var, argc, env_lst, arg_node);
-	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0 && cmd_len == 4)
 		echo_parsing(cmd_node);
-	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
 		exit_parsing(var, arg_node);
 }
 

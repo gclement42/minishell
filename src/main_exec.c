@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 10:42:29 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:17:03 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ int	main(int argc, char **argv, char *envp[])
 		while (1)
 		{
 			var->cmd = readline(">>");
-			if (var->cmd == NULL)
-				exit_env(var);
+			// if (var->cmd == NULL)
+			// 	exit_env(var);
 			parsing(var->cmd, var);
 			if (ft_strlen(var->cmd) > 0)
 				add_history(var->cmd);
