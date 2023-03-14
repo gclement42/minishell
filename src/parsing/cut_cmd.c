@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 16:00:55 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 18:01:22 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,18 +113,22 @@ void	get_opt(char *cmd, int *i, t_cmd **lst)
 	int		tmp;
 
 	tmp = *i;
-	while (cmd[*i] != '-' && \
-		(cmd[*i] == ' ' || cmd[*i] == '\'' || cmd[*i] == '"' ) && cmd[*i])
-		*i += 1;
-	if (cmd[*i] == '-')
+	while (cmd[*i])
 	{
-		len = count_len(&cmd[*i], cmd[*i - 1]);
-		word = ft_substr(cmd, *i, len);
-		if (!word)
-			return ;
-		new_node_cmd(word, get_marks(cmd[tmp]), OPT, lst);
-		*i += len + 1;
+		while (cmd[*i] != '-' && \
+			(cmd[*i] == ' ' || cmd[*i] == '\'' || cmd[*i] == '"' ) && cmd[*i])
+			*i += 1;
+		if (cmd[*i] == '-')
+		{
+			len = count_len(&cmd[*i], cmd[*i - 1]);
+			word = ft_substr(cmd, *i, len);
+			if (!word)
+				return ;
+			new_node_cmd(word, get_marks(cmd[tmp]), OPT, lst);
+			*i += len;
+			tmp = *i;
+		}
+		*i += 1;
 	}
-	else
-		*i = tmp;
+	*i = tmp;
 }

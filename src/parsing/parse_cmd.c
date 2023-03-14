@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 12:50:07 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:30:56 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@ static	char *join_new_content(char *new_content, char *content, int size)
 	return (content);
 }
 
+static char *join_content_next_var(char *content, int i)
+{
+	char	*var_content;
+	char	*eow;
+	char	*join_content;
+
+	var_content = ft_itoa(errno);
+	eow = ft_substr(content, i + 2, (ft_strlen(content) - i + 2));
+	if (!eow)
+		return (NULL);
+	join_content = ft_strjoin(var_content, eow);
+	return (free(var_content), free(eow), join_content);	
+}
+
 t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
 {
 	char	*new_content;
@@ -51,7 +65,10 @@ t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
 		{
 			if (lst->content[i] == '$' && lst->marks != QUOTE)
 			{
-				new_content = search_key(env->env_list, &lst->content[i + 1]);
+				if (lst->content[i + 1] == '?')
+					new_content = join_content_next_var(lst->content, i);
+				else
+					new_content = search_key(env->env_list, &lst->content[i + 1]);
 				lst->content = join_new_content(new_content, lst->content, i);
 				if (!lst->content)
 					return (NULL);
@@ -101,23 +118,4 @@ void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
 		return ;
 	}
 	new_node_cmd(word, SPACES, ARG, lst);
-}
-
-void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
-{
-	while (lst)
-	{
-		if (lst->type == REDIRECT)
-		{
-			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
-				open_fd_in(var, lst->next->content);
-			else if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
-				create_heredoc(lst, pipe_fd);
-			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
-				open_fd_out(var, lst->next->content, 0);
-			else if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
-				open_fd_out(var, lst->next->content, 1);
-		}
-		lst = lst->next;
-	}
 }

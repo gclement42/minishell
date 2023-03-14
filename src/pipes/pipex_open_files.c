@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 15:23:49 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/14 10:18:36 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,24 @@ void	open_fd_out(t_pipex *var, char *filename, int redirect)
 	{
 		perror("dup2");
 		exit(EXIT_FAILURE);
+	}
+}
+
+void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
+{
+	while (lst)
+	{
+		if (lst->type == REDIRECT)
+		{
+			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
+				open_fd_in(var, lst->next->content);
+			else if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
+				create_heredoc(lst, pipe_fd);
+			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
+				open_fd_out(var, lst->next->content, 0);
+			else if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
+				open_fd_out(var, lst->next->content, 1);
+		}
+		lst = lst->next;
 	}
 }
