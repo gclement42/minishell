@@ -6,39 +6,13 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 12:36:28 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/14 10:09:12 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
-{
-	t_env	*temp_env;
-	t_env	*temp_exp;
-	char	*str_lvl;
-
-	temp_env = *env_l;
-	temp_exp = *exp_l;
-	if (check_key(&temp_env, "SHLVL") == 0)
-	{
-		while (temp_env)
-		{
-			if (ft_strnstr(temp_env->key, "SHLVL", 6))
-			{
-				var->lvl = ft_atoi(temp_env->content);
-				var->lvl++;
-				str_lvl = ft_itoa(var->lvl);
-				if (!str_lvl)
-					exit(1); //FREE
-				modify_var(&temp_env, "SHLVL", str_lvl);
-				modify_var(&temp_exp, "SHLVL", str_lvl);
-				free(str_lvl);
-			}
-			temp_env = temp_env->next;
-		}
-	}
-}
+unsigned char	g_return_value = 0;
 
 void	init_struct(t_minish *var, char **envp)
 {
@@ -57,16 +31,17 @@ int	main(int argc, char **argv, char *envp[])
 	if (!var)
 		exit(1);
 	(void)argv;
-	init_sigaction();
 	var->builtins = init_bultins_arr();
+	init_sigaction();
 	if (argc == 1)
 	{
 		init_struct(var, envp);
+		init_sigaction();
 		while (1)
 		{
-			init_sigaction();
 			while (1)
 			{
+				init_sigaction();
 				var->cmd = readline(">>");
 				if (var->cmd == NULL)
 					exit_env(var);

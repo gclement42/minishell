@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 15:31:53 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/14 10:16:45 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # include "pipes.h"
 # include "parsing.h"
 
+extern unsigned char	return_value;
+
 /* ---- Utils ---- */
 char	*ft_strnstr_path(char *haystack, char *needle, size_t len);
 void	*free_array(char **ptr);
@@ -47,7 +49,7 @@ void	print_list(t_env **list);
 void	free_list(t_env *lst);
 int		ft_lstlen(t_env *lst);
 
-void	signal_handler(int status);
+void	signal_handler(int sig);
 void	init_sigaction(void);
 
 void	get_cmd_line(t_minish *var, t_env **lst);

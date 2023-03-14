@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 15:32:01 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/13 14:28:11 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ static void	add_export(t_minish *var, t_env *new_var)
 {
 	while (new_var)
 	{
+		if (ft_strncmp(new_var->key, "SHLVL", 6) == 0)
+		{
+			modify_shlvl(&var->exp_list, &var->env_list, new_var, var);
+			return ;
+		}
 		if (check_key(&var->exp_list, new_var->key) == 1)
 		{
 			if (!new_var->content)

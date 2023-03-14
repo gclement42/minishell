@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 13:50:22 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/13 16:53:11 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,12 @@ static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
-	pid_t	pid;
+	pid_t	id;
 	int 	pipe_fd[2];
-	int		id;
 
 	if (!cmd || cmd[0] == '\0')
 		return ;
-	lst = create_lst_cmd(cmd);
+	lst = create_lst_cmd(cmd, env);
 	if (!lst)
 		exit (0); //FREE
 	env->var = malloc(sizeof(t_pipex));
@@ -147,7 +146,7 @@ void	parsing(char *cmd, t_minish *env)
 			exit (1); // FREE
 		if (id == 0)
 		{
-			init_sigaction();
+			//init_sigaction();
 			search_if_redirect(env->var, lst, pipe_fd);
 			pipex(env, lst);
 			exit(0);
