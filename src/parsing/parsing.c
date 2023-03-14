@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 16:53:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/14 10:36:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,22 +135,20 @@ void	parsing(char *cmd, t_minish *env)
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit (1); //FREE
-	replace_variable(lst, env);
+	id = fork();
+	if (id < 0)
+		exit (1); // FREE
+	if (id == 0)
+	{
+		init_sigaction();
+		search_if_redirect(env->var, lst, pipe_fd);
+		if (!(count_type_in_lst(lst, PIPE) == 0 
+			&& check_is_builtins(get_node(lst, CMD), env)))
+		pipex(env, lst);
+		exit(0);
+	}
+	wait(NULL);
 	if (count_type_in_lst(lst, PIPE) == 0 
 		&& check_is_builtins(get_node(lst, CMD), env))
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
-	else
-	{
-		id = fork();
-		if (id < 0)
-			exit (1); // FREE
-		if (id == 0)
-		{
-			//init_sigaction();
-			search_if_redirect(env->var, lst, pipe_fd);
-			pipex(env, lst);
-			exit(0);
-		}
-	}
-	wait(NULL);
 }
