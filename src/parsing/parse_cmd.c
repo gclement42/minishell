@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/14 10:30:56 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/16 10:21:45 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ static char *join_content_next_var(char *content, int i)
 	char	*join_content;
 
 	var_content = ft_itoa(errno);
-	eow = ft_substr(content, i + 2, (ft_strlen(content) - i + 2));
+	if (!content[i + 2])
+		return (var_content);
+	eow = ft_substr(content, i + 2, (ft_strlen(content) - i + 1));
 	if (!eow)
 		return (NULL);
 	join_content = ft_strjoin(var_content, eow);
@@ -80,7 +82,7 @@ t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
 	return (lst);
 }
 
-static int	is_all_spaces(char *word)
+int	is_all_spaces(char *word)
 {
 	int	x;
 

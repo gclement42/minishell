@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 18:01:22 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/16 10:57:15 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,37 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 	*i = tmp;
 }
 
+static	char *remove_quote(char *str)
+{
+	int		i;
+	char	*dest;
+	int		x;
+	char	tmp;
+
+	i = -1;
+	while (str[++i])
+		if (!(str[i] == '\'' || str[i] == '"'))
+			i += count_len(&str[i], str[i]);
+	dest = ft_calloc((i + 1), sizeof(char));
+	i = -1;
+	x = -1;
+	tmp = 0;
+	while (str[++i] && dest)
+	{
+		if ((str[i] == '\'' || str[i] == '"') && tmp == 0)
+			tmp = str[i++];
+		if (str[i] == tmp)
+		{
+			tmp = 0;
+			i++;
+		}
+		if ((str[i] == '\'' || str[i] == '"') && tmp == 0)
+			tmp = str[i++];
+		dest[++x] = str[i];
+	}
+	return (free(str), dest);
+}
+
 void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 {
 	size_t	len;
@@ -93,17 +124,24 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 {
 	size_t	len;
 	char	*word;
-	int		x;
-
-	x = 0;
-	len = count_len(&cmd[*i], ' ');
+	
+	while (cmd[*i] == ' ')
+		*i += 1;
+	if (cmd[*i] == '\'' || cmd[*i] == '"')
+		len = count_len(&cmd[*i], cmd[*i]);
+	else
+		len = count_len(&cmd[*i], ' ');
 	word = ft_substr(cmd, *i, len);
 	if (!word)
 		return ;
-	while (word[x] == ' ')
-		x++;
-	new_node_cmd(&word[x], get_marks(cmd[*i]), CMD, lst);
-	*i += len;
+	if (is_all_spaces(word) == 0)
+	{
+		word = remove_quote(word);
+		new_node_cmd(word, get_marks(cmd[*i]), CMD, lst);
+	}
+	else
+		return ;
+	*i += len + 1;
 }
 
 void	get_opt(char *cmd, int *i, t_cmd **lst)

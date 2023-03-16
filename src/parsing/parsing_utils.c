@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 18:00:06 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/16 11:03:35 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	check_is_builtins(t_cmd *node, t_minish *env)
 	size_t	len;
 
 	i = 0;
+	if (!node)
+		return (0);
 	while (env->builtins[i])
 	{
 		len = ft_strlen(node->content);
@@ -69,15 +71,17 @@ int	count_type_in_lst(t_cmd *lst, t_type type)
 	int	count;
 
 	count = 0;
+	if (!lst)
+		return (0);
 	while (lst)
 	{
-		printf("content = %s\n", lst->content);
-		printf("marks = %d\n", lst->marks);
-		printf("type = %d\n\n", lst->type);
+		// printf("content = %s\n", lst->content);
+		// printf("marks = %d\n", lst->marks);
+		// printf("type = %d\n\n", lst->type);
 		if (lst->type == type)
 			count++;
 		lst = lst->next;
 	}
-	printf("---------------------------------\n");
+	//printf("---------------------------------\n");
 	return (count);
 }

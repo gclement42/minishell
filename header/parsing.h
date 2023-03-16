@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/09 16:00:38 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/16 10:22:35 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_marks		get_marks(char c);
 char		*search_key(t_env *lst_env, char *key);
 int			count_type_in_lst(t_cmd *lst, t_type type);
 int			check_is_valid_identifier(char *str, char *cmd);
-char		**ft_strtok(char const *str, char *delimiters);
+int			is_all_spaces(char *word);
 
 
 void		parsing(char *cmd, t_minish *env);
