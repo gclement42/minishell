@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/16 11:03:35 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/16 15:08:46 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,15 @@ t_marks	get_marks(char c)
 char	*search_key(t_env *lst_env, char *key)
 {
 	char	*res;
+	int		i;
 
 	res = NULL;
+	i = 0;
+	while (ft_isalpha(key[i]) == 1)
+		i++;
 	while (lst_env)
 	{
-		res = ft_strnstr(lst_env->key, key, ft_strlen(key));
+		res = ft_strnstr(key, lst_env->key, i);
 		if (res && !res[ft_strlen(key) + 1])
 			return (lst_env->content);
 		lst_env = lst_env->next;

@@ -6,27 +6,46 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/16 10:21:45 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:06:48 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char *join_content_next_var(char *content, char *var_content)
+{
+	char	*eow;
+	char	*join_content;
+	int		start;
+
+	start = 0;
+	while (content[start] != '$')
+		start++;
+	start++;
+	while (ft_isalpha(content[start]) == 1 || content[start] == '?')
+		start++;
+	eow = ft_substr(content, start, (ft_strlen(content)) - start);
+	if (!eow)
+		return (NULL);
+	join_content = ft_strjoin(var_content, eow);
+	return (free(var_content), free(eow), join_content);	
+}
+
 static	char *join_new_content(char *new_content, char *content, int size)
 {
+	char	*str_begin;
 	char	*str;
 	
 	if (size > 0)
 	{
-		str = malloc((size + 1) * sizeof(char));
-		if (!str)
+		str_begin = malloc((size + 1) * sizeof(char));
+		if (!str_begin)
 			return (NULL);
-		str = ft_memcpy(str, content, size);
-		str[size] = '\0';
-		free(content);
-		content = ft_strjoin(str, new_content);
-		if (!content)
-			return (NULL);
+		str_begin = ft_memcpy(str_begin, content, size);
+		str_begin[size] = '\0';
+		str = ft_strjoin(str_begin, new_content);
+		str = join_content_next_var(content, str);
+		return (str);
 	}
 	else
 	{
@@ -39,21 +58,6 @@ static	char *join_new_content(char *new_content, char *content, int size)
 	return (content);
 }
 
-static char *join_content_next_var(char *content, int i)
-{
-	char	*var_content;
-	char	*eow;
-	char	*join_content;
-
-	var_content = ft_itoa(errno);
-	if (!content[i + 2])
-		return (var_content);
-	eow = ft_substr(content, i + 2, (ft_strlen(content) - i + 1));
-	if (!eow)
-		return (NULL);
-	join_content = ft_strjoin(var_content, eow);
-	return (free(var_content), free(eow), join_content);	
-}
 
 t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
 {
@@ -68,10 +72,11 @@ t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
 			if (lst->content[i] == '$' && lst->marks != QUOTE)
 			{
 				if (lst->content[i + 1] == '?')
-					new_content = join_content_next_var(lst->content, i);
+					new_content = ft_itoa(errno);
 				else
 					new_content = search_key(env->env_list, &lst->content[i + 1]);
-				lst->content = join_new_content(new_content, lst->content, i);
+				if (new_content)
+					lst->content = join_new_content(new_content, lst->content, i);
 				if (!lst->content)
 					return (NULL);
 			}
@@ -119,5 +124,6 @@ void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
 		}
 		return ;
 	}
-	new_node_cmd(word, SPACES, ARG, lst);
+	if (is_all_spaces(word) == 0)
+		new_node_cmd(word, SPACES, ARG, lst);
 }

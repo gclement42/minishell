@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/16 10:57:15 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/16 14:13:02 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,16 +125,20 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 	size_t	len;
 	char	*word;
 	
+	len = 0;
 	while (cmd[*i] == ' ')
 		*i += 1;
-	if (cmd[*i] == '\'' || cmd[*i] == '"')
-		len = count_len(&cmd[*i], cmd[*i]);
-	else
-		len = count_len(&cmd[*i], ' ');
+	while (len <= 1)
+	{
+		if (cmd[*i] == '\'' || cmd[*i] == '"')
+			len = count_len(&cmd[*i], cmd[*i]);
+		else
+			len = count_len(&cmd[*i], ' ');
+		if (len <= 1)
+			*i += len + 1;
+	}
 	word = ft_substr(cmd, *i, len);
-	if (!word)
-		return ;
-	if (is_all_spaces(word) == 0)
+	if (is_all_spaces(word) == 0 && word)
 	{
 		word = remove_quote(word);
 		new_node_cmd(word, get_marks(cmd[*i]), CMD, lst);
