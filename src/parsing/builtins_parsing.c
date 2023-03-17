@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/17 14:55:22 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 15:02:23 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0 && cmd_len == 2)
 		cd_parsing(arg_node, argc, var);
 	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0 && cmd_len == 3)
-		get_pwd(var);
+		get_pwd();
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)
 		get_env(var, &env_lst);
 	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0 && cmd_len == 5)
@@ -38,7 +38,7 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0 && cmd_len == 4)
 		echo_parsing(cmd_node);
 	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
-		exit_parsing(var, arg_node);
+		exit_parsing(arg_node);
 }
 
 int	check_is_valid_identifier(char *str, char *cmd)
