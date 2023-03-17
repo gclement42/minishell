@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/14 10:16:45 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 14:13:50 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include "pipes.h"
 # include "parsing.h"
 
-extern unsigned char	return_value;
+extern int	return_status;
 
 /* ---- Utils ---- */
 char	*ft_strnstr_path(char *haystack, char *needle, size_t len);
@@ -49,8 +49,16 @@ void	print_list(t_env **list);
 void	free_list(t_env *lst);
 int		ft_lstlen(t_env *lst);
 
-void	signal_handler(int sig);
-void	init_sigaction(void);
+/* ---- Signals ---- */
+void    signal_handler_newl(int sig);
+void	signal_here_doc(int sig);
+void	new_signal_here_doc(int sig);
+void	signal_fork(int sig);
+void	signal_parsing(int sig);
+void	init_sigaction(void (*signal_handler)(int));
+int		termios_save(struct termios *termios_save);
+int		termios_restore(const struct termios termios_save);
+int		termios_disable_quit();
 
 void	get_cmd_line(t_minish *var, t_env **lst);
 void	builtin_cmp(t_minish *var);

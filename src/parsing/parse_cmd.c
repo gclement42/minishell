@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/14 10:30:56 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/17 14:16:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char *join_content_next_var(char *content, int i)
 	char	*eow;
 	char	*join_content;
 
-	var_content = ft_itoa(errno);
+	var_content = ft_itoa(return_status);
 	eow = ft_substr(content, i + 2, (ft_strlen(content) - i + 2));
 	if (!eow)
 		return (NULL);

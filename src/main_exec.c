@@ -6,11 +6,12 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/14 10:36:44 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 14:14:06 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+int	return_status;
 
 unsigned char	g_return_value = 0;
 
@@ -25,31 +26,28 @@ void	init_struct(t_minish *var, char **envp)
 
 int	main(int argc, char **argv, char *envp[])
 {
-	t_minish	*var;
+	t_minish		*var;
+	struct	termios	orig_ter;
 
 	var = malloc(sizeof(t_minish));
 	if (!var)
 		exit(1);
 	(void)argv;
+	(void)argc;
 	var->builtins = init_bultins_arr();
-	init_sigaction();
-	if (argc == 1)
+	init_struct(var, envp);
+	termios_save(&orig_ter);
+	while (1)
 	{
-		init_struct(var, envp);
-		init_sigaction();
-		while (1)
-		{
-			while (1)
-			{
-				init_sigaction();
-				var->cmd = readline(">>");
-				if (var->cmd == NULL)
-					exit_env(var);
-				parsing(var->cmd, var);
-				if (ft_strlen(var->cmd) > 0)
-					add_history(var->cmd);
-			}
-			rl_clear_history();
-		}
+		init_sigaction(signal_handler_newl);
+		termios_disable_quit();
+		var->cmd = readline(">>");
+		if (termios_restore(orig_ter) == 1)
+			exit (1); //FREE
+		if (var->cmd == NULL)
+			exit_env();
+		parsing(var->cmd, var);
+		if (ft_strlen(var->cmd) > 0)
+			add_history(var->cmd);
 	}
 }

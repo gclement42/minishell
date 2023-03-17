@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/13 14:28:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 14:45:16 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,5 @@ void	export_env(t_minish *var, t_env *new_var, int argc)
 		add_export(var, new_var);
 	else
 		print_export_list(&(var->exp_list));
+	return_status = 0;
 }

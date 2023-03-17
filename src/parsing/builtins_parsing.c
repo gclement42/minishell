@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 11:13:44 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/17 14:49:40 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 	return (env_lst);
 }
 
-void	exit_parsing(t_minish *var, t_cmd *lst)
+void	exit_parsing(t_cmd *lst)
 {
 	int	i;
 
@@ -105,7 +105,7 @@ void	exit_parsing(t_minish *var, t_cmd *lst)
 		}
 		i++;
 	}
-	exit_env(var);
+	exit_env();
 }
 
 void	create_heredoc(t_cmd *lst, int pipe_fd[2])
@@ -123,6 +123,7 @@ void	create_heredoc(t_cmd *lst, int pipe_fd[2])
 		return (perror("fork"), exit(0));
 	if (pid == 0)
 	{
+		init_sigaction(signal_here_doc);
 		close(pipe_fd[0]);
 		line = readline(">");
 		while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)

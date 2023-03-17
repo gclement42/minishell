@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/14 10:36:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 14:50:58 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0 && cmd_len == 2)
 		cd_parsing(arg_node, argc, var);
 	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0 && cmd_len == 3)
-		get_pwd(var);
+		get_pwd();
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)
 		get_env(var, &env_lst);
 	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0 && cmd_len == 5)
@@ -38,7 +38,7 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0 && cmd_len == 4)
 		echo_parsing(cmd_node);
 	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
-		exit_parsing(var, arg_node);
+		exit_parsing(arg_node);
 }
 
 char	**create_arr_exec(t_cmd *cmd)
@@ -127,6 +127,7 @@ void	parsing(char *cmd, t_minish *env)
 	pid_t	id;
 	int 	pipe_fd[2];
 
+	init_sigaction(signal_parsing);
 	if (!cmd || cmd[0] == '\0')
 		return ;
 	lst = create_lst_cmd(cmd, env);
@@ -136,11 +137,11 @@ void	parsing(char *cmd, t_minish *env)
 	if (!env->var)
 		exit (1); //FREE
 	id = fork();
+	init_sigaction(new_signal_here_doc);
 	if (id < 0)
 		exit (1); // FREE
 	if (id == 0)
 	{
-		init_sigaction();
 		search_if_redirect(env->var, lst, pipe_fd);
 		if (!(count_type_in_lst(lst, PIPE) == 0 
 			&& check_is_builtins(get_node(lst, CMD), env)))

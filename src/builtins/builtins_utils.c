@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/14 10:23:25 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/14 11:00:12 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ char	*get_cwd(void)
 	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
-	if (errno)
-		exit (1); //FREE
+	if (cwd == NULL)
+		return (NULL);
 	return (cwd);
 }
 
