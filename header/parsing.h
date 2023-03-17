@@ -46,7 +46,8 @@ t_marks		get_marks(char c);
 char		*search_key(t_env *lst_env, char *key);
 int			count_type_in_lst(t_cmd *lst, t_type type);
 int			check_is_valid_identifier(char *str, char *cmd);
-int			is_all_spaces(char *word);
+int			is_all_char(char *word, char c);
+int			check_if_unexpected_token(t_cmd *node);
 
 
 void		parsing(char *cmd, t_minish *env);

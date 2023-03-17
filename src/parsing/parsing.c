@@ -78,6 +78,8 @@ static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 	
 	i = 0;
 	lst = NULL;
+	if (is_all_char(cmd, '|') || cmd[0] == '|')
+		return (ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);

@@ -68,6 +68,8 @@ static	char *remove_quote(char *str)
 	char	tmp;
 
 	i = -1;
+	if (!str)
+		return (NULL);
 	while (str[++i])
 		if (!(str[i] == '\'' || str[i] == '"'))
 			i += count_len(&str[i], str[i]);
@@ -133,16 +135,17 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 		if (cmd[*i] == '\'' || cmd[*i] == '"')
 			len = count_len(&cmd[*i], cmd[*i]);
 		else
+		{
 			len = count_len(&cmd[*i], ' ');
+			break;
+		}
 		if (len <= 1)
 			*i += len + 1;
 	}
 	word = ft_substr(cmd, *i, len);
-	if (is_all_spaces(word) == 0 && word)
-	{
-		word = remove_quote(word);
+	word = remove_quote(word);
+	if (is_all_char(word, ' ') == 0 && word)
 		new_node_cmd(word, get_marks(cmd[*i]), CMD, lst);
-	}
 	else
 		return ;
 	*i += len + 1;
