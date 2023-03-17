@@ -60,7 +60,7 @@ t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
 			if (lst->content[i] == '$' && lst->marks != QUOTE)
 			{
 				if (lst->content[i + 1] == '?')
-					new_content = ft_itoa(errno);
+					new_content = ft_itoa(return_status);
 				else
 					new_content = search_key(env->env_list, &lst->content[i + 1]);
 				if (new_content)

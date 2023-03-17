@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:13:14 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/17 14:47:36 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 15:28:21 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	signal_here_doc(int sig)
 void	signal_fork(int sig)
 {
 	if (sig == SIGINT)
-		exit (130);
+		exit (1);
 	if (sig == SIGQUIT)
-		exit (131);
+		exit (1);
 }
 
 void	signal_parsing(int sig)

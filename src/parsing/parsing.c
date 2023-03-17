@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/17 14:56:21 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 15:31:37 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	parsing(char *cmd, t_minish *env)
 	pid_t	id;
 	int 	pipe_fd[2];
 
-	init_sigaction(signal_parsing);
+	init_sigaction(signal_fork);
 	if (!cmd || cmd[0] == '\0')
 		return ;
 	lst = create_lst_cmd(cmd, env);

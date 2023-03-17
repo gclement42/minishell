@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/15 10:56:48 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 15:31:32 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 	int		fd;
 
 	fd = 0;
+	init_sigaction(signal_parsing);
 	while (lst)
 	{
 		id = fork();
