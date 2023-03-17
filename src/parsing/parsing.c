@@ -12,35 +12,6 @@
 
 #include "minishell.h"
 
-void	builtins_router(t_cmd *lst, int argc, t_minish *var)
-{
-	t_cmd	*cmd_node;
-	t_cmd	*arg_node;
-	t_env	*env_lst;
-	size_t	cmd_len;
-
-	cmd_node = get_node(lst, CMD);
-	arg_node = get_node(lst, ARG);
-	cmd_len = ft_strlen(cmd_node->content);
-	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0
-		|| ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
-		env_lst = export_variable_parsing(lst, cmd_node->content);
-	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0 && cmd_len == 2)
-		cd_parsing(arg_node, argc, var);
-	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0 && cmd_len == 3)
-		get_pwd();
-	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)
-		get_env(var, &env_lst);
-	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0 && cmd_len == 5)
-		unset_parsing(var, arg_node);
-	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0 && cmd_len == 6)
-		export_parsing(var, argc, env_lst, arg_node);
-	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0 && cmd_len == 4)
-		echo_parsing(cmd_node);
-	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
-		exit_parsing(arg_node);
-}
-
 char	**create_arr_exec(t_cmd *cmd)
 {
 	t_cmd	*tmp;

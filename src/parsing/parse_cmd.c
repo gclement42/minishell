@@ -14,49 +14,7 @@
 
 int	check_if_unexpected_token(t_cmd *node)
 {
-	char	*str;
-	
-	if (size > 0)
-	{
-		str = malloc((size + 1) * sizeof(char));
-		if (!str)
-			return (NULL);
-		str = ft_memcpy(str, content, size);
-		str[size] = '\0';
-		free(content);
-		content = ft_strjoin(str, new_content);
-		if (!content)
-			return (NULL);
-	}
-	else
-	{
-		free(content);
-		if (new_content)
-			content = new_content;
-		else
-			content = " ";
-	}
-	return (content);
-}
-
-static char *join_content_next_var(char *content, int i)
-{
-	char	*var_content;
-	char	*eow;
-	char	*join_content;
-
-	var_content = ft_itoa(return_status);
-	eow = ft_substr(content, i + 2, (ft_strlen(content) - i + 2));
-	if (!eow)
-		return (NULL);
-	join_content = ft_strjoin(var_content, eow);
-	return (free(var_content), free(eow), join_content);	
-}
-
-t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
-{
-	char	*new_content;
-	int		i;
+	int	i;
 
 	i = 0;
 	while (node && node->type != CMD)

@@ -18,7 +18,7 @@ void	exit_env(void)
 	exit(0);
 }
 
-void	exit_parsing(t_minish *var, t_cmd *lst)
+void	exit_parsing(t_cmd *lst)
 {
 	int	i;
 
@@ -34,5 +34,5 @@ void	exit_parsing(t_minish *var, t_cmd *lst)
 		}
 		i++;
 	}
-	exit_env(var);
+	exit_env();
 }
