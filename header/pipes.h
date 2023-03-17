@@ -26,6 +26,7 @@ void	close_pipes(t_pipex *var);
 /* ----- Open ----- */
 void	open_fd_in(t_pipex *var, char *filename);
 void	open_fd_out(t_pipex *var, char *filename, int redirect);
+void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2]);
 
 /* ----- Error / Free / Close ---- */
 void	free_close(t_pipex *var);

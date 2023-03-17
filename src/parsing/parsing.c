@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/17 14:50:58 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 14:56:21 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 	
 	i = 0;
 	lst = NULL;
+	if (is_all_char(cmd, '|') || cmd[0] == '|')
+		return (ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);
@@ -132,7 +134,7 @@ void	parsing(char *cmd, t_minish *env)
 		return ;
 	lst = create_lst_cmd(cmd, env);
 	if (!lst)
-		exit (0); //FREE
+		return ; //FREE
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit (1); //FREE
@@ -145,7 +147,7 @@ void	parsing(char *cmd, t_minish *env)
 		search_if_redirect(env->var, lst, pipe_fd);
 		if (!(count_type_in_lst(lst, PIPE) == 0 
 			&& check_is_builtins(get_node(lst, CMD), env)))
-		pipex(env, lst);
+			pipex(env, lst);
 		exit(0);
 	}
 	wait(NULL);

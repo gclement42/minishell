@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/14 14:15:54 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 14:57:46 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ t_marks		get_marks(char c);
 char		*search_key(t_env *lst_env, char *key);
 int			count_type_in_lst(t_cmd *lst, t_type type);
 int			check_is_valid_identifier(char *str, char *cmd);
-char		**ft_strtok(char const *str, char *delimiters);
+int			is_all_char(char *word, char c);
+int			check_if_unexpected_token(t_cmd *node);
 
 
 void		parsing(char *cmd, t_minish *env);
