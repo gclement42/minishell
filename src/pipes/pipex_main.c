@@ -95,6 +95,8 @@ void	pipex(t_minish *env, t_cmd *lst)
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE
+	// if (check_if_unexpected_token(lst) == 0)	
+	// 	return ;
 	if (get_node(lst, CMD) != NULL)
 	{
 		init_struct_pipex(env, env->env_tab, lst);
