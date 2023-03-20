@@ -58,6 +58,8 @@ char	*search_key(t_env *lst_env, char *key)
 
 	res = NULL;
 	i = 0;
+	if (key[0] == '?')
+		return (ft_itoa(errno));
 	while (ft_isalpha(key[i]) == 1)
 		i++;
 	while (lst_env)

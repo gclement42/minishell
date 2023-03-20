@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/03/19 16:29:07 by jlaisne          ###   ########.fr       */
@@ -95,8 +95,8 @@ void	pipex(t_minish *env, t_cmd *lst)
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE
-	// if (check_if_unexpected_token(lst) == 0)	
-	// 	return ;
+	if (check_if_unexpected_token(lst) == 0)	
+		return ;
 	if (get_node(lst, CMD) != NULL)
 	{
 		init_sigaction(signal_fork);

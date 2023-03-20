@@ -28,7 +28,7 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0 && cmd_len == 2)
 		cd_parsing(arg_node, argc, var);
 	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0 && cmd_len == 3)
-		get_pwd();
+		pwd_parsing(cmd_node, var);
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)
 		get_env(var, &env_lst);
 	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0 && cmd_len == 5)
@@ -106,7 +106,7 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 			return_status = 1;
 			return (NULL);
 		}
-		if (lst->type == ARG && ft_strchr(lst->content, '=') != 0)
+		if (lst->type == ARG)
 		{
 			new = create_tmp_lst_env(lst->content);
 			if (!new)

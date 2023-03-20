@@ -54,21 +54,24 @@ t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
 
 	while (lst)
 	{
-		i = 0;
-		while (lst->content[i])
+		i = -1;
+		while (lst->content[++i])
 		{
 			if (lst->content[i] == '$' && lst->marks != QUOTE)
 			{
-				if (lst->content[i + 1] == '?')
+	      if (lst->content[i - 1] == '\\')
+					new_content = ft_strdup(&lst->content[i]);
+				else if (lst->content[i + 1] == '?')
 					new_content = ft_itoa(return_status);
 				else
 					new_content = search_key(env->env_list, &lst->content[i + 1]);
-				if (new_content)
+				if (lst->content[i - 1] == '\\')
+					lst->content = new_content;
+				else if (new_content)
 					lst->content = join_new_content(new_content, lst->content, i);
 				if (!lst->content)
 					return (NULL);
 			}
-			i++;
 		}
 		lst = lst->next;
 	}

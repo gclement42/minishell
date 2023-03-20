@@ -19,7 +19,8 @@ int	check_if_unexpected_token(t_cmd *node)
 	i = 0;
 	while (node && node->type != CMD)
 		node = node->next; 
-	while (ft_isalpha(node->content[i]) && node->content[i] != '$')
+	while (ft_isalpha(node->content[i]) || \
+		node->content[i] == '$' || node->content[i] == '/')
 		i++;
 	if (node->content[i] || node->type == PIPE)
 	{

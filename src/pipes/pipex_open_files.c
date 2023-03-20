@@ -76,41 +76,38 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 
 void    create_heredoc(t_cmd *lst, int pipe_fd[2])
 {
-    char    *line;
-    pid_t    pid;
-    
-    if (pipe(pipe_fd) < 0)
-    {
-        perror("pipe");
-        exit (0);
-    }
-    pid = fork();
-    if (pid < 0)
-        return (perror("fork"), exit(0));
-    if (pid == 0)
-    {
-        close(pipe_fd[0]);
-        line = readline(">");
-        while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
-        {
-            if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
-            {
-                perror("write");
-                //close(pipe_fd[0]);
-                return ;
-            }
-            if (write(pipe_fd[1], "\n", 1) < 0)
-                perror("write");
-            free (line);
-            line = readline(">");
-        }
-        exit (0);
-    }
-    wait (NULL);
-    close(pipe_fd[1]);
-    if(dup2(pipe_fd[0], STDIN_FILENO) < 0)
-    {
-        perror("dup2");
-        exit(EXIT_FAILURE);
-    }
+
+	char	*line;
+	pid_t	pid;
+	
+	if (pipe(pipe_fd) < 0)
+	{
+		perror("pipe");
+		exit (0);
+	}
+	pid = fork();
+	if (pid < 0)
+		return (perror("fork"), exit(0));
+	if (pid == 0)
+	{
+		close(pipe_fd[0]);
+		line = readline(">");
+		while (ft_strlen(line) == 0 || ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
+		{
+			if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
+				return (perror("write"));
+			if (write(pipe_fd[1], "\n", 1) < 0)
+				perror("write");
+			free (line);
+			line = readline(">");
+		}
+		exit (0);
+	}
+	wait (NULL);
+	close(pipe_fd[1]);
+	if(dup2(pipe_fd[0], STDIN_FILENO) < 0)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
 }

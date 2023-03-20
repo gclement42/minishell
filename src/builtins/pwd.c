@@ -22,3 +22,18 @@ void	get_pwd(void)
 	printf("%s\n", str);
 	return_status = 0;
 }
+
+void	pwd_parsing(t_cmd *lst, t_minish *var)
+{
+	t_cmd	*opt;
+
+	opt = get_node(lst, OPT);
+	if (opt)
+	{
+		ft_putstr_fd("minishell: pwd: ", 2);
+		ft_putstr_fd(opt->content, 2);
+		ft_putstr_fd(": invalid option\n", 2);
+	}
+	else
+		get_pwd(var);
+}
