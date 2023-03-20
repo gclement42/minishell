@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:13:14 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/17 15:28:21 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/17 15:58:09 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	signal_here_doc(int sig)
 	{
 		printf("\n");
 		return_status = 130;
-		exit (return_status);
+		exit(1);
 	}
 }
 

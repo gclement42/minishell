@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:42:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/02 14:30:14 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/19 16:23:10 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	display_error_cmd(char **tab, char *msg, char *cmd)
 	ft_putstr_fd("\n", 2);
 	if (tab)
 		free_tab(tab);
-	exit (1);
+	exit (127);
 }
 
 void	display_error(char **tab, char *msg)
@@ -29,7 +29,7 @@ void	display_error(char **tab, char *msg)
 	ft_putstr_fd("\n", 2);
 	if (tab)
 		free_tab(tab);
-	exit (EXIT_FAILURE);
+	exit (1);
 }
 
 void	free_tab(char **tab)

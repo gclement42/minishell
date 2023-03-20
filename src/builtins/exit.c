@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/17 14:56:32 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/20 11:18:06 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,33 @@
 void	exit_env(void)
 {
 	ft_putstr_fd("exit\n", 1);
-	exit(0);
+	exit(return_status);
 }
 
 void	exit_parsing(t_cmd *lst)
 {
-	int	i;
+	long long	code;
 
-	i = 0;
-	while (lst && lst->content[i])
+	if (lst->next->next)
 	{
-		if (!(lst->content[i] >= '0' && lst->content[i] <= '9'))
+		printf("minishell: exit: too many arguments\n");
+		return_status = 1;
+		return ;
+	}
+	if (lst->next)
+	{
+		if (ft_atoll(lst->next->content) == 0 && lst->next->content[0] != '0' \
+			&& lst->next->content[1] != '\0')
 		{
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(lst->content, 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			break ;
+			printf("minishell: exit: %s: numeric argument required\n", \
+				lst->next->content);
+			return_status = 2;
 		}
-		i++;
+		else
+		{
+			code = ft_atoll(lst->next->content);
+			return_status = (unsigned char)code;
+		}
 	}
 	exit_env();
 }

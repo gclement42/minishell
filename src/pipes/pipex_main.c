@@ -6,29 +6,29 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/17 15:31:32 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/19 16:29:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-static void    execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
+static void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 {
-    char    **cmd;
+	char	**cmd;
 
-    close_pipes(var);
-    if (check_is_builtins(get_node(lst, CMD), env) == 1)
-    {
-        builtins_router(lst, count_type_in_lst(lst, ARG), env);
-        exit(0); // FREE
-    }
-    else
-    {
-        cmd = create_arr_exec(lst);
-        if (!cmd)
-            display_error(var->env_cmd, "Command tab not properly allocated");
-        exec_command(var, var->env_cmd, cmd, envp);
-    }
+	close_pipes(var);
+	if (check_is_builtins(get_node(lst, CMD), env) == 1)
+	{
+		builtins_router(lst, count_type_in_lst(lst, ARG), env);
+		exit(0); // FREE
+	}
+	else
+	{
+		cmd = create_arr_exec(lst);
+		if (!cmd)
+			display_error(var->env_cmd, "Command tab not properly allocated");
+		exec_command(var, var->env_cmd, cmd, envp);
+	}
 }
 
 int	*init_pipes(t_pipex *var)
@@ -45,7 +45,7 @@ int	*init_pipes(t_pipex *var)
 		if (pipe(pipefds + i * 2) < 0)
 		{
 			perror("couldn't pipe");
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 		i++;
 	}
@@ -71,7 +71,6 @@ static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 	int		fd;
 
 	fd = 0;
-	init_sigaction(signal_parsing);
 	while (lst)
 	{
 		id = fork();
@@ -79,6 +78,7 @@ static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 			perror("fork: ");
 		else if (id == 0)
 		{
+			init_sigaction(signal_fork);
 			duplicate_fd(fd, var, lst);
 			close_pipes(var);
 			execute_child(env, var, lst, envp);
