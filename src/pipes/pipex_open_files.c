@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/14 11:14:21 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/20 10:46:53 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,10 @@ void	create_heredoc(t_cmd *lst, int pipe_fd[2])
 	{
 		close(pipe_fd[0]);
 		line = readline(">");
-		while (ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
+		while (ft_strlen(line) == 0 || ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
 		{
 			if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
-			{
-				perror("write");
-				//close(pipe_fd[0]);
-				return ;
-			}
+				return (perror("write"));
 			if (write(pipe_fd[1], "\n", 1) < 0)
 				perror("write");
 			free (line);

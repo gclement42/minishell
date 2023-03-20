@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/16 10:22:35 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/20 13:50:06 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		get_opt(char *cmd, int *i, t_cmd **lst);
 void		get_frst_word(char *cmd, int *i, t_cmd **lst);
 void		*get_word(char *cmd, int *i, size_t *start, t_cmd **lst);
 void		get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
-void		get_file(char *cmd, int *i, t_cmd **lst);
+void		*get_file(char *cmd, int *i, t_cmd **lst);
 void		get_word_with_space(char *word, t_cmd **lst, int is_eol);
 
 /* parse cmd */
@@ -61,6 +61,7 @@ void		echo_parsing(t_cmd *lst);
 void		unset_parsing(t_minish *var, t_cmd *lst);
 void		exit_parsing(t_minish *var, t_cmd *lst);
 void		export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst);
+void		pwd_parsing(t_cmd *lst, t_minish *var);
 
 #endif
 
