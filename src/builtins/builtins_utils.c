@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 15:32:12 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/14 11:00:12 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,7 @@ char	*get_cwd(void)
 
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
-	{
-		if (errno == ERANGE)
-			stderr;
-		stderr;
-	}
+		return (NULL);
 	return (cwd);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/20 13:50:06 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/17 14:57:46 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_env		*export_variable_parsing(t_cmd *lst, char *cmd_name);
 void		cd_parsing(t_cmd *lst, int argc, t_minish *var);
 void		echo_parsing(t_cmd *lst);
 void		unset_parsing(t_minish *var, t_cmd *lst);
-void		exit_parsing(t_minish *var, t_cmd *lst);
+void		exit_parsing(t_cmd *lst);
 void		export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst);
 void		pwd_parsing(t_cmd *lst, t_minish *var);
 

@@ -3,42 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/13 14:08:37 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/20 13:37:54 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
-{
-	t_env	*temp_env;
-	t_env	*temp_exp;
-	char	*str_lvl;
-
-	temp_env = *env_l;
-	temp_exp = *exp_l;
-	if (check_key(&temp_env, "SHLVL") == 0)
-	{
-		while (temp_env)
-		{
-			if (ft_strnstr(temp_env->key, "SHLVL", 6))
-			{
-				var->lvl = ft_atoi(temp_env->content);
-				var->lvl++;
-				str_lvl = ft_itoa(var->lvl);
-				if (!str_lvl)
-					exit(1); //FREE
-				modify_var(&temp_env, "SHLVL", str_lvl);
-				modify_var(&temp_exp, "SHLVL", str_lvl);
-				free(str_lvl);
-			}
-			temp_env = temp_env->next;
-		}
-	}
-}
+unsigned char	return_status = 0;
 
 void	init_struct(t_minish *var, char **envp)
 {
@@ -51,30 +24,28 @@ void	init_struct(t_minish *var, char **envp)
 
 int	main(int argc, char **argv, char *envp[])
 {
-	t_minish	*var;
+	t_minish		*var;
+	struct	termios	orig_ter;
 
 	var = malloc(sizeof(t_minish));
 	if (!var)
 		exit(1);
 	(void)argv;
-	init_sigaction();
+	(void)argc;
 	var->builtins = init_bultins_arr();
-	if (argc == 1)
+	init_struct(var, envp);
+	termios_save(&orig_ter);
+	while (1)
 	{
-		init_struct(var, envp);
-		while (1)
-		{
-			init_sigaction();
-			while (1)
-			{
-				var->cmd = readline(">>");
-				if (var->cmd == NULL)
-					exit_env(var);
-				parsing(var->cmd, var);
-				if (ft_strlen(var->cmd) > 0)
-					add_history(var->cmd);
-			}
-			rl_clear_history();
-		}
+		init_sigaction(signal_handler_newl);
+		termios_disable_quit();
+		var->cmd = readline(">>");
+		if (termios_restore(orig_ter) == 1)
+			exit (1); //FREE
+		if (var->cmd == NULL)
+			exit_env();
+		parsing(var->cmd, var);
+		if (ft_strlen(var->cmd) > 0)
+			add_history(var->cmd);
 	}
 }

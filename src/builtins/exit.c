@@ -3,59 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/14 11:15:37 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/20 11:18:06 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	exit_env(t_minish *var)
+void	exit_env(void)
 {
-	struct termios old_attr;
-	struct sigaction sa;
-
-	sa.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
-	if (var->cmd)
-	{
-		sigaction(SIGINT, &sa, NULL);
-		sigaction(SIGQUIT, &sa, NULL);
-		tcgetattr(STDIN_FILENO, &old_attr);
-		old_attr.c_cc[VQUIT] = (cc_t)(intptr_t)SIG_DFL;
-		tcsetattr(STDIN_FILENO, TCSANOW, &old_attr);
-		ft_putstr_fd("exit\n", 1);
-	}
-	else
-	{
-		sigaction(SIGINT, &sa, NULL);
-		sigaction(SIGQUIT, &sa, NULL);
-		tcgetattr(STDIN_FILENO, &old_attr);
-		old_attr.c_cc[VQUIT] = (cc_t)(intptr_t)SIG_DFL;
-		tcsetattr(STDIN_FILENO, TCSANOW, &old_attr);
-		ft_putstr_fd("\n", 1);
-	}
-	exit(0);
+	ft_putstr_fd("exit\n", 1);
+	exit(return_status);
 }
 
-void	exit_parsing(t_minish *var, t_cmd *lst)
+void	exit_parsing(t_cmd *lst)
 {
-	int	i;
+	long long	code;
 
-	i = 0;
-	while (lst && lst->content[i])
+	if (lst->next->next)
 	{
-		if (!(lst->content[i] >= '0' && lst->content[i] <= '9'))
-		{
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(lst->content, 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			break ;
-		}
-		i++;
+		printf("minishell: exit: too many arguments\n");
+		return_status = 1;
+		return ;
 	}
-	exit_env(var);
+	if (lst->next)
+	{
+		if (ft_atoll(lst->next->content) == 0 && lst->next->content[0] != '0' \
+			&& lst->next->content[1] != '\0')
+		{
+			printf("minishell: exit: %s: numeric argument required\n", \
+				lst->next->content);
+			return_status = 2;
+		}
+		else
+		{
+			code = ft_atoll(lst->next->content);
+			return_status = (unsigned char)code;
+		}
+	}
+	exit_env();
 }

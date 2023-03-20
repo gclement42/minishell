@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/16 14:14:52 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/20 13:50:32 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,26 +101,31 @@ void	parsing(char *cmd, t_minish *env)
 	int 	pipe_fd[2];
 
 	if (!cmd || cmd[0] == '\0')
+	{
+		return_status = 0;
 		return ;
+	}
 	lst = create_lst_cmd(cmd, env);
 	if (!lst)
-		return ; //FREE
+		exit(1) ; //FREE
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit (1); //FREE
+	init_sigaction(signal_parsing);
 	id = fork();
 	if (id < 0)
 		exit (1); // FREE
 	if (id == 0)
 	{
-		init_sigaction();
 		search_if_redirect(env->var, lst, pipe_fd);
 		if (!(count_type_in_lst(lst, PIPE) == 0 
 			&& check_is_builtins(get_node(lst, CMD), env)))
 			pipex(env, lst);
-		exit(0);
+		exit(return_status);
 	}
-	wait(NULL);
+	wait(&env->var->status);
+	if (WEXITSTATUS(env->var->status))
+		return_status = WEXITSTATUS(env->var->status);
 	if (count_type_in_lst(lst, PIPE) == 0 
 		&& check_is_builtins(get_node(lst, CMD), env))
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);

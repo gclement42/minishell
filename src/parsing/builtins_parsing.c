@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/20 13:54:09 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/20 13:34:44 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0 && cmd_len == 4)
 		echo_parsing(cmd_node);
 	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
-		exit_parsing(var, cmd_node);
+		exit_parsing(cmd_node);
 }
 
 int	check_is_valid_identifier(char *str, char *cmd)
@@ -50,6 +50,7 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	{
 		printf("minishell : %s : %s : not a valid identifier\n", \
 			cmd, str);
+		return_status = 1;
 		return (0);
 	}
 	i++;
@@ -60,6 +61,7 @@ int	check_is_valid_identifier(char *str, char *cmd)
 		{
 			printf("minishell : %s : %s : not a valid identifier\n", \
 			cmd, str);
+			return_status = 1;
 			return (0);
 		}
 		i++;
@@ -101,6 +103,7 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 		{
 			ft_putstr_fd("env : invalid option --", 2);
 			ft_putstr_fd(lst->content, 2);
+			return_status = 1;
 			return (NULL);
 		}
 		if (lst->type == ARG)

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/02 14:41:10 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/20 13:33:00 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static int	cd_home(t_minish *var)
 		if (chdir("/nfs/homes/jlaisne") != -1)
 			update_pwd_home(var, "/nfs/homes/jlaisne");
 		else
-			exit(1);
+			return (-1);
 	}
 	else
 		update_pwd_home(var, "/nfs/homes/gclement");
@@ -96,25 +96,21 @@ int	cd(t_minish *var, char *path)
 {
 	var->oldpwd = ft_strdup(get_cwd());
 	if (!var->oldpwd)
-		return (-1);
+		exit (1); // FREE
 	if (!path)
-	{
-		cd_home(var);
-		return (0);
-	}
+		return (cd_home(var));
 	if (chdir(path) == -1)
+	{
 		printf("cd: no such file or directory: %s\n", path);
+		return (-1);
+	}
 	else
 	{
-		var->cd_path = getcwd(NULL, 0);
+		var->cd_path = get_cwd();
 		if (var->cd_path == NULL)
-		{
-			if (errno == ERANGE)
-				stderr;
-			stderr;
-		}
+			exit (1); // FREE
 		update_pwd(var);
+		free(var->oldpwd);
+		return (0);
 	}
-	free(var->oldpwd);
-	return (1);
 }

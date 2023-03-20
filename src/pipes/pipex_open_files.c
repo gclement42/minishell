@@ -3,24 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/20 10:46:53 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/19 16:33:11 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-void	open_fd_in(t_pipex *var, char *filename)
+void	open_fd_in(t_pipex *var, char *filename, t_cmd *lst)
 {
+	int	count;
+
+	count = count_type_in_lst(lst, PIPE);
 	var->fdin = open(filename, O_RDONLY, 0777);
 	if (var->fdin == -1)
-		perror("infile");
-	if (dup2(var->fdin, STDIN_FILENO) < 0)
 	{
-		perror("dup2");
-		exit(EXIT_FAILURE);
+		perror("infile");
+		if (count == 0)
+			exit (1);
+	}
+	if (var->fdin  > -1)
+	{
+		if (dup2(var->fdin, STDIN_FILENO) < 0)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 
@@ -33,14 +43,15 @@ void	open_fd_out(t_pipex *var, char *filename, int redirect)
 	if (var->fdout == -1)
 	{
 		perror("outfile");
-		close(var->fdout);
-		free_close(var);
-		exit(0);
+		exit(1);
 	}
-	if (dup2(var->fdout, STDOUT_FILENO) < 0)
+	else
 	{
-		perror("dup2");
-		exit(EXIT_FAILURE);
+		if (dup2(var->fdout, STDOUT_FILENO) < 0)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 
@@ -51,7 +62,7 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 		if (lst->type == REDIRECT)
 		{
 			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
-				open_fd_in(var, lst->next->content);
+				open_fd_in(var, lst->next->content, lst);
 			else if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
 				create_heredoc(lst, pipe_fd);
 			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
@@ -63,8 +74,9 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 	}
 }
 
-void	create_heredoc(t_cmd *lst, int pipe_fd[2])
+void    create_heredoc(t_cmd *lst, int pipe_fd[2])
 {
+
 	char	*line;
 	pid_t	pid;
 	

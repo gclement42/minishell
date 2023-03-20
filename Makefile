@@ -12,10 +12,11 @@ HEADER_FILE				= minishell.h	\
 							parsing.h 
 
 DIR						=	src/
-SRC						=	parsing/parsing.c parsing/builtins_parsing.c parsing/list_utils.c parsing/cut_cmd.c parsing/parsing_utils.c parsing/init_arr.c parsing/parse_cmd.c parsing/cd_parsing.c\
-							parsing/echo_parsing.c parsing/export_parsing.c parsing/replace_variable.c\
-							ms_utils.c	ms_utils_list.c main_exec.c memory_management.c	signal.c\
-							builtins/cd.c    builtins/pwd.c    builtins/builtins_utils.c    builtins/echo.c builtins/env.c    builtins/unset.c builtins/export.c	builtins/exit.c	\
+SRC						=	parsing/parsing.c parsing/builtins_parsing.c parsing/list_utils.c parsing/cut_cmd.c parsing/parsing_utils.c parsing/init_arr.c parsing/parse_cmd.c parsing/cd_parsing.c	\
+							parsing/echo_parsing.c parsing/export_parsing.c	parsing/replace_variable.c\
+							ms_utils.c	ms_utils_list.c main_exec.c memory_management.c	ms_atoll.c	\
+							signals/signal.c	signals/termios.c	\
+							builtins/cd.c	builtins/pwd.c	builtins/builtins_utils.c	builtins/echo.c builtins/env.c	builtins/unset.c builtins/export.c	builtins/exit.c	builtins/builtins_shlvl.c	\
 							pipes/pipex_error.c	pipes/pipex_exec.c	pipes/pipex_main.c	pipes/pipex_utils.c	pipes/pipex_open_files.c	pipes/pipex_dup.c
 							
 OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)
