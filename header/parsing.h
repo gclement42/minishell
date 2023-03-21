@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/17 14:57:46 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/21 10:25:57 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_cmd		*replace_variable(t_cmd *lst, t_minish *env);
 char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
 void		search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2]);
-void		create_heredoc(t_cmd *lst, int pipe_fd[2]);
+void	    create_heredoc(t_cmd *lst, int pipe_fd[2], t_pipex *var);
 
 /* cmd list utils */
 void		*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst);
@@ -61,7 +61,7 @@ void		echo_parsing(t_cmd *lst);
 void		unset_parsing(t_minish *var, t_cmd *lst);
 void		exit_parsing(t_cmd *lst);
 void		export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst);
-void		pwd_parsing(t_cmd *lst, t_minish *var);
+void		pwd_parsing(t_cmd *lst);
 
 #endif
 

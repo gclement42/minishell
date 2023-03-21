@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/20 13:50:32 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/21 10:43:57 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,13 @@ static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 	return (free_2d_array(split_by_pipe), lst);
 }
 
+int is_here_doc(t_cmd *lst)
+{
+	if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
+		return (0);
+	return (1);
+}
+
 void	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
@@ -111,10 +118,16 @@ void	parsing(char *cmd, t_minish *env)
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit (1); //FREE
-	init_sigaction(signal_parsing);
 	id = fork();
 	if (id < 0)
 		exit (1); // FREE
+	init_sigaction(signal_parsing);
+	if (is_here_doc(lst) == 0)
+	{
+		init_sigaction(new_signal_here_doc);
+		if (termios_disable_quit() == 1)
+			exit (1); // FREE
+	}
 	if (id == 0)
 	{
 		search_if_redirect(env->var, lst, pipe_fd);

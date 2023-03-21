@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:19:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/17 14:19:54 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/20 14:05:18 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	get_pwd(void)
 	return_status = 0;
 }
 
-void	pwd_parsing(t_cmd *lst, t_minish *var)
+void	pwd_parsing(t_cmd *lst)
 {
 	t_cmd	*opt;
 
@@ -35,5 +35,5 @@ void	pwd_parsing(t_cmd *lst, t_minish *var)
 		ft_putstr_fd(": invalid option\n", 2);
 	}
 	else
-		get_pwd(var);
+		get_pwd();
 }

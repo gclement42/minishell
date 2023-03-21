@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/20 11:18:06 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/20 14:36:43 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void	exit_env(void)
 {
 	ft_putstr_fd("exit\n", 1);
-	exit(return_status);
+		exit(return_status);
 }
 
 void	exit_parsing(t_cmd *lst)
 {
 	long long	code;
 
-	if (lst->next->next)
+	if (lst->next && lst->next->next)
 	{
 		printf("minishell: exit: too many arguments\n");
 		return_status = 1;
@@ -41,7 +41,9 @@ void	exit_parsing(t_cmd *lst)
 		{
 			code = ft_atoll(lst->next->content);
 			return_status = (unsigned char)code;
+			exit_env();
 		}
 	}
-	exit_env();
+	else
+		exit_env();
 }
