@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   replace_variable.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
+/*   Updated: 2023/03/22 09:50:49 by gclement         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char *join_content_next_var(char *content, char *var_content)
@@ -46,33 +58,38 @@ static	char *join_new_content(char *new_content, char *content, int size)
 	return (content);
 }
 
-
-t_cmd	*replace_variable(t_cmd *lst, t_minish *env)
+char	*replace_variable(char *str, t_minish *env)
 {
 	char	*new_content;
 	int		i;
 
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '$')
+		{
+			if (str[i - 1] == '\\')
+				new_content = ft_strdup(&str[i]);
+			else if (str[i + 1] == '?')
+				new_content = ft_itoa(return_status);
+			else
+				new_content = search_key(env->env_list, &str[i + 1]);
+			if (str[i - 1] == '\\')
+				str = new_content;
+			else if (new_content)
+				str = join_new_content(new_content, str, i);
+			if (!str)
+				return (NULL);
+		}
+	}
+	return (str);
+}
+t_cmd *check_if_replace_var(t_cmd *lst, t_minish *env)
+{
 	while (lst)
 	{
-		i = -1;
-		while (lst->content[++i])
-		{
-			if (lst->content[i] == '$' && lst->marks != QUOTE)
-			{
-	      if (lst->content[i - 1] == '\\')
-					new_content = ft_strdup(&lst->content[i]);
-				else if (lst->content[i + 1] == '?')
-					new_content = ft_itoa(return_status);
-				else
-					new_content = search_key(env->env_list, &lst->content[i + 1]);
-				if (lst->content[i - 1] == '\\')
-					lst->content = new_content;
-				else if (new_content)
-					lst->content = join_new_content(new_content, lst->content, i);
-				if (!lst->content)
-					return (NULL);
-			}
-		}
+		if (lst->marks != QUOTE)
+			replace_variable(lst->content, env);
 		lst = lst->next;
 	}
 	return (lst);

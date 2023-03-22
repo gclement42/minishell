@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/21 10:25:57 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/22 15:23:29 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ void		*get_word(char *cmd, int *i, size_t *start, t_cmd **lst);
 void		get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
 void		*get_file(char *cmd, int *i, t_cmd **lst);
 void		get_word_with_space(char *word, t_cmd **lst, int is_eol);
+void		check_is_opt_or_arg(char *word, char marks, t_cmd **lst);
+void		parse_router(char *cmd, int *i, size_t *start, t_cmd **lst);
 
 /* parse cmd */
-t_cmd		*replace_variable(t_cmd *lst, t_minish *env);
+char		*replace_variable(char *str, t_minish *env);
 char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
-void		search_if_redirect(t_pipex *var, t_cmd *lst);
-void		create_heredoc(t_cmd *lst);
+t_cmd		*check_if_replace_var(t_cmd *lst, t_minish *env);
 
 /* cmd list utils */
 void		*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst);

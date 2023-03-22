@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 08:50:15 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/22 09:04:06 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	exit_env(t_minish *var)
 		exit(return_status);
 }
 
-void	exit_remove_quotes(t_cmd *lst)
-{
-	
-}
+// void	exit_remove_quotes(t_cmd *lst)
+// {
+		
+// }
 
 void	exit_parsing(t_cmd *lst, t_minish *var)
 {

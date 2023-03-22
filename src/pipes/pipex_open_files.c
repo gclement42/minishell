@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/21 10:43:39 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/22 10:03:31 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	open_fd_out(t_pipex *var, char *filename, int redirect)
 	}
 }
 
-void	search_if_redirect(t_pipex *var, t_cmd *lst)
+void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 {
 	while (lst)
 	{
@@ -64,7 +64,7 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst)
 			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
 				open_fd_in(var, lst->next->content, lst);
 			else if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
-				create_heredoc(lst);
+				create_heredoc(lst, var, env);
 			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
 				open_fd_out(var, lst->next->content, 0);
 			else if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
@@ -74,15 +74,17 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst)
 	}
 }
 
-static void read_in_heredoc(int fd, char *eof, int bools)
+static void write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 {
 	char	*line;
 	
 	line = readline(">");
 	if (!line)
-		printf("minishell: warning: here-document delimited by end-of-file (wanted %s)\n", eof);
-	while (ft_strlen(line) == 0 || ft_strncmp(eof, line, ft_strlen(line)) != 0)
+		printf("minishell: warning: here-document delimited by end-of-file (wanted %s)\n", eof->content);
+	while (ft_strlen(line) == 0 || ft_strncmp(eof->content, line, ft_strlen(line)) != 0)
 	{
+		if (eof->marks != QUOTE)
+			line = replace_variable(line, env);
 		if (bools == 1)
 		{
 			if (write(fd, line, ft_strlen(line) + 1) < 0)
@@ -93,11 +95,11 @@ static void read_in_heredoc(int fd, char *eof, int bools)
 		free (line);
 		line = readline(">");
 		if (!line)
-			printf("minishell: warning: here-document delimited by end-of-file (wanted %s)\n", eof);
+			printf("minishell: warning: here-document delimited by end-of-file (wanted %s)\n", eof->content);
 	}
 }
 
-void    create_heredoc(t_cmd *lst)
+void    create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
@@ -114,31 +116,24 @@ void    create_heredoc(t_cmd *lst)
 	{
 		close(pipe_fd[0]);
 		init_sigaction(signal_here_doc);
-		line = readline(">");
-		while (ft_strlen(line) == 0 || ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
-		{
-      		close(pipe_fd[0]);
-		    if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
-			    read_in_heredoc(pipe_fd[1], lst->next->content, 1);
-		    else
-			    read_in_heredoc(pipe_fd[1], lst->next->content, 0);
-		    exit (EXIT_SUCCESS);
-		}
+		if (!lst->next->next || ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
+			write_in_heredoc(pipe_fd[1], lst->next, 1, env);
+		else
+			write_in_heredoc(pipe_fd[1], lst->next, 0, env);
 		exit (0);
 	}
 	wait (&var->status);
 	if (WEXITSTATUS(var->status))
 		return_status = WEXITSTATUS(var->status);
 	close(pipe_fd[1]);
-  if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
-	{
-    if(dup2(pipe_fd[0], STDIN_FILENO) < 0)
-      if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
-        read_in_heredoc(pipe_fd[1], lst->next->content, 1);
-      else
-        read_in_heredoc(pipe_fd[1], lst->next->content, 0);
-      exit (EXIT_SUCCESS);
-	}
 	if (return_status == 130)
 		exit(return_status);
+	if (!lst->next->next || ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
+	{
+		if (dup2(pipe_fd[0], STDIN_FILENO) < 0)
+		{
+			perror("dup2");
+			exit (EXIT_SUCCESS);
+		}
+	}
 }

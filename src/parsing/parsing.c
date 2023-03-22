@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/21 10:43:57 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/22 15:26:34 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,12 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	i = 0;
 	get_redirect(cmd, &i, lst, &start);
 	get_frst_word(cmd, &i, lst);
-	get_opt(cmd, &i, lst);
 	start = i;
 	while (cmd[i])
 	{
-		if (cmd[i] == '\'' || cmd[i] == '"')
-			get_word(cmd, &i, &start, lst);
-		if (cmd[i] == '>' || cmd[i] == '<')
-			get_redirect(cmd, &i, lst, &start);
+		if (cmd[i] == '\'' || cmd[i] == '"' \
+			|| cmd[i] == '>' || cmd[i] == '<')
+			parse_router(cmd, &i, &start, lst);
 		i++;
 	}
 	if (start < (size_t)i - 1 && cmd[start])
@@ -92,7 +90,7 @@ static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	replace_variable(lst, env);
+	check_if_replace_var(lst, env);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
@@ -131,7 +129,7 @@ int	parsing(char *cmd, t_minish *env)
 	}
 	if (id == 0)
 	{
-		search_if_redirect(env->var, lst);
+		search_if_redirect(env->var, lst, env);
 		if (!(count_type_in_lst(lst, PIPE) == 0 
 			&& check_is_builtins(get_node(lst, CMD), env)))
 			pipex(env, lst);

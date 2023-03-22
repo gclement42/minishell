@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/16 14:38:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:41:23 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	check_opt(t_cmd *opt)
 		i = 1;
 		while (opt->content[i] == 'n')
 			i++;
-		if (opt->content[i])
+		if (opt->content[i] && opt->content[i] != ' ')
 			opt->type = ARG;
 		opt = opt->next;
 	}
