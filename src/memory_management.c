@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 08:52:12 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/22 09:04:27 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	exit_free(t_minish *var)
 	if (var->env_list)
 		free_env_list(var->env_list);
 	if (var->exp_list)
-		free_list(var->exp_list);
+		free_env_list(var->exp_list);
 	if (var->oldpwd)
 		free(var->oldpwd);
 	free(var);

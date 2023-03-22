@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 08:44:45 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:50:58 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**get_var_env(char **env, char *env_line)
 	env = malloc(sizeof(char *) * 3);
 	if (!env)
 		exit(1); // FREE
-	x = count_fist_word(env_line);
+	x = count_first_word(env_line, '=');
 	i = 0;
 	env[0] = malloc(sizeof(char) * x + 1);
 	if (!env[0])

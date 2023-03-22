@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/21 10:25:57 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/22 14:15:29 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ void		*get_word(char *cmd, int *i, size_t *start, t_cmd **lst);
 void		get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
 void		*get_file(char *cmd, int *i, t_cmd **lst);
 void		get_word_with_space(char *word, t_cmd **lst, int is_eol);
+char        *remove_quote(char *str);
 
 /* parse cmd */
 t_cmd		*replace_variable(t_cmd *lst, t_minish *env);
 char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
 void		search_if_redirect(t_pipex *var, t_cmd *lst);
-void		create_heredoc(t_cmd *lst);
+void		create_heredoc(t_cmd *lst, t_pipex *var);
 
 /* cmd list utils */
 void		*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst);
@@ -62,6 +63,7 @@ void		unset_parsing(t_minish *var, t_cmd *lst);
 void		exit_parsing(t_cmd *lst, t_minish *var);
 void		export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst);
 void		pwd_parsing(t_cmd *lst);
+char	    *exit_num_parsing(t_cmd *lst, t_minish *var);
 
 #endif
 

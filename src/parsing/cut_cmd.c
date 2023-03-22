@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cut_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/21 15:35:14 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:28:13 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 	*i = tmp;
 }
 
-static	char *remove_quote(char *str)
+char	*remove_quote(char *str)
 {
 	int		i;
 	char	*dest;

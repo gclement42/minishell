@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/21 15:44:13 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:24:06 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,9 @@ int	count_type_in_lst(t_cmd *lst, t_type type)
 		return (0);
 	while (lst)
 	{
-		// printf("content = %s\n", lst->content);
-		// printf("type = %d\n", lst->type);
-		// printf("marks = %d\n", lst->marks);
 		if (lst->type == type)
 			count++;
 		lst = lst->next;
 	}
-	//printf("--------------------------------------------------\n");
 	return (count);
 }
