@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 08:50:31 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/22 08:52:12 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,10 @@ void	exit_free(t_minish *var)
 	if (var->env_list)
 		free_env_list(var->env_list);
 	if (var->exp_list)
-		free_env_list(var->exp_list);
+		free_list(var->exp_list);
+	if (var->oldpwd)
+		free(var->oldpwd);
 	free(var);
-	exit (1);
 }
 
 void	free_env_list(t_env *lst)

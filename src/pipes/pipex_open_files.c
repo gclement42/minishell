@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/21 16:01:51 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/21 10:43:39 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst)
 		lst = lst->next;
 	}
 }
+
 static void read_in_heredoc(int fd, char *eof, int bools)
 {
 	char	*line;
@@ -104,28 +105,40 @@ void    create_heredoc(t_cmd *lst)
 	if (pipe(pipe_fd) < 0)
 	{
 		perror("pipe");
-		exit (0);
+		exit (1);
 	}
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork"), exit(0));
+		return (perror("fork"), exit(1));
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
-		if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
-			read_in_heredoc(pipe_fd[1], lst->next->content, 1);
-		else
-			read_in_heredoc(pipe_fd[1], lst->next->content, 0);
-		exit (EXIT_SUCCESS);
-	}
-	wait (NULL);
-	if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
-	{
-		close(pipe_fd[1]);
-		if(dup2(pipe_fd[0], STDIN_FILENO) < 0)
+		init_sigaction(signal_here_doc);
+		line = readline(">");
+		while (ft_strlen(line) == 0 || ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
 		{
-			perror("dup2");
-			exit(EXIT_FAILURE);
+      		close(pipe_fd[0]);
+		    if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
+			    read_in_heredoc(pipe_fd[1], lst->next->content, 1);
+		    else
+			    read_in_heredoc(pipe_fd[1], lst->next->content, 0);
+		    exit (EXIT_SUCCESS);
 		}
+		exit (0);
 	}
+	wait (&var->status);
+	if (WEXITSTATUS(var->status))
+		return_status = WEXITSTATUS(var->status);
+	close(pipe_fd[1]);
+  if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
+	{
+    if(dup2(pipe_fd[0], STDIN_FILENO) < 0)
+      if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
+        read_in_heredoc(pipe_fd[1], lst->next->content, 1);
+      else
+        read_in_heredoc(pipe_fd[1], lst->next->content, 0);
+      exit (EXIT_SUCCESS);
+	}
+	if (return_status == 130)
+		exit(return_status);
 }
