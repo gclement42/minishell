@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 09:51:41 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/14 14:16:36 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/21 10:51:58 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "typedef.h"
 
 /* ---- exit ---- */
-void	exit_env(void);
+void	exit_env(t_minish *var);
 
 /* ---- cd ---- */
 int		cd(t_minish *var, char *path);

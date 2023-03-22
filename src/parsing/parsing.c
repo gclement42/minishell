@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
 /*   Updated: 2023/03/21 10:43:57 by jlaisne          ###   ########.fr       */
@@ -86,6 +86,8 @@ static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 	while (split_by_pipe[i])
 	{
 		lst = parse_cmd(split_by_pipe[i], &lst);
+		if (lst == NULL)
+			return (free_2d_array(split_by_pipe), NULL);
 		i++;
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
@@ -101,20 +103,19 @@ int is_here_doc(t_cmd *lst)
 	return (1);
 }
 
-void	parsing(char *cmd, t_minish *env)
+int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	pid_t	id;
-	int 	pipe_fd[2];
 
 	if (!cmd || cmd[0] == '\0')
 	{
 		return_status = 0;
-		return ;
+		return (1);
 	}
 	lst = create_lst_cmd(cmd, env);
 	if (!lst)
-		exit(1) ; //FREE
+		return (-1); //FREE
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit (1); //FREE
@@ -130,10 +131,11 @@ void	parsing(char *cmd, t_minish *env)
 	}
 	if (id == 0)
 	{
-		search_if_redirect(env->var, lst, pipe_fd);
+		search_if_redirect(env->var, lst);
 		if (!(count_type_in_lst(lst, PIPE) == 0 
 			&& check_is_builtins(get_node(lst, CMD), env)))
 			pipex(env, lst);
+		free_cmd_list(lst);
 		exit(return_status);
 	}
 	wait(&env->var->status);
@@ -142,4 +144,5 @@ void	parsing(char *cmd, t_minish *env)
 	if (count_type_in_lst(lst, PIPE) == 0 
 		&& check_is_builtins(get_node(lst, CMD), env))
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
+	return (free_cmd_list(lst), 1);
 }

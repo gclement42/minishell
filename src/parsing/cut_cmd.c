@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cut_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/20 10:34:45 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/21 15:35:14 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 			if (get_file(cmd, i, lst) == NULL)
 				return (ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2));
 			*start = *i + 1;
-			return ;
+			tmp = *i;
 		}
 		*i += 1;
 	}
@@ -117,8 +117,9 @@ void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	word = ft_substr(cmd, *i + 1, (count_len(&cmd[*i], cmd[*i]) - 1));
 	if (!word)
 		return (NULL);
-	if (new_node_cmd(word, get_marks(cmd[*i]), ARG, lst) == NULL)
-		return (NULL);
+	if (is_all_char(word, ' ') == 0)
+		if (new_node_cmd(word, get_marks(cmd[*i]), ARG, lst) == NULL)
+			return (NULL);
 	if (cmd[*i + len + 1] != '\'' && cmd[*i + len + 1] != '"')
 		*i += len + 1;
 	else

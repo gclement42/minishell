@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/17 14:55:50 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/20 14:18:12 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_if_unexpected_token(t_cmd *node)
 	while (node && node->type != CMD)
 		node = node->next; 
 	while (ft_isalpha(node->content[i]) || \
-		node->content[i] == '$' || node->content[i] == '/')
+		node->content[i] == '$' || node->content[i] == '/' || node->content[i] == '.')
 		i++;
 	if (node->content[i] || node->type == PIPE)
 	{

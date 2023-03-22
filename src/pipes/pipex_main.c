@@ -103,4 +103,5 @@ void	pipex(t_minish *env, t_cmd *lst)
 		init_struct_pipex(env, env->env_tab, lst);
 		child_proc(env, env->var, env->env_tab, get_node(lst, CMD));
 	}
+	free_2d_array(env->env_tab);
 }

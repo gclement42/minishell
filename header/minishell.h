@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/20 10:46:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/21 10:31:12 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ long long	ft_atoll(const char *str);
 void		ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env		*ft_lstnew_env(char *key, char *content);
 void		print_list(t_env **list);
-void		free_list(t_env *lst);
+void		free_env_list(t_env *lst);
+void		free_cmd_list(t_cmd *lst);
 int			ft_lstlen(t_env *lst);
 
 /* ---- Signals ---- */
