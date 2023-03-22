@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/19 16:15:38 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/20 14:27:04 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ static void	execution(t_pipex *var, char *path, char **cmd, char **envp)
 	// DEAL WITH EXEC COMMAND ERRORS
 	if (execve(path, cmd, envp) == -1)
 	{
-		exit (1);
 		perror("exec");
 		// close_pipes(var);
 		free_tab(var->env_cmd);
+		exit (1);
 	//	free(path);
 	}
 }

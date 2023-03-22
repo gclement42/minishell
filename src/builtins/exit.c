@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/20 11:18:06 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/21 10:53:21 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	exit_env(void)
+void	exit_env(t_minish *var)
 {
+	exit_free(var);
 	ft_putstr_fd("exit\n", 1);
 	exit(return_status);
 }
 
-void	exit_parsing(t_cmd *lst)
+void	exit_parsing(t_cmd *lst, t_minish *var)
 {
 	long long	code;
 
@@ -43,5 +44,5 @@ void	exit_parsing(t_cmd *lst)
 			return_status = (unsigned char)code;
 		}
 	}
-	exit_env();
+	exit_env(var);
 }

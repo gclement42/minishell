@@ -3,27 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:08:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/02/21 14:49:59 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/21 10:29:24 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_list(t_env *lst)
-{
-	t_env	*temp;
-
-	while (lst)
-	{
-		temp = lst->next;
-		free(lst);
-		lst = temp;
-	}
-	free(lst);
-}
 
 void	print_list(t_env **list)
 {

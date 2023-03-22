@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/20 13:37:54 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/22 08:52:48 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ int	main(int argc, char **argv, char *envp[])
 {
 	t_minish		*var;
 	struct	termios	orig_ter;
-
+	int				run;
+	
+	run = 1;
 	var = malloc(sizeof(t_minish));
 	if (!var)
 		exit(1);
@@ -35,17 +37,19 @@ int	main(int argc, char **argv, char *envp[])
 	var->builtins = init_bultins_arr();
 	init_struct(var, envp);
 	termios_save(&orig_ter);
-	while (1)
+	while (run)
 	{
 		init_sigaction(signal_handler_newl);
 		termios_disable_quit();
 		var->cmd = readline(">>");
 		if (termios_restore(orig_ter) == 1)
-			exit (1); //FREE
+			run = 0; //FREE
 		if (var->cmd == NULL)
-			exit_env();
+			exit_env(var);
 		parsing(var->cmd, var);
 		if (ft_strlen(var->cmd) > 0)
 			add_history(var->cmd);
+		free(var->cmd);
 	}
+	exit_env(var);
 }

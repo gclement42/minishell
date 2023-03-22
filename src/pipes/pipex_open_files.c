@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/19 16:33:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/21 16:01:51 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	open_fd_out(t_pipex *var, char *filename, int redirect)
 	}
 }
 
-void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
+void	search_if_redirect(t_pipex *var, t_cmd *lst)
 {
 	while (lst)
 	{
@@ -64,7 +64,7 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
 				open_fd_in(var, lst->next->content, lst);
 			else if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
-				create_heredoc(lst, pipe_fd);
+				create_heredoc(lst);
 			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
 				open_fd_out(var, lst->next->content, 0);
 			else if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
@@ -73,13 +73,34 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, int pipe_fd[2])
 		lst = lst->next;
 	}
 }
-
-void    create_heredoc(t_cmd *lst, int pipe_fd[2])
+static void read_in_heredoc(int fd, char *eof, int bools)
 {
-
 	char	*line;
-	pid_t	pid;
 	
+	line = readline(">");
+	if (!line)
+		printf("minishell: warning: here-document delimited by end-of-file (wanted %s)\n", eof);
+	while (ft_strlen(line) == 0 || ft_strncmp(eof, line, ft_strlen(line)) != 0)
+	{
+		if (bools == 1)
+		{
+			if (write(fd, line, ft_strlen(line) + 1) < 0)
+				return (perror("write"));
+			if (write(fd, "\n", 1) < 0)
+				perror("write");
+		}
+		free (line);
+		line = readline(">");
+		if (!line)
+			printf("minishell: warning: here-document delimited by end-of-file (wanted %s)\n", eof);
+	}
+}
+
+void    create_heredoc(t_cmd *lst)
+{
+	pid_t	pid;
+	int		pipe_fd[2];
+
 	if (pipe(pipe_fd) < 0)
 	{
 		perror("pipe");
@@ -91,23 +112,20 @@ void    create_heredoc(t_cmd *lst, int pipe_fd[2])
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
-		line = readline(">");
-		while (ft_strlen(line) == 0 || ft_strncmp(lst->next->content, line, ft_strlen(line)) != 0)
-		{
-			if (write(pipe_fd[1], line, ft_strlen(line) + 1) < 0)
-				return (perror("write"));
-			if (write(pipe_fd[1], "\n", 1) < 0)
-				perror("write");
-			free (line);
-			line = readline(">");
-		}
-		exit (0);
+		if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
+			read_in_heredoc(pipe_fd[1], lst->next->content, 1);
+		else
+			read_in_heredoc(pipe_fd[1], lst->next->content, 0);
+		exit (EXIT_SUCCESS);
 	}
 	wait (NULL);
-	close(pipe_fd[1]);
-	if(dup2(pipe_fd[0], STDIN_FILENO) < 0)
+	if (ft_memcmp(lst->content, lst->next->next->content, ft_strlen(lst->content)) != 0)
 	{
-		perror("dup2");
-		exit(EXIT_FAILURE);
+		close(pipe_fd[1]);
+		if(dup2(pipe_fd[0], STDIN_FILENO) < 0)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
 	}
 }

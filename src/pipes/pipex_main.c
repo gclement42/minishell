@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/19 16:29:07 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/21 10:44:42 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,5 @@ void	pipex(t_minish *env, t_cmd *lst)
 		init_struct_pipex(env, env->env_tab, lst);
 		child_proc(env, env->var, env->env_tab, get_node(lst, CMD));
 	}
+	free_2d_array(env->env_tab);
 }
