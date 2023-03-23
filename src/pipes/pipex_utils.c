@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/19 16:23:29 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/23 11:50:14 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	wait_id(t_pipex *var)
 
 t_cmd	*lst_next(t_cmd *lst)
 {
-	if (get_node(lst, PIPE) != NULL)
+	if (get_node(lst, PIPE, -1) != NULL)
 	{
-		lst = get_node(lst, PIPE);
+		lst = get_node(lst, PIPE, -1);
 		if (lst && lst->next)
 			lst = lst->next;
 		else

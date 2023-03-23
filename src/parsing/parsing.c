@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 15:26:34 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:49:18 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	parsing(char *cmd, t_minish *env)
 	{
 		search_if_redirect(env->var, lst, env);
 		if (!(count_type_in_lst(lst, PIPE) == 0 
-			&& check_is_builtins(get_node(lst, CMD), env)))
+			&& check_is_builtins(get_node(lst, CMD, PIPE), env)))
 			pipex(env, lst);
 		free_cmd_list(lst);
 		exit(return_status);
@@ -140,7 +140,7 @@ int	parsing(char *cmd, t_minish *env)
 	if (WEXITSTATUS(env->var->status))
 		return_status = WEXITSTATUS(env->var->status);
 	if (count_type_in_lst(lst, PIPE) == 0 
-		&& check_is_builtins(get_node(lst, CMD), env))
+		&& check_is_builtins(get_node(lst, CMD, PIPE), env))
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
 	return (free_cmd_list(lst), 1);
 }

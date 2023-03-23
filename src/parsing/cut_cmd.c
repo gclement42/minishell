@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 15:24:51 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:52:35 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,25 @@ static	char *remove_quote(char *str)
 
 void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
 {
-	int	x;
+	int		x;
+	int		tmp;
+	t_cmd	*last;
 	
 	x = 0;
-	while (word[x] == '\'' || word[x] == '"')
+	last = cmd_lst_last(lst);
+	while (word[x] && (word[x] == '\'' || word[x] == '"'))
 		x++;
-	if (word[x] == '-')
+	tmp = x;
+	while (word[x] && word[x] != ' ')
+		x++;
+	if (last->type == OPT && !ft_strchr(last->content, ' '))
+		last->content = ft_strjoin(last->content, word);
+	else if (word[tmp] == '-' && !ft_isalpha(word[x + 1]) && !get_node(*lst, ARG, PIPE))
 		new_node_cmd(word, get_marks(marks), OPT, lst);
 	else
 	{
-		if (is_all_char(word, ' ') == 0)
-			if (new_node_cmd(word, get_marks(marks), ARG, lst) == NULL)
+		if (is_all_char(word, ' ') == 0 || get_marks(marks) != SPACE)
+			if (!new_node_cmd(word, get_marks(marks), ARG, lst))
 				return ;
 	}
 }
@@ -142,9 +150,9 @@ void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	char	*word;
 
 	len = count_len(&cmd[*i], cmd[*i]);
-	if (!cmd[*i + len])
-		*i -= 1;
-	word = ft_substr(cmd, *i + 1, (count_len(&cmd[*i], cmd[*i]) - 1));
+	// if (!cmd[*i + len])
+	// 	*i -= 1;
+	word = ft_substr(cmd, *i + 1, (len - 1));
 	if (!word)
 		return (NULL);
 	check_is_opt_or_arg(word, cmd[*i], lst);

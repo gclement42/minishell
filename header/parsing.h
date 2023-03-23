@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 15:23:29 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:47:07 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_cmd		*check_if_replace_var(t_cmd *lst, t_minish *env);
 void		*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst);
 t_cmd		*cmd_lst_last(t_cmd **lst);
 void		lst_cmd_add_back(t_cmd **lst, t_cmd *new);
-t_cmd		*get_node(t_cmd *lst, t_type type);
+t_cmd		*get_node(t_cmd *lst, t_type type, t_type end);
 
 /* utils */
 int			check_is_builtins(t_cmd *node, t_minish *env);

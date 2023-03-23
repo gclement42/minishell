@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 15:00:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:52:54 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ size_t	count_len(char *cmd, char c)
 	size_t	i;
 
 	i = 1;
-	while (cmd[i] != c && cmd[i])
+	while (cmd[i] && cmd[i] != c)
 		i++;
 	return (i);
 }

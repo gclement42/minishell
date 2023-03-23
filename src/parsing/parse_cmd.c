@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 14:50:10 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:40:42 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	check_if_unexpected_token(t_cmd *node)
 	while (node && node->type != CMD)
 		node = node->next; 
 	while (ft_isalpha(node->content[i]) || \
-		node->content[i] == '$' || node->content[i] == '/' || node->content[i] == '.')
+		node->content[i] == '$' || node->content[i] == '/' || node->content[i] == '.' \
+		|| node->content[i] == '-')
 		i++;
 	if (node->content[i] || node->type == PIPE)
 	{
@@ -55,6 +56,8 @@ void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
 	if (ft_strchr(word, ' ') && is_all_char(word, ' ') == 0)
 	{
 		split_word = ft_split(word, ' ');
+		if (word[0] == ' ')
+			new_node_cmd(" ", -1, S_SPACES, lst);
 		while (split_word[x])
 		{
 			if (word[ft_strlen(word) - 1] == ' ' && !split_word[x + 1] && is_eol == 0)
@@ -65,9 +68,13 @@ void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
 			}
 			check_is_opt_or_arg(split_word[x], ' ', lst);
 			x++;
+			if (split_word[x])
+				new_node_cmd(" ", -1, S_SPACES, lst);
 		}
 		return ;
 	}
-	if (is_all_char(word, ' ') == 0)
-		new_node_cmd(word, SPACES, ARG, lst);
+	if (is_all_char(word, ' ') == 1)
+		new_node_cmd(" ", -1, S_SPACES, lst);
+	else
+		check_is_opt_or_arg(word, SPACES, lst);
 }

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 09:03:01 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:48:07 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	t_env	*env_lst;
 	size_t	cmd_len;
 
-	cmd_node = get_node(lst, CMD);
-	arg_node = get_node(lst, ARG);
+	cmd_node = get_node(lst, CMD, PIPE);
+	arg_node = get_node(lst, ARG, PIPE);
 	cmd_len = ft_strlen(cmd_node->content);
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0
 		|| ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
