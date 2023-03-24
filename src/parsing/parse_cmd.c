@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/24 14:13:59 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/24 17:00:58 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ int	check_if_unexpected_token(t_cmd *node)
 	while (node && node->type != CMD)
 		node = node->next; 
 	while (ft_isalpha(node->content[i]) || \
-		node->content[i] == '$' || node->content[i] == '/' || node->content[i] == '.' \
-		|| node->content[i] == '-')
+		(node->content[i] >= 33 && node->content[i] <= 47) || node->content[i] == ' ')
 		i++;
 	if (node->content[i] || node->type == PIPE)
 	{

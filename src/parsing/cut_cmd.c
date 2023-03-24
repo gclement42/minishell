@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/24 14:14:21 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/24 16:56:33 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,16 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 			}
 			else
 				len = count_len(&cmd[*i], ' ');
+			if (count_len(&cmd[*i], '>') < len)
+				len = count_len(&cmd[*i], '>');
+			if (count_len(&cmd[*i], '<') < len)
+				len = count_len(&cmd[*i], '<');
 			word = ft_substr(cmd, *i, len);
 			if (!word)
 				return (NULL);
 			if (new_node_cmd(word, get_marks(cmd[*i]), FILES, lst) == NULL)
 				return (NULL);
-			*i += len;
+			*i += len - 1;
 			return (word);
 		}
 		*i += 1;
@@ -65,17 +69,19 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 	int		tmp;
 
 	tmp = *i;
+	len = 1;
 	while ((cmd[*i] == ' ' || cmd[*i] == '<' || cmd[*i] == '>') && cmd[*i])
 	{
 		if (cmd[*i] == '<' || cmd[*i] == '>')
 		{
-			len = count_len(&cmd[*i], ' ');
+			if (cmd[*i + 1] == cmd[*i])
+				len = 2;
 			word = ft_substr(cmd, *i, len);
 			if (!word)
 				return ;
 			if (new_node_cmd(word, SPACES, REDIRECT, lst) == NULL)
 				return ;
-			*i += len + 1;
+			*i += len;
 			if (get_file(cmd, i, lst) == NULL)
 				return (ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2));
 			*start = *i + 1;
@@ -169,28 +175,27 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 {
 	size_t	len;
 	char	*word;
+	char	del;
 	
-	len = 0;
 	while (cmd[*i] == ' ')
 		*i += 1;
-	while (len <= 1)
+	len = *i;
+	while (cmd[len] && cmd[len] != ' ')
 	{
-		if (cmd[*i] == '\'' || cmd[*i] == '"')
-			len = count_len(&cmd[*i], cmd[*i]);
-		else
+		if (cmd[len] == '"' || cmd[len] == '\'')
 		{
-			len = count_len(&cmd[*i], ' ');
-			break;
+			del = cmd[len++];
+			while (cmd[len] != del)
+				len++;
 		}
-		if (len <= 1)
-			*i += len + 1;
+		len++;
 	}
-	word = ft_substr(cmd, *i, len);
+	word = ft_substr(cmd, *i, len - *i);
 	word = remove_quote(word);
 	if (is_all_char(word, ' ') == 0 && word)
 		new_node_cmd(word, get_marks(cmd[*i]), CMD, lst);
 	else
 		return ;
-	*i += len + 1;
+	*i += len;
 }
 

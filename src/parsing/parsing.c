@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/24 13:27:32 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/24 17:06:17 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,13 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 			parse_router(cmd, &i, &start, lst);
 		i++;
 	}
-	if (start < (size_t)i - 1 && cmd[start])
+	if (start < (size_t)i && cmd[start])
 	{
 		word = ft_substr(cmd, start, ft_strlen(cmd) - start);
 		if (!word)
 			return (NULL);
-		get_word_with_space(word, lst, 1);
+		if (is_all_char(word, ' ') == 0)
+			get_word_with_space(word, lst, 1);
 	}
 	return (*lst);
 }
