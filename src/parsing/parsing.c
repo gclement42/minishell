@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/23 11:49:18 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/24 13:27:32 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
+	if (cmd[ft_strlen(cmd) - 1] == '|')
+		new_node_cmd("|", SPACES, CMD, &lst);
 	check_if_replace_var(lst, env);
 	return (free_2d_array(split_by_pipe), lst);
 }

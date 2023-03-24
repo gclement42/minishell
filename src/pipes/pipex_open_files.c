@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 10:03:31 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/24 14:17:27 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	open_fd_in(t_pipex *var, char *filename, t_cmd *lst)
 
 void	open_fd_out(t_pipex *var, char *filename, int redirect)
 {
+	if (filename[0])
 	if (redirect == 0)
 		var->fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else

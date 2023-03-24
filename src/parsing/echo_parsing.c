@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/23 11:48:33 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/24 10:48:35 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,19 @@ void	check_opt(t_cmd *opt)
 {
 	int		i;
 	
-	while (opt && opt->type == OPT)
+	while (opt && (opt->type == OPT || opt->type == S_SPACES))
 	{
-		i = 1;
-		while (opt->content[i] == 'n')
-			i++;
-		if (opt->content[i] && opt->content[i] != ' ')
-			opt->type = ARG;
-		opt = opt->next;
+		if (opt->type == S_SPACES)
+			opt = opt->next;
+		else
+		{
+			i = 1;
+			while (opt->content[i] == 'n')
+				i++;
+			if (opt->content[i] && opt->content[i] != ' ')
+				opt->type = ARG;
+			opt = opt->next;
+		}
 	}
 }
 
@@ -75,13 +80,7 @@ void	echo_parsing(t_cmd *lst)
 			exit (0);
 	}
 	if (get_node(lst, OPT, PIPE))
-	{
-		printf("la\n");
 		print_echo(1, arg_join);
-	}
 	else
-	{
-		printf("ici\n");
 		print_echo(0, arg_join);
-	}
 }

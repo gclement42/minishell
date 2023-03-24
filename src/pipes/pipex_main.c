@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/23 11:50:57 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/24 13:25:21 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 	fd = 0;
 	while (lst)
 	{
+		if (check_if_unexpected_token(lst) == 0)	
+			return ;
 		id = fork();
 		if (id == -1)
 			perror("fork: ");
