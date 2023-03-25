@@ -104,10 +104,23 @@ int is_here_doc(t_cmd *lst)
 	return (1);
 }
 
+static void display_lst(t_cmd *lst)
+{
+	while (lst)
+	{
+		printf("content = %s\n", lst->content);
+		printf("type = %d\n", lst->type);
+		printf("marks = %d\n", lst->marks);
+		lst = lst->next;
+	}
+	printf("-------------------------------------------------------\n");
+}
+
 int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	pid_t	id;
+	t_cmd	*arg;
 
 	if (!cmd || cmd[0] == '\0')
 	{
@@ -117,6 +130,7 @@ int	parsing(char *cmd, t_minish *env)
 	lst = create_lst_cmd(cmd, env);
 	if (!lst)
 		return (-1); //FREE
+	display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit (1); //FREE
@@ -133,17 +147,19 @@ int	parsing(char *cmd, t_minish *env)
 	if (id == 0)
 	{
 		search_if_redirect(env->var, lst, env);
-		if (!(count_type_in_lst(lst, PIPE) == 0 
-			&& check_is_builtins(get_node(lst, CMD, PIPE), env)))
-			pipex(env, lst);
+		pipex(env, lst);
 		free_cmd_list(lst);
 		exit(return_status);
 	}
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))
 		return_status = WEXITSTATUS(env->var->status);
+	arg = get_node(lst, CMD, PIPE);
 	if (count_type_in_lst(lst, PIPE) == 0 
-		&& check_is_builtins(get_node(lst, CMD, PIPE), env))
+		&& ((ft_memcmp(arg->content, "export", ft_strlen(arg->content)) == 0 
+		&& ft_strlen(arg->content) == 6)
+		|| (ft_memcmp(arg->content, "unset", ft_strlen(arg->content)) == 0
+		&& ft_strlen(arg->content) == 5)))
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
 	return (free_cmd_list(lst), 1);
 }

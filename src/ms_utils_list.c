@@ -74,10 +74,8 @@ t_env	*ft_lstnew_env(char *key, char *content)
 	ptr = (void *)malloc(sizeof(t_env));
 	if (!ptr)
 		return (NULL);
-	ptr->key = ft_strdup(key);
-	ptr->content = ft_strdup(content);
+	ptr->key = key;
+	ptr->content = content;
 	ptr->next = NULL;
-	if (!ptr->content || !ptr->key)
-		return (NULL);
 	return (ptr);
 }

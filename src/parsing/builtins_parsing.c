@@ -12,6 +12,21 @@
 
 #include "minishell.h"
 
+void	parsing_env(t_minish *var, t_cmd *arg)
+{
+	if (arg)
+	{
+		if (!ft_strchr(arg->content, '='))
+		{
+			ft_putstr_fd("env: ", 2);
+			ft_putstr_fd(arg->content, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			return ;
+		}
+	}
+	get_env(var, NULL);
+}
+
 void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 {
 	t_cmd	*cmd_node;
@@ -19,18 +34,18 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	t_env	*env_lst;
 	size_t	cmd_len;
 
+	env_lst = NULL;
 	cmd_node = get_node(lst, CMD, PIPE);
 	arg_node = get_node(lst, ARG, PIPE);
 	cmd_len = ft_strlen(cmd_node->content);
-	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0
-		|| ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
+	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
 		env_lst = export_variable_parsing(lst, cmd_node->content);
 	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0 && cmd_len == 2)
 		cd_parsing(arg_node, argc, var);
 	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0 && cmd_len == 3)
 		pwd_parsing(cmd_node);
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)
-		get_env(var, &env_lst);
+		parsing_env(var, arg_node);
 	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0 && cmd_len == 5)
 		unset_parsing(var, arg_node);
 	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0 && cmd_len == 6)
@@ -46,7 +61,7 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	int	i;
 
 	i = 0;
-	if (ft_isalnum(str[i]) == 0)
+	if (str[i] && ft_isalnum(str[i]) == 0 && (str[i] >= 33 && str[i] <= 47) && str[i] != ' ')
 	{
 		printf("minishell : %s : %s : not a valid identifier\n", \
 			cmd, str);
@@ -56,9 +71,10 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	i++;
 	while (str[i])
 	{
-		if ((ft_isalpha(str[i]) == 0 && ft_isdigit(str[i]) == 0) && \
-			str[i] != '$' && str[i] != '#' && str[i] != '=')
+		if ((ft_isalnum(str[i]) == 0) && str[i] != '=' &&\
+			!(str[i] >= 33 && str[i] <= 47) && str[i] != ' ')
 		{
+			printf("%d = %c\n", str[i], str[i]);
 			printf("minishell : %s : %s : not a valid identifier\n", \
 			cmd, str);
 			return_status = 1;

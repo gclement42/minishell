@@ -22,14 +22,14 @@ void	print_export_list(t_env **list)
 		return ;
 	while (temp != NULL)
 	{
-		if (ft_strncmp(temp->key, "_", 2) == 0)
+		if (temp->key && ft_strncmp(temp->key, "_", 2) == 0)
 		{
 			if (temp->next)
 				temp = temp->next;
 			else
 				return ;
 		}
-		if (ft_strncmp(temp->content, "''", 3) != 0)
+		if (temp->content && ft_strncmp(temp->content, "''", 3) != 0)
 			printf("declare -x %s=\"%s\"\n", temp->key, temp->content);
 		else
 			printf("declare -x %s\n", temp->key);

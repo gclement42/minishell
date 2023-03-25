@@ -117,6 +117,7 @@ void	set_env(char **envp, t_env **env, t_env **exp)
 void	get_env(t_minish *var, t_env **add_env)
 {
 	print_list(&(var->env_list));
-	print_list(add_env);
+	if (add_env)
+		print_list(add_env);
 	return ;
 }

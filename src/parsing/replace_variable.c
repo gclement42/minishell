@@ -57,16 +57,17 @@ char	*replace_variable(char *str, t_minish *env)
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && (ft_isalnum(str[i + 1]) || str[i + 1] == '?' || !str[i + 1]))
 		{
 			if (str[i + 1] == '?')
 				new_content = ft_itoa(return_status);
 			else
 				new_content = search_key(env->env_list, &str[i + 1]);
 			str = join_new_content(new_content, str, i);
+			if (str[i] != '$' || !new_content)
+				i--;
 			if (!str)
 				return (NULL);
-			i--;
 		}
 	}
 	return (str);
