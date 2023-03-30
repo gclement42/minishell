@@ -6,58 +6,11 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 13:50:58 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/30 16:08:11 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-
-char	**get_var_env(char **env, char *env_line)
-{
-	int		x;
-	int		i;
-	
-	env = malloc(sizeof(char *) * 3);
-	if (!env)
-		exit(1); // FREE
-	x = count_first_word(env_line, '=');
-	i = 0;
-	env[0] = malloc(sizeof(char) * x + 1);
-	if (!env[0])
-		exit(1); //FREE
-	while (i < x)
-	{
-		env[0][i] = env_line[i];
-		i++;
-	}
-	env[0][i] = '\0';
-	env[1] = ft_strdup(ft_strnstr_path(env_line, "=", ft_strlen(env_line)));
-	if (!env[1])
-		exit(1); //FREE
-	env[2] = NULL;
-	return (env);
-}
-
-char	**split_env_var(char *env_line)
-{
-	char	**env;
-	int		i;
-
-	env = ft_split(env_line, '=');
-	if (!env)
-		return (NULL); // FREE
-	i = 0;
-	while (env[i])
-		i++;
-	if (i > 2)
-	{
-		free(env);
-		env = get_var_env(env, env_line);
-		return (env);
-	}
-	else
-		return (env);
-}
 
 static void	init_env(t_env **env, t_env **exp)
 {
@@ -86,26 +39,73 @@ static void	init_env(t_env **env, t_env **exp)
 	ft_lstadd_back_env(exp, ptr);
 }
 
-void	set_env(char **envp, t_env **env, t_env **exp)
+char	**get_var_env(char **env, char *env_line)
+{
+	int		x;
+	int		i;
+
+	x = count_first_word(env_line, '=');
+	i = 0;
+	env[0] = malloc(sizeof(char) * x + 1);
+	if (!env[0])
+		return (NULL);
+	while (i < x)
+	{
+		env[0][i] = env_line[i];
+		i++;
+	}
+	env[0][i] = '\0';
+	env[1] = ft_strdup(ft_strnstr_path(env_line, "=", ft_strlen(env_line)));
+	if (!env[1])
+		return (NULL);
+	env[2] = NULL;
+	return (env);
+}
+
+char	**split_env_var(char *env_line)
+{
+	char	**env;
+
+	env = malloc(sizeof(char *) * 3);
+	if (!env)
+		return (NULL);
+	env = get_var_env(env, env_line);
+	if (!env)
+		return (NULL);
+	return (env);
+}
+
+t_env	*duplicate_node(t_env* node) 
+{
+	t_env* new_node = malloc(sizeof(t_env));
+	new_node->key = strdup(node->key); // duplicate the first string
+	new_node->content = strdup(node->content); // duplicate the second string
+	new_node->next = node->next; // set the next pointer to the same value as the original node
+
+	return (new_node);
+}
+
+void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
 {
 	int		i;
-	char	**var_con;
 	t_env	*ptr_env;
 	t_env	*ptr_exp;
+	char	**tab;
 
 	i = 0;
 	while (envp && envp[i])
 	{
-		var_con = split_env_var(envp[i]);
-		if (!var_con)
-			exit (1);
-		ptr_env = ft_lstnew_env(var_con[0], var_con[1]);
-		ptr_exp = ft_lstnew_env(var_con[0], var_con[1]);
-		if (!ptr_env || !ptr_exp)
-			exit(1); // FREE
+		tab = split_env_var(envp[i]);
+		if (!tab)
+			exit_free(var);
+		ptr_env = ft_lstnew_env(tab[0], tab[1]);
 		ft_lstadd_back_env(env, ptr_env);
+		ptr_exp = duplicate_node(ptr_env);
 		ft_lstadd_back_env(exp, ptr_exp);
+		if (!ptr_env) // || !ptr_exp
+			exit_free(var);
 		i++;
+		free(tab);
 	}
 	ptr_env = *env;
 	if (!ptr_env)
@@ -118,5 +118,6 @@ void	get_env(t_minish *var, t_env **add_env)
 {
 	print_list(&(var->env_list));
 	print_list(add_env);
+	free_env_list(*add_env);
 	return ;
 }

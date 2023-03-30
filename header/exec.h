@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 09:51:41 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 13:28:03 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/30 15:40:43 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	exit_env(t_minish *var);
 int		cd(t_minish *var, char *path);
 
 /* ---- env ---- */
-void	set_env(char **envp, t_env **env, t_env **exp);
+void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp);
 void	get_env(t_minish *var, t_env **add_env);
 char	**split_env_var(char *env_line);
 void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l);
@@ -49,5 +49,5 @@ void	add_var_env(t_env **lst, char *key, char *content);
 int		check_key(t_env **lst, char *key);
 void	modify_var(t_env **list, char *key, char *str);
 char	*get_cwd(void);
-
+char	**copy_reverse_envp(t_minish *var, char **envp);
 #endif

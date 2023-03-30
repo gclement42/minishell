@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 16:14:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/30 15:46:37 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	exit_env(t_minish *var)
 {
-	exit_free(var);
 	ft_putstr_fd("exit\n", 1);
-		exit(return_status);
+	exit_free(var);
+	exit(return_status);
 }
 
 static void	exit_num_arg(t_cmd *lst, t_minish *var)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 08:52:48 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:45:14 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	init_struct(t_minish *var, char **envp)
 {
 	var->env_list = NULL;
 	var->exp_list = NULL;
-	set_env(envp, &(var->env_list), &(var->exp_list));
+	var->oldpwd = NULL;
+	var->env_tab = NULL;
+	var->builtins = NULL;
+	set_env(var, envp, &(var->env_list), &(var->exp_list));
 	modify_var(&(var->env_list), "_", "/usr/bin/env");
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
 }
@@ -34,8 +37,8 @@ int	main(int argc, char **argv, char *envp[])
 		exit(1);
 	(void)argv;
 	(void)argc;
-	var->builtins = init_bultins_arr();
 	init_struct(var, envp);
+	var->builtins = init_bultins_arr();
 	termios_save(&orig_ter);
 	while (run)
 	{

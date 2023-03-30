@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 14:06:42 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/13 14:38:49 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/30 15:44:19 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
 				var->lvl = set_strlvl(var->lvl);
 				str_lvl = ft_itoa(var->lvl);
 				if (!str_lvl)
-					exit(1); //FREE
+					exit_free(var); //FREE
 				modify_var(&temp_env, "SHLVL", str_lvl);
 				modify_var(&temp_exp, "SHLVL", str_lvl);
-				free(str_lvl);
+				// free(str_lvl);
+				break ;
 			}
 			temp_env = temp_env->next;
 		}
@@ -63,11 +64,11 @@ static void	init_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *v
 	var->lvl = set_strlvl(var->lvl);
 	str_lvl = ft_itoa(var->lvl);
 	if (!str_lvl)
-		exit(1); //FREE
+		exit_free(var); //FREE
 	key = ft_lstnew_env("SHLVL", str_lvl);
 	ptr = ft_lstnew_env("SHLVL", str_lvl);
 	if (!ptr || !key)
-		exit(1); //FREE
+		exit_free(var); //FREE
 	ft_lstadd_back_env(env_l, key);
 	ft_lstadd_back_env(exp_l, ptr);
 }
