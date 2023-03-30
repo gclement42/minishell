@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/24 14:42:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:39:10 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ void		check_is_opt_or_arg(char *word, char marks, t_cmd **lst);
 void		parse_router(char *cmd, int *i, size_t *start, t_cmd **lst);
 
 /* parse cmd */
-char		*replace_variable(char *str, t_minish *env);
+char		*replace_variable(char *str, t_minish *env, int skip_quote);
 char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
 t_cmd		*check_if_replace_var(t_cmd *lst, t_minish *env);
+char 		*remove_quote(char *str);
 
 /* cmd list utils */
 void		*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst);
@@ -49,11 +50,14 @@ int			count_type_in_lst(t_cmd *lst, t_type type);
 int			check_is_valid_identifier(char *str, char *cmd);
 int			is_all_char(char *word, char c);
 int			check_if_unexpected_token(t_cmd *node);
+void		msg_invalid_opt(char *str, char *cmd);
+char		**ft_ms_split(char const *s, char c);
+void		skip_quote(int *i, char *str, char del);
 
 
 int			parsing(char *cmd, t_minish *env);
 const char	**init_bultins_arr(void);
-char		*join_all_arg(t_cmd *lst);
+char		*join_all_arg(t_cmd *lst, int bools);
 
 /* Builtins parsing */
 t_env		*export_variable_parsing(t_cmd *lst, char *cmd_name);
@@ -63,6 +67,10 @@ void		unset_parsing(t_minish *var, t_cmd *lst);
 void		exit_parsing(t_cmd *lst, t_minish *var);
 void		export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst);
 void		pwd_parsing(t_cmd *lst);
+void		parsing_env(t_minish *var, t_cmd *arg);
+
+/* TMP */
+void		display_lst(t_cmd *lst);
 
 #endif
 

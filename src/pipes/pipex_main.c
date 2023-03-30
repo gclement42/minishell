@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/24 13:25:21 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:51:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 	fd = 0;
 	while (lst)
 	{
-		if (check_if_unexpected_token(lst) == 0)	
+		if (check_if_unexpected_token(lst) == 0)
 			return ;
 		id = fork();
 		if (id == -1)
@@ -97,7 +97,7 @@ void	pipex(t_minish *env, t_cmd *lst)
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE
-	if (check_if_unexpected_token(lst) == 0)	
+	if (check_if_unexpected_token(lst) == 0)
 		return ;
 	if (get_node(lst, CMD, PIPE) != NULL)
 	{

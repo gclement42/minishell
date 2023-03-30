@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/24 15:13:55 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:54:35 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,34 +59,38 @@ void	open_fd_out(t_pipex *var, char *filename, int redirect)
 
 void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 {
+	size_t	len;
+
+	len = ft_strlen(lst->content);
 	while (lst)
 	{
 		if (lst->type == REDIRECT)
 		{
-			if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
+			if (ft_memcmp("<", lst->content, len) == 0)
 				open_fd_in(var, lst->next->content, lst);
-			else if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
+			else if (ft_memcmp("<<", lst->content, len) == 0)
 				create_heredoc(lst, var, env);
-			if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
+			if (ft_memcmp(">", lst->content, len) == 0)
 				open_fd_out(var, lst->next->content, 0);
-			else if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
+			else if (ft_memcmp(">>", lst->content, len) == 0)
 				open_fd_out(var, lst->next->content, 1);
 		}
 		lst = lst->next;
 	}
 }
 
-static void write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
+static void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 {
 	char	*line;
-	
+
 	line = readline(">");
 	if (!line)
-		printf("minishell: warning: here-document delimited by end-of-file (wanted %s)\n", eof->content);
-	while (ft_strlen(line) == 0 || ft_strncmp(eof->content, line, ft_strlen(line)) != 0)
+		printf("minishell: warning: here-document delimited by end-of-file \
+		(wanted %s)\n", eof->content);
+	while (!ft_strlen(line) || ft_strncmp(eof->content, line, ft_strlen(line)))
 	{
 		if (eof->marks != QUOTE)
-			line = replace_variable(line, env);
+			line = replace_variable(line, env, 0);
 		if (bools == 1)
 		{
 			if (write(fd, line, ft_strlen(line) + 1) < 0)
@@ -97,7 +101,8 @@ static void write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 		free (line);
 		line = readline(">");
 		if (!line)
-			printf("minishell: warning: here-document delimited by end-of-file (wanted %s)\n", eof->content);
+			printf("minishell: warning: here-document delimited by end-of-file \
+			(wanted %s)\n", eof->content);
 	}
 }
 

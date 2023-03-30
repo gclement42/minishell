@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/24 17:03:21 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/28 14:16:09 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*search_key(t_env *lst_env, char *key)
 		i++;
 	while (lst_env && key[0] != '\0')
 	{
-		if (ft_memcmp(lst_env->key, key, ft_strlen(lst_env->key)) == 0 
+		if (ft_memcmp(lst_env->key, key, ft_strlen(lst_env->key)) == 0
 			&& (size_t)i == ft_strlen(lst_env->key))
 			return (lst_env->content);
 		lst_env = lst_env->next;

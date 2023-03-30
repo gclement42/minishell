@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/20 14:27:04 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:04:58 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ char	**get_path(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		path = ft_strnstr(envp[i], "PATH=", 5);
-		if (path)
+		if (ft_strnstr(envp[i], "PATH=", 5))
 		{
 			path = ft_strdup(ft_strnstr_path(envp[i], \
 				"PATH=", ft_strlen(envp[i])));
+			if (!path)
+				return (NULL);
 			break ;
 		}
 		free(path);

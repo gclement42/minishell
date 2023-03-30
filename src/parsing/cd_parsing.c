@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 18:14:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/20 13:36:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/28 10:31:38 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 	i = 0;
 	if (argc > 1 && lst->content[0] != '<')
 		return (ft_putstr_fd("minishell: cd : too many arguments\n", 2));
-	else if (argc == 0 || \
+	else if (argc == 0 || lst->content[0] == '\0' || \
 		(lst && ft_strchr(lst->content, '~') != 0) || lst->content[0] == '<')
 	{
-		if (lst && check_is_good_arg_cd(lst->next->content) == 1)
+		if ((lst && check_is_good_arg_cd(lst->next->content) == 1) || lst->content[0] == '\0')
 		{
 			cd(var, NULL);
 			return ;
@@ -44,7 +44,7 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 		while (argc != 0 && lst->content[i])
 		{
 			if (lst->content[i] != '~')
-				return (ft_putstr_fd("errr", 2));
+				return (ft_putstr_fd("errr", 2));//quasi sur que c'est pas le bon msg d'erreur
 			i++;
 		}
 		if (cd(var, NULL) == -1)

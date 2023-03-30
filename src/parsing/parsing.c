@@ -6,40 +6,11 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/24 17:06:17 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:18:50 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**create_arr_exec(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-	char	**arr_exec;
-	int		len;
-	int		x;
-
-	len = 1;
-	x = -1;
-	tmp = cmd;
-	tmp = tmp->next;
-	while (tmp)
-	{
-		if (tmp->type != ARG && tmp->type != OPT)
-			break;
-		len++;
-		tmp = tmp->next;
-	}
-	arr_exec = malloc((len + 1) * sizeof(char *));
-	if (!arr_exec)
-		return (NULL);
-	while (++x < len)
-	{
-		arr_exec[x] = cmd->content;
-		cmd = cmd->next;
-	}
-	return (arr_exec[x] = NULL, arr_exec);
-}
 
 static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 {
@@ -53,6 +24,7 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	start = i;
 	while (cmd[i])
 	{
+		//printf("%c", cmd[i]);
 		if (cmd[i] == '\'' || cmd[i] == '"' \
 			|| cmd[i] == '>' || cmd[i] == '<')
 			parse_router(cmd, &i, &start, lst);
@@ -69,17 +41,18 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	return (*lst);
 }
 
-static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
+static	t_cmd	*create_lst_cmd(char *cmd, t_minish *env)
 {
 	char	**split_by_pipe;
 	t_cmd	*lst;
 	int		i;
-	
+
 	i = 0;
 	lst = NULL;
+	cmd = replace_variable(cmd, env, 1);
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
 		return (ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2), NULL);
-	split_by_pipe = ft_split(cmd, '|');
+	split_by_pipe = ft_ms_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);
 	while (split_by_pipe[i])
@@ -93,19 +66,19 @@ static	t_cmd *create_lst_cmd(char *cmd, t_minish *env)
 	}
 	if (cmd[ft_strlen(cmd) - 1] == '|')
 		new_node_cmd("|", SPACES, CMD, &lst);
-	check_if_replace_var(lst, env);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
-int is_here_doc(t_cmd *lst)
+int	is_here_doc(t_cmd *lst)
 {
 	if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
 		return (0);
 	return (1);
 }
 
-static void display_lst(t_cmd *lst)
+void	display_lst(t_cmd *lst)
 {
+	(void) lst;
 	while (lst)
 	{
 		printf("content = %s\n", lst->content);
@@ -116,24 +89,10 @@ static void display_lst(t_cmd *lst)
 	printf("-------------------------------------------------------\n");
 }
 
-int	parsing(char *cmd, t_minish *env)
+static void	fork_parsing(t_cmd *lst, t_minish *env)
 {
-	t_cmd	*lst;
 	pid_t	id;
-	t_cmd	*arg;
 
-	if (!cmd || cmd[0] == '\0')
-	{
-		return_status = 0;
-		return (1);
-	}
-	lst = create_lst_cmd(cmd, env);
-	if (!lst)
-		return (-1); //FREE
-	display_lst(lst);
-	env->var = malloc(sizeof(t_pipex));
-	if (!env->var)
-		exit (1); //FREE
 	id = fork();
 	if (id < 0)
 		exit (1); // FREE
@@ -151,15 +110,57 @@ int	parsing(char *cmd, t_minish *env)
 		free_cmd_list(lst);
 		exit(return_status);
 	}
+}
+
+static void	copystd_and_exec_builtins(t_cmd *lst, t_minish *env)
+{
+	t_cmd	*arg;
+	int		stdin_copy;
+	int		stdout_copy;
+	int		stderr_copy;
+	size_t	len;
+
+	arg = get_node(lst, CMD, PIPE);
+	if (!arg)
+		return ;
+	len = ft_strlen(arg->content);
+	if (count_type_in_lst(lst, PIPE) == 0 && arg && \
+		((ft_memcmp(arg->content, "export", len) == 0 && len == 6)
+			|| (ft_memcmp(arg->content, "unset", len) == 0 && len == 5)))
+	{
+		stdin_copy = dup(0);
+		stdout_copy = dup(1);
+		stderr_copy = dup(2);
+		close(0);
+		close(1);
+		close(2);
+		builtins_router(lst, count_type_in_lst(lst, ARG), env);
+		dup2(stdin_copy, 0);
+		dup2(stdout_copy, 1);
+		dup2(stderr_copy, 2);
+	}
+}
+
+int	parsing(char *cmd, t_minish *env)
+{
+	t_cmd	*lst;
+
+	if (!cmd || cmd[0] == '\0')
+	{
+		return_status = 0;
+		return (1);
+	}
+	lst = create_lst_cmd(cmd, env);
+	if (!lst)
+		return (-1); //FREE
+	display_lst(lst);
+	env->var = malloc(sizeof(t_pipex));
+	if (!env->var)
+		exit (1); //FREE
+	fork_parsing(lst, env);
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))
 		return_status = WEXITSTATUS(env->var->status);
-	arg = get_node(lst, CMD, PIPE);
-	if (count_type_in_lst(lst, PIPE) == 0 
-		&& ((ft_memcmp(arg->content, "export", ft_strlen(arg->content)) == 0 
-		&& ft_strlen(arg->content) == 6)
-		|| (ft_memcmp(arg->content, "unset", ft_strlen(arg->content)) == 0
-		&& ft_strlen(arg->content) == 5)))
-		builtins_router(lst, count_type_in_lst(lst, ARG), env);
+	copystd_and_exec_builtins(lst, env);
 	return (free_cmd_list(lst), 1);
 }
