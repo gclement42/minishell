@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+void	parse_router(char *cmd, int *i, size_t *start, t_cmd **lst)
+{
+	char	*word;
+
+	if (*start < ((size_t)*i) && cmd[*start] != '"' && cmd[*start] != '\'')
+	{
+		word = ft_substr(cmd, *start, *i - *start);
+		if (!word)
+			return ;
+		get_word_with_space(word, lst, 0);
+	}
+	if (cmd[*i] == '\'' || cmd[*i] == '"')
+		get_word(cmd, i, start, lst);
+	if (cmd[*i] == '>' || cmd[*i] == '<')
+		get_redirect(cmd, i, lst, start);
+}
+
 void	*get_file(char *cmd, int *i, t_cmd **lst)
 {
 	size_t	len;
@@ -22,16 +39,20 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 		if (cmd[*i] && (cmd[*i] == '"' || cmd[*i] == '\'' || cmd[*i] != ' '))
 		{
 			if (cmd[*i] == '"' || cmd[*i] == '\'')
-				len = count_len(&cmd[*i], cmd[*i]);
+			{
+				len = count_len(&cmd[*i], cmd[*i]) - 1;
+				*i += 1;
+			}
 			else
 				len = count_len(&cmd[*i], ' ');
+			if (count_len(&cmd[*i], '>') < len)
+				len = count_len(&cmd[*i], '>');
+			if (count_len(&cmd[*i], '<') < len)
+				len = count_len(&cmd[*i], '<');
 			word = ft_substr(cmd, *i, len);
-			if (!word)
+			if (!word || !new_node_cmd(word, get_marks(cmd[*i]), FILES, lst))
 				return (NULL);
-			if (new_node_cmd(word, get_marks(cmd[*i]), FILES, lst) == NULL)
-				return (NULL);
-			*i += len;
-			return (word);
+			return (*i += len, word);
 		}
 		*i += 1;
 	}
@@ -45,23 +66,24 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 	int		tmp;
 
 	tmp = *i;
-	while ((cmd[*i] == ' ' || cmd[*i] == '<' || cmd[*i] == '>') && cmd[*i])
+	len = 1;
+	while (cmd[*i] && (cmd[*i] == ' ' || cmd[*i] == '<' || cmd[*i] == '>'))
 	{
 		if (cmd[*i] == '<' || cmd[*i] == '>')
 		{
-			len = count_len(&cmd[*i], ' ');
+			if (cmd[*i + 1] == cmd[*i])
+				len = 2;
 			word = ft_substr(cmd, *i, len);
-			if (!word)
+			if (!word || new_node_cmd(word, SPACES, REDIRECT, lst) == NULL)
 				return ;
-			if (new_node_cmd(word, SPACES, REDIRECT, lst) == NULL)
-				return ;
-			*i += len + 1;
+			*i += len;
 			if (get_file(cmd, i, lst) == NULL)
-				return (ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2));
+				return (msg_unexpected_token('>'));//!
 			*start = *i + 1;
 			tmp = *i;
 		}
-		*i += 1;
+		else
+			*i += 1;
 	}
 	*i = tmp;
 }
@@ -80,6 +102,8 @@ char	*remove_quote(char *str)
 		if (!(str[i] == '\'' || str[i] == '"'))
 			i += count_len(&str[i], str[i]);
 	dest = ft_calloc((i + 1), sizeof(char));
+	if (!dest)
+		return (NULL);
 	i = -1;
 	x = -1;
 	tmp = 0;
@@ -96,7 +120,33 @@ char	*remove_quote(char *str)
 			tmp = str[i++];
 		dest[++x] = str[i];
 	}
-	return (free(str), dest);
+	return (dest);
+}
+
+void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
+{
+	int		x;
+	int		tmp;
+	t_cmd	*last;
+
+	x = 0;
+	last = cmd_lst_last(lst);
+	while (word[x] && (word[x] == '\'' || word[x] == '"'))
+		x++;
+	tmp = x;
+	while (word[x] && word[x] != ' ')
+		x++;
+	if (last->type == OPT && !ft_strchr(last->content, ' '))
+		last->content = ft_strjoin(last->content, word);
+	else if (word[tmp] == '-' \
+	&& !ft_isalpha(word[x + 1]) && !get_node(*lst, ARG, PIPE))
+		new_node_cmd(word, get_marks(marks), OPT, lst);
+	else
+	{
+		if (is_all_char(word, ' ') == 0 || get_marks(marks) != SPACE)
+			if (!new_node_cmd(word, get_marks(marks), ARG, lst))
+				return ;
+	}
 }
 
 void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
@@ -104,22 +154,13 @@ void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	size_t	len;
 	char	*word;
 
-	if (*start < ((size_t)*i) && cmd[*start] != '"' && cmd[*start] != '\'')
-	{
-		word = ft_substr(cmd, *start, *i - *start);
-		if (!word)
-			return (NULL);
-		get_word_with_space(word, lst, 0);
-	}
 	len = count_len(&cmd[*i], cmd[*i]);
-	if (!cmd[*i + len])
-		*i -= 1;
-	word = ft_substr(cmd, *i + 1, (count_len(&cmd[*i], cmd[*i]) - 1));
+	// if (!cmd[*i + len])
+	// 	*i -= 1;
+	word = ft_substr(cmd, *i + 1, (len - 1));
 	if (!word)
 		return (NULL);
-	if (is_all_char(word, ' ') == 0)
-		if (new_node_cmd(word, get_marks(cmd[*i]), ARG, lst) == NULL)
-			return (NULL);
+	check_is_opt_or_arg(word, cmd[*i], lst);
 	if (cmd[*i + len + 1] != '\'' && cmd[*i + len + 1] != '"')
 		*i += len + 1;
 	else
@@ -133,54 +174,26 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 {
 	size_t	len;
 	char	*word;
-	
-	len = 0;
+	char	del;
+
 	while (cmd[*i] == ' ')
 		*i += 1;
-	while (len <= 1)
+	len = *i;
+	while (cmd[len] && cmd[len] != ' ')
 	{
-		if (cmd[*i] == '\'' || cmd[*i] == '"')
-			len = count_len(&cmd[*i], cmd[*i]);
-		else
+		if (cmd[len] == '"' || cmd[len] == '\'')
 		{
-			len = count_len(&cmd[*i], ' ');
-			break;
+			del = cmd[len++];
+			while (cmd[len] && cmd[len] != del)
+				len++;
 		}
-		if (len <= 1)
-			*i += len + 1;
+		len++;
 	}
-	word = ft_substr(cmd, *i, len);
-	word = remove_quote(word);
-	if (is_all_char(word, ' ') == 0 && word)
+	word = ft_substr(cmd, *i, len - *i);
+	if (word && is_all_char(word, ' ') == 0)
 		new_node_cmd(word, get_marks(cmd[*i]), CMD, lst);
 	else
 		return ;
-	*i += len + 1;
+	*i += (len - *i);
 }
 
-void	get_opt(char *cmd, int *i, t_cmd **lst)
-{
-	char	*word;
-	int		len;
-	int		tmp;
-
-	tmp = *i;
-	while (cmd[*i])
-	{
-		while (cmd[*i] != '-' && \
-			(cmd[*i] == ' ' || cmd[*i] == '\'' || cmd[*i] == '"' ) && cmd[*i])
-			*i += 1;
-		if (cmd[*i] == '-')
-		{
-			len = count_len(&cmd[*i], cmd[*i - 1]);
-			word = ft_substr(cmd, *i, len);
-			if (!word)
-				return ;
-			new_node_cmd(word, get_marks(cmd[tmp]), OPT, lst);
-			*i += len;
-			tmp = *i;
-		}
-		*i += 1;
-	}
-	*i = tmp;
-}

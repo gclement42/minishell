@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/21 14:51:18 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/22 09:56:39 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	close_pipes(t_pipex *var);
 /* ----- Open ----- */
 void	open_fd_in(t_pipex *var, char *filename, t_cmd *lst);
 void	open_fd_out(t_pipex *var, char *filename, int redirect);
-void	search_if_redirect(t_pipex *var, t_cmd *lst);
+void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env);
+void    create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env);
 
 /* ----- Error / Free / Close ---- */
 void	free_close(t_pipex *var);

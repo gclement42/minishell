@@ -76,6 +76,8 @@ void	free_cmd_list(t_cmd *lst)
 	while (lst)
 	{
 		temp = lst->next;
+    if (lst->content && lst->type != S_SPACES)
+    free(lst->content);
 		free(lst);
 		lst = temp;
 	}

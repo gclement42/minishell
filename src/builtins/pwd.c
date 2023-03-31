@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:19:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/20 14:05:18 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/28 11:25:52 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	get_pwd(void)
 {
-	char *str;
+	char	*str;
 
 	str = get_cwd();
 	if (str == NULL)
@@ -27,13 +27,9 @@ void	pwd_parsing(t_cmd *lst)
 {
 	t_cmd	*opt;
 
-	opt = get_node(lst, OPT);
+	opt = get_node(lst, OPT, PIPE);
 	if (opt)
-	{
-		ft_putstr_fd("minishell: pwd: ", 2);
-		ft_putstr_fd(opt->content, 2);
-		ft_putstr_fd(": invalid option\n", 2);
-	}
+		msg_invalid_opt(opt->content, "pwd");
 	else
 		get_pwd();
 }

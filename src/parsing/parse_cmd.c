@@ -6,11 +6,58 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/20 14:18:12 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:07:48 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static	char **count_and_malloc(t_cmd *lst, int *len)
+{
+	t_cmd	*tmp;
+	char	**arr_exec;
+
+	tmp = lst;
+	tmp = tmp->next;
+	while (tmp)
+	{
+		if (tmp->type == S_SPACES)
+			tmp = tmp->next;
+		else
+		{
+			if (tmp->type != ARG && tmp->type != OPT)
+				break;
+			*len += 1;
+			tmp = tmp->next;
+		}
+	}
+	arr_exec = malloc((*len + 1) * sizeof(char *));
+	if (!arr_exec)
+		return (NULL);
+	return (arr_exec);
+}
+
+char	**create_arr_exec(t_cmd *cmd)
+{
+	char	**arr_exec;
+	int		len;
+	int		x;
+
+	len = 1;
+	x = 0;
+	arr_exec = count_and_malloc(cmd, &len);
+	while (x < len)
+	{
+		if (cmd->type != S_SPACES && \
+		(cmd->type == OPT || cmd->type == ARG || cmd->type == CMD))
+		{
+			arr_exec[x] = cmd->content;
+			x++;
+		}
+		cmd = cmd->next;
+	}
+	return (arr_exec[x] = NULL, arr_exec);
+}
 
 int	check_if_unexpected_token(t_cmd *node)
 {
@@ -18,16 +65,13 @@ int	check_if_unexpected_token(t_cmd *node)
 
 	i = 0;
 	while (node && node->type != CMD)
-		node = node->next; 
-	while (ft_isalpha(node->content[i]) || \
-		node->content[i] == '$' || node->content[i] == '/' || node->content[i] == '.')
+		node = node->next;
+	while (ft_isalnum(node->content[i]) || \
+		(node->content[i] >= 33 && node->content[i] <= 47) ||
+		node->content[i] == ' ')
 		i++;
 	if (node->content[i] || node->type == PIPE)
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-		ft_putchar_fd(node->content[i], 2);
-		return (ft_putstr_fd("'\n", 2), 0);
-	}
+		return (msg_unexpected_token(node->content[i]), 0);
 	return (1);
 }
 
@@ -49,25 +93,25 @@ void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
 {
 	char	**split_word;
 	int		x;
-	char	*tmp;
 
 	x = 0;
+	(void) is_eol;
 	if (ft_strchr(word, ' ') && is_all_char(word, ' ') == 0)
 	{
 		split_word = ft_split(word, ' ');
+		if (word[0] == ' ')
+			new_node_cmd(" ", -1, S_SPACES, lst);
 		while (split_word[x])
 		{
-			if (word[ft_strlen(word) - 1] == ' ' && !split_word[x + 1] && is_eol == 0)
-			{
-				tmp = ft_strjoin(split_word[x], " ");
-				new_node_cmd(tmp, SPACES, ARG, lst);
-				return ;
-			}
-			new_node_cmd(split_word[x], SPACES, ARG, lst);
+			check_is_opt_or_arg(split_word[x], ' ', lst);
 			x++;
+			if (split_word[x])
+				new_node_cmd(" ", -1, S_SPACES, lst);
 		}
 		return ;
 	}
-	if (is_all_char(word, ' ') == 0)
-		new_node_cmd(word, SPACES, ARG, lst);
+	if (is_all_char(word, ' ') == 1)
+		new_node_cmd(" ", -1, S_SPACES, lst);
+	else
+		check_is_opt_or_arg(word, SPACES, lst);
 }

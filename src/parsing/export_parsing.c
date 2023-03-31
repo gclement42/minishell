@@ -6,26 +6,51 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/20 13:31:13 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:52:00 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
+void	parsing_env(t_minish *var, t_cmd *lst)
 {
-	t_env *tmp;
-	
-	if (!env || env->key[0] == '#')
+	while (lst && lst->type != PIPE)
 	{
-		if (lst && check_is_valid_identifier(lst->content, "export") == 0)
+		if (lst->type == OPT)
+			return (msg_invalid_opt(lst->content, "env"));
+		if (lst->type == ARG)
+		{
+			if (!ft_strchr(lst->content, '='))
+			{
+				ft_putstr_fd("env: ", 2);
+				ft_putstr_fd(lst->content, 2);
+				ft_putstr_fd(": No such file or directory\n", 2);
+				return ;
+			}
+		}
+		lst = lst->next;
+	}
+	get_env(var, NULL);
+}
+
+void	export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
+{
+	t_env	*tmp;
+
+	if (!env)
+		return ;
+	if (env->key[0] == '#')
+	{
+		if (lst && check_is_valid_identifier(env->key, "export") == 0)
 			return ;
 		export_env(var, env, 0);
 		return ;
 	}
 	while (env && lst && lst->type != PIPE)
 	{
-		if (check_is_valid_identifier(lst->content, "export") == 0)
+		ft_putstr_fd(env->content, 2);
+		ft_putstr_fd("\n", 2);
+		if (check_is_valid_identifier(env->key, "export") == 0)
 			return ;
 		tmp = env->next;
 		env->next = NULL;
@@ -39,8 +64,21 @@ void	unset_parsing(t_minish *var, t_cmd *lst)
 {
 	while (lst)
 	{
+		if (lst->next && lst->next->type == ARG && \
+			!ft_strchr(lst->content, ' '))
+			lst->content = join_all_arg(lst, 1);
+		if (ft_strchr(lst->content, '='))
+		{
+			printf("minishell : unset : `%s' : not a valid identifier\n", \
+				lst->content);
+			return_status = 1;
+			return ;
+		}
 		check_is_valid_identifier(lst->content, "unset");
 		remove_var_env(var, lst->content);
-		lst = lst->next;
+		while (lst && lst->type == ARG && !ft_strchr(lst->content, ' '))
+			lst = lst->next;
+		if (lst && lst->next)
+			lst = lst->next;
 	}
 }

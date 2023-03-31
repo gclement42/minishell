@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/20 14:19:44 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/30 14:51:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 	char	**cmd;
 
 	close_pipes(var);
-	if (check_is_builtins(get_node(lst, CMD), env) == 1)
+	if (check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
 		exit(0); // FREE
@@ -73,6 +73,8 @@ static void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 	fd = 0;
 	while (lst)
 	{
+		if (check_if_unexpected_token(lst) == 0)
+			return ;
 		id = fork();
 		if (id == -1)
 			perror("fork: ");
@@ -95,13 +97,13 @@ void	pipex(t_minish *env, t_cmd *lst)
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit (1); //FREE
-	if (check_if_unexpected_token(lst) == 0)	
+	if (check_if_unexpected_token(lst) == 0)
 		return ;
-	if (get_node(lst, CMD) != NULL)
+	if (get_node(lst, CMD, PIPE) != NULL)
 	{
 		init_sigaction(signal_fork);
 		init_struct_pipex(env, env->env_tab, lst);
-		child_proc(env, env->var, env->env_tab, get_node(lst, CMD));
+		child_proc(env, env->var, env->env_tab, get_node(lst, CMD, PIPE));
 	}
 	free_2d_array(env->env_tab);
 }

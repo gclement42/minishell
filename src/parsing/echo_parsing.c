@@ -6,37 +6,34 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/16 14:38:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/28 11:30:18 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*join_all_arg(t_cmd *lst)
+char	*join_all_arg(t_cmd *lst, int bools)
 {
 	char	*arg_join;
 	char	*tmp;
-	char	*add_space;
 
-	lst = get_node(lst, ARG);
+	lst = get_node(lst, ARG, PIPE);
 	tmp = lst->content;
 	lst = lst->next;
 	arg_join = tmp;
-	while (lst && lst->type == ARG)
+	while (lst && (lst->type == ARG || lst->type == S_SPACES))
 	{
-		if (lst->marks == SPACES)
-		{
-			add_space = ft_strjoin(tmp, " ");
-			arg_join = ft_strjoin(add_space, lst->content);
-			free (add_space);
-		}
+		if (bools == 1 && lst->type == S_SPACES)
+			break ;
 		else
+		{
 			arg_join = ft_strjoin(tmp, lst->content);
-		if (!arg_join)
-			return (NULL);
-		free (tmp);
-		tmp = arg_join;
-		lst = lst->next;
+			if (!arg_join)
+				return (NULL);
+			free (tmp);
+			tmp = arg_join;
+			lst = lst->next;
+		}
 	}
 	return (arg_join);
 }
@@ -44,15 +41,20 @@ char	*join_all_arg(t_cmd *lst)
 void	check_opt(t_cmd *opt)
 {
 	int		i;
-	
-	while (opt && opt->type == OPT)
+
+	while (opt && (opt->type == OPT || opt->type == S_SPACES))
 	{
-		i = 1;
-		while (opt->content[i] == 'n')
-			i++;
-		if (opt->content[i])
-			opt->type = ARG;
-		opt = opt->next;
+		if (opt->type == S_SPACES)
+			opt = opt->next;
+		else
+		{
+			i = 1;
+			while (opt->content[i] == 'n')
+				i++;
+			if (opt->content[i] && opt->content[i] != ' ')
+				opt->type = ARG;
+			opt = opt->next;
+		}
 	}
 }
 
@@ -65,17 +67,19 @@ void	echo_parsing(t_cmd *lst)
 	if (lst->next)
 		lst = lst->next;
 	else
+	{
 		return (print_echo(0, NULL));
-	opt = get_node(lst, OPT);
+	}
+	opt = get_node(lst, OPT, PIPE);
 	if (opt)
 		check_opt(opt);
-	if (get_node(lst, ARG))
+	if (get_node(lst, ARG, PIPE))
 	{
-		arg_join = join_all_arg(lst);
+		arg_join = join_all_arg(lst, 0);
 		if (!arg_join)
 			exit (0);
 	}
-	if (get_node(lst, OPT))
+	if (get_node(lst, OPT, PIPE))
 		print_echo(1, arg_join);
 	else
 		print_echo(0, arg_join);

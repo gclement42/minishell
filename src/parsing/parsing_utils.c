@@ -36,7 +36,7 @@ size_t	count_len(char *cmd, char c)
 	size_t	i;
 
 	i = 1;
-	while (cmd[i] != c && cmd[i])
+	while (cmd[i] && cmd[i] != c)
 		i++;
 	return (i);
 }
@@ -53,19 +53,17 @@ t_marks	get_marks(char c)
 
 char	*search_key(t_env *lst_env, char *key)
 {
-	char	*res;
 	int		i;
 
-	res = NULL;
 	i = 0;
 	if (key[0] == '?')
 		return (ft_itoa(errno));
-	while (ft_isalpha(key[i]) == 1)
+	while (ft_isalnum(key[i]))
 		i++;
-	while (lst_env)
+	while (lst_env && key[0] != '\0')
 	{
-		res = ft_strnstr(key, lst_env->key, i);
-		if (res && !res[ft_strlen(key) + 1])
+		if (ft_memcmp(lst_env->key, key, ft_strlen(lst_env->key)) == 0
+			&& (size_t)i == ft_strlen(lst_env->key))
 			return (lst_env->content);
 		lst_env = lst_env->next;
 	}

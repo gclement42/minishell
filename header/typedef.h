@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 10:14:44 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/03/31 13:24:55 by jlaisne          ###   ########.fr       */
@@ -27,7 +27,8 @@ typedef enum s_type
 	ARG,
 	PIPE,
 	FILES,
-	REDIRECT
+	REDIRECT,
+	S_SPACES
 }	t_type;
 
 typedef struct s_env

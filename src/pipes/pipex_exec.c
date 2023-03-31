@@ -21,11 +21,12 @@ char	**get_path(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		path = ft_strnstr(envp[i], "PATH=", 5);
-		if (path)
+		if (ft_strnstr(envp[i], "PATH=", 5))
 		{
 			path = ft_strdup(ft_strnstr_path(envp[i], \
 				"PATH=", ft_strlen(envp[i])));
+			if (!path)
+				return (NULL);
 			break ;
 		}
 		free(path);
