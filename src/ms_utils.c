@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:13:28 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/09 10:10:35 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:55:29 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ void	*free_array(char **ptr)
 	return (NULL);
 }
 
-int	count_fist_word(char *env)
+size_t	count_first_word(char *env, char c)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (env[i] != '=')
+	while (env[i] != c)
 		i++;
 	return (i);
 }

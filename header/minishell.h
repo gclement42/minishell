@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/21 10:31:12 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 11:06:57 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <limits.h>
 # include </usr/include/readline/readline.h>
 # include </usr/include/readline/history.h>
 # include <errno.h>
@@ -37,7 +38,7 @@ extern unsigned char	return_status;
 /* ---- Utils ---- */
 char		*ft_strnstr_path(char *haystack, char *needle, size_t len);
 void		*free_array(char **ptr);
-int			count_fist_word(char *env);
+size_t		count_first_word(char *env, char c);
 int			wordcount(char const *str, char c);
 void		exit_free(t_minish *var);
 char		**lst_to_tab(t_env **lst);
@@ -46,6 +47,7 @@ long long	ft_atoll(const char *str);
 /* ---- Utils list---- */
 void		ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env		*ft_lstnew_env(char *key, char *content);
+t_env	    *duplicate_node(t_env* lst);
 void		print_list(t_env **list);
 void		free_env_list(t_env *lst);
 void		free_cmd_list(t_cmd *lst);

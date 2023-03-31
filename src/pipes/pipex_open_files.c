@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/30 10:54:35 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/22 09:11:53 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 {
 	size_t	len;
 
-	len = ft_strlen(lst->content);
 	while (lst)
 	{
+    len = ft_strlen(lst->content);
 		if (lst->type == REDIRECT)
 		{
 			if (ft_memcmp("<", lst->content, len) == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:08:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 13:24:36 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:09:43 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ t_env	*ft_lstnew_env(char *key, char *content)
 {
 	t_env	*ptr;
 
+	if (!key || !content)
+		return (NULL);
 	ptr = (void *)malloc(sizeof(t_env));
 	if (!ptr)
 		return (NULL);
@@ -78,4 +80,14 @@ t_env	*ft_lstnew_env(char *key, char *content)
 	ptr->content = content;
 	ptr->next = NULL;
 	return (ptr);
+}
+
+t_env	*duplicate_node(t_env* lst)
+{
+	t_env* new_node = malloc(sizeof(t_env));
+	new_node->key = strdup(lst->key);
+	new_node->content = strdup(lst->content);
+	new_node->next = lst->next;
+
+	return (new_node);
 }

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 13:45:00 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:36:00 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static void	update_pwd(t_minish *var)
 			}
 			temp = temp->next;
 		}
-		modify_var(&var->env_list, "PWD", var->cd_path);
-		modify_var(&var->env_list, "OLDPWD", old_pwd);
+		modify_var(var, &var->env_list, "PWD", var->cd_path);
+		modify_var(var, &var->env_list, "OLDPWD", old_pwd);
 	}
 	if ((check_key(&var->exp_list, "PWD") == 0))
 		add_var_env(&var->env_list, "PWD", var->cd_path);
@@ -59,8 +59,8 @@ static void	update_pwd_home(t_minish *var, char *home_dir)
 			}
 			temp = temp->next;
 		}
-		modify_var(&var->env_list, "PWD", home_dir);
-		modify_var(&var->env_list, "OLDPWD", old_pwd);
+		modify_var(var, &var->env_list, "PWD", home_dir);
+		modify_var(var, &var->env_list, "OLDPWD", old_pwd);
 	}
 	if ((check_key(&var->exp_list, "PWD") == 0))
 		add_var_env(&var->env_list, "PWD", var->cd_path);
@@ -75,8 +75,8 @@ static int	cd_home(t_minish *var)
 	{
 		if (check_key(&var->env_list, "OLDPWD") == 0)
 		{
-			modify_var(&var->env_list, "OLDPWD", var->oldpwd);
-			modify_var(&var->exp_list, "OLDPWD", var->oldpwd);
+			modify_var(var, &var->env_list, "OLDPWD", var->oldpwd);
+			modify_var(var, &var->exp_list, "OLDPWD", var->oldpwd);
 			return (0);
 		}
 	}

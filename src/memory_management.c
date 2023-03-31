@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 09:03:38 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:51:44 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,30 @@ void	exit_free(t_minish *var)
 		free_env_list(var->exp_list);
 	if (var->oldpwd)
 		free(var->oldpwd);
-	free(var);
+	if (var->builtins)
+		free(var->builtins);
+	if (var)
+		free(var);
 }
 
 void	free_env_list(t_env *lst)
 {
 	t_env	*temp;
 
-	while (lst)
+	while (lst->next)
 	{
 		temp = lst->next;
+		if (lst->key)
+			free(lst->key);
+		if (lst->content)
+			free(lst->content);
 		free(lst);
 		lst = temp;
 	}
+	if (lst->key)
+		free(lst->key);
+	if (lst->content)
+		free(lst->content);
 	free(lst);
 }
 
@@ -65,6 +76,8 @@ void	free_cmd_list(t_cmd *lst)
 	while (lst)
 	{
 		temp = lst->next;
+    if (lst->content && lst->type != S_SPACES)
+    free(lst->content);
 		free(lst);
 		lst = temp;
 	}

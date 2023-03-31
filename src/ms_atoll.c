@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 18:54:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/20 11:16:22 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/22 13:48:00 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static int	check_isspace(const char *str)
 
 long long	ft_atoll(const char *str)
 {
-	int			i;
-	unsigned long long	nb;
-	long long	sign;
+	int		i;
+	long long	nb;
+	int			sign;
 
 	i = check_isspace(str);
 	nb = 0;
@@ -42,8 +42,8 @@ long long	ft_atoll(const char *str)
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (nb != ((nb * 10) + (str[i] - '0')) / 10)
-			return ((sign + 1) / -2);
+		if (nb != ((nb * 10) + (str[i] - '0')) * sign / 10)
+			return (0);
 		nb = nb * 10 + (str[i] - '0');
 		i++;
 	}

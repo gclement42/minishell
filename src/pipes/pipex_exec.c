@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/30 15:04:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:17:24 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**get_path(char **envp)
 	tab = ft_split(path, ':');
 	free(path);
 	if (!tab)
-		exit(EXIT_FAILURE);
+		return (NULL);
 	join_slash(tab);
 	return (tab);
 }
