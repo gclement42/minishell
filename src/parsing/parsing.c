@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 14:18:50 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:58:53 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ static void	copystd_and_exec_builtins(t_cmd *lst, t_minish *env)
 int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
+	t_cmd	*cmd_node;
 
 	if (!cmd || cmd[0] == '\0')
 	{
@@ -153,6 +154,9 @@ int	parsing(char *cmd, t_minish *env)
 	lst = create_lst_cmd(cmd, env);
 	if (!lst)
 		return (-1); //FREE
+	cmd_node = get_node(lst, CMD, PIPE);
+	if (cmd_node)
+		cmd_node->content = remove_quote(cmd_node->content);
 	display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
@@ -162,5 +166,5 @@ int	parsing(char *cmd, t_minish *env)
 	if (WEXITSTATUS(env->var->status))
 		return_status = WEXITSTATUS(env->var->status);
 	copystd_and_exec_builtins(lst, env);
-	return (free_cmd_list(lst), 1);
+	return (free_cmd_list(lst), free(env->var), 1);
 }

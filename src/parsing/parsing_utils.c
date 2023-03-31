@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/28 14:16:09 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/30 19:09:46 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*search_key(t_env *lst_env, char *key)
 	i = 0;
 	if (key[0] == '?')
 		return (ft_itoa(errno));
-	while (ft_isalpha(key[i]) == 1)
+	while (ft_isalnum(key[i]))
 		i++;
 	while (lst_env && key[0] != '\0')
 	{

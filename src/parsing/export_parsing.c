@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 13:42:17 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:52:00 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
 	}
 	while (env && lst && lst->type != PIPE)
 	{
+		ft_putstr_fd(env->content, 2);
+		ft_putstr_fd("\n", 2);
 		if (check_is_valid_identifier(env->key, "export") == 0)
 			return ;
 		tmp = env->next;

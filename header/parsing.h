@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 10:39:10 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/30 19:43:09 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int			check_if_unexpected_token(t_cmd *node);
 void		msg_invalid_opt(char *str, char *cmd);
 char		**ft_ms_split(char const *s, char c);
 void		skip_quote(int *i, char *str, char del);
+int			is_special_char(char c);
+void		msg_unexpected_token(char token);
 
 
 int			parsing(char *cmd, t_minish *env);

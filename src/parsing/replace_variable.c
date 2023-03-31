@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 10:37:08 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/30 19:50:59 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,13 @@ static char	*join_content_next_var(char *content, char *var_content)
 	while (content[start] != '$')
 		start++;
 	start++;
-	while (content[start] && ft_isalpha(content[start]) == 1 &&\
-		content[start] != '?' \
-	&& content[start] != '"' && content[start] != '\'')
+	if (ft_isdigit(content[start]) || is_special_char(content[start]))
 		start++;
+	else
+		while (content[start] && ft_isalnum(content[start]) && \
+			content[start] != '?' \
+		&& content[start] != '"' && content[start] != '\'')
+			start++;
 	if (content[start] == '?')
 		if (content[start - 1] && content[start - 1] == '$')
 			start++;
@@ -71,8 +74,8 @@ char	*replace_variable(char *str, t_minish *env, int b_skip_quote)
 	{
 		if (str[i] == '\'' && b_skip_quote == 1)
 			skip_quote(&i, str, '\'');
-		if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) \
-		|| str[i + 1] == '?' || str[i + 1] == '"' || str[i + 1] == '\''))
+		if (str[i] == '$' && (str[i + 1] && (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1]) \
+		|| str[i + 1] == '?' || str[i + 1] == '"' || str[i + 1] == '\'')))
 		{
 			if (str[i + 1] == '?')
 				new_content = ft_itoa(return_status);
@@ -92,7 +95,7 @@ char	*replace_variable(char *str, t_minish *env, int b_skip_quote)
 
 t_cmd	*check_if_replace_var(t_cmd *lst, t_minish *env)
 {
-	display_lst(lst);
+	//display_lst(lst);
 	while (lst)
 	{
 		if (lst->marks != QUOTE)

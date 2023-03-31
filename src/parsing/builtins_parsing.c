@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/28 13:52:03 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:41:12 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	check_is_valid_identifier(char *str, char *cmd)
 
 	i = 0;
 	if (!str[i] || ((str[i] != '$' && str[i] != ' ') && \
-		(!ft_isalpha(str[i]) || str[i] == '=') && is_special_char(str[i])))
+		(!ft_isalpha(str[i]) || str[i] == '=' || is_special_char(str[i]))))
 	{
 		printf("minishell : %s : `%s' : not a valid identifier\n", \
 			cmd, str);
@@ -97,21 +97,6 @@ static	t_env	*create_tmp_lst_env(char *arg)
 		return (NULL);
 	i++;
 	return (new);
-}
-
-void	msg_invalid_opt(char *str, char *cmd)
-{
-	int		i;
-
-	i = -1;
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(": ", 2);
-	while (++i < 2)
-		ft_putchar_fd(str[i], 2);
-	ft_putstr_fd(": invalid option ", 2);
-	ft_putstr_fd("\n", 2);
-	return_status = 1;
 }
 
 t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)

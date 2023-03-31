@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 14:14:00 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:07:48 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,13 @@ int	check_if_unexpected_token(t_cmd *node)
 
 	i = 0;
 	while (node && node->type != CMD)
-		node = node->next; 
+		node = node->next;
 	while (ft_isalnum(node->content[i]) || \
-		(node->content[i] >= 33 && node->content[i] <= 47) || node->content[i] == ' ')
+		(node->content[i] >= 33 && node->content[i] <= 47) ||
+		node->content[i] == ' ')
 		i++;
 	if (node->content[i] || node->type == PIPE)
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-		ft_putchar_fd(node->content[i], 2);
-		return (ft_putstr_fd("'\n", 2), 0);
-	}
+		return (msg_unexpected_token(node->content[i]), 0);
 	return (1);
 }
 

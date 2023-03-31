@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 14:24:13 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:07:39 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 			word = ft_substr(cmd, *i, len);
 			if (!word || !new_node_cmd(word, get_marks(cmd[*i]), FILES, lst))
 				return (NULL);
-			*i += len;
-			return (word);
+			return (*i += len, word);
 		}
 		*i += 1;
 	}
@@ -68,24 +67,23 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 
 	tmp = *i;
 	len = 1;
-	while ((cmd[*i] == ' ' || cmd[*i] == '<' || cmd[*i] == '>') && cmd[*i])
+	while (cmd[*i] && (cmd[*i] == ' ' || cmd[*i] == '<' || cmd[*i] == '>'))
 	{
 		if (cmd[*i] == '<' || cmd[*i] == '>')
 		{
 			if (cmd[*i + 1] == cmd[*i])
 				len = 2;
 			word = ft_substr(cmd, *i, len);
-			if (!word)
-				return ;
-			if (new_node_cmd(word, SPACES, REDIRECT, lst) == NULL)
+			if (!word || new_node_cmd(word, SPACES, REDIRECT, lst) == NULL)
 				return ;
 			*i += len;
 			if (get_file(cmd, i, lst) == NULL)
-				return (ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2));
+				return (msg_unexpected_token('>'));//!
 			*start = *i + 1;
 			tmp = *i;
 		}
-		*i += 1;
+		else
+			*i += 1;
 	}
 	*i = tmp;
 }
@@ -196,7 +194,6 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 		new_node_cmd(word, get_marks(cmd[*i]), CMD, lst);
 	else
 		return ;
-	printf("word = %s, i = %d, len = %ld\n", word, *i, len);
 	*i += (len - *i);
 }
 
