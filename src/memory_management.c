@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 16:08:18 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 13:51:44 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	free_env_list(t_env *lst)
 {
 	t_env	*temp;
 
-	while (lst)
+	while (lst->next)
 	{
 		temp = lst->next;
 		if (lst->key)
@@ -62,6 +62,10 @@ void	free_env_list(t_env *lst)
 		free(lst);
 		lst = temp;
 	}
+	if (lst->key)
+		free(lst->key);
+	if (lst->content)
+		free(lst->content);
 	free(lst);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/17 14:45:16 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 13:36:35 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ static void	replace_content(t_minish *var, t_env *new_var)
 		new_var->content = ft_strdup("''");
 		if (!new_var->content)
 			exit(1); //FREE
-		modify_var(&var->exp_list, new_var->key, new_var->content);
+		modify_var(var, &var->exp_list, new_var->key, new_var->content);
 	}
 	else
 	{
-		modify_var(&var->exp_list, new_var->key, new_var->content);
-		modify_var(&var->env_list, new_var->key, new_var->content);
+		modify_var(var, &var->exp_list, new_var->key, new_var->content);
+		modify_var(var, &var->env_list, new_var->key, new_var->content);
 	}	
 }
 

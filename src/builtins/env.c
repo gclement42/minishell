@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/30 16:08:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 14:14:50 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,20 @@ static void	init_env(t_env **env, t_env **exp)
 	char	*cwd;
 
 	cwd = get_cwd();
-	key = ft_lstnew_env("PWD", cwd);
-	ptr = ft_lstnew_env("PWD", cwd);
+	key = ft_lstnew_env(ft_strdup("PWD"), ft_strdup(cwd));
+	ptr = duplicate_node(key);
 	if (!ptr || !key)
 		exit(1); //FREE
 	ft_lstadd_back_env(env, key);
 	ft_lstadd_back_env(exp, ptr);
-	key = ft_lstnew_env("SHLVL", "1");
-	ptr = ft_lstnew_env("SHLVL", "1");
+	key = ft_lstnew_env(ft_strdup("SHLVL"), ft_strdup("1"));
+	ptr = duplicate_node(key);
 	if (!ptr || !key)
 		exit(1); //FREE
 	ft_lstadd_back_env(env, key);
 	ft_lstadd_back_env(exp, ptr);
-	key = ft_lstnew_env("_", "/usr/bin/env");
-	ptr = ft_lstnew_env("OLDPWD", "");
+	key = ft_lstnew_env(ft_strdup("_"), ft_strdup("/usr/bin/env"));
+	ptr = duplicate_node(key);
 	if (!ptr || !key)
 		exit(1); //FREE
 	ft_lstadd_back_env(env, key);
@@ -75,16 +75,6 @@ char	**split_env_var(char *env_line)
 	return (env);
 }
 
-t_env	*duplicate_node(t_env* node) 
-{
-	t_env* new_node = malloc(sizeof(t_env));
-	new_node->key = strdup(node->key); // duplicate the first string
-	new_node->content = strdup(node->content); // duplicate the second string
-	new_node->next = node->next; // set the next pointer to the same value as the original node
-
-	return (new_node);
-}
-
 void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
 {
 	int		i;
@@ -100,12 +90,12 @@ void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
 			exit_free(var);
 		ptr_env = ft_lstnew_env(tab[0], tab[1]);
 		ft_lstadd_back_env(env, ptr_env);
+		free(tab);
 		ptr_exp = duplicate_node(ptr_env);
 		ft_lstadd_back_env(exp, ptr_exp);
-		if (!ptr_env) // || !ptr_exp
+		if (!ptr_env || !ptr_exp)
 			exit_free(var);
 		i++;
-		free(tab);
 	}
 	ptr_env = *env;
 	if (!ptr_env)
@@ -117,7 +107,10 @@ void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
 void	get_env(t_minish *var, t_env **add_env)
 {
 	print_list(&(var->env_list));
-	print_list(add_env);
-	free_env_list(*add_env);
+	if (*add_env)
+	{
+		print_list(add_env);
+		free_env_list(*add_env);
+	}
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/28 17:41:35 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 14:17:24 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**get_path(char **envp)
 	tab = ft_split(path, ':');
 	free(path);
 	if (!tab)
-		return (envp);
+		return (NULL);
 	join_slash(tab);
 	return (tab);
 }

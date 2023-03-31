@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 09:51:41 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/30 15:40:43 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 13:38:46 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	remove_var_env(t_minish *var, char *unset_tab);
 /* ---- builtins utils ---- */
 void	add_var_env(t_env **lst, char *key, char *content);
 int		check_key(t_env **lst, char *key);
-void	modify_var(t_env **list, char *key, char *str);
+void	modify_var(t_minish *var, t_env **list, char *key, char *str);
 char	*get_cwd(void);
 char	**copy_reverse_envp(t_minish *var, char **envp);
 #endif

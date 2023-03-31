@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/28 17:31:04 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 14:01:22 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,24 @@ int	check_key(t_env **lst, char *key)
 	return (1);
 }
 
-void	modify_var(t_env **list, char *key, char *str)
+void	modify_var(t_minish *var, t_env **list, char *key, char *str)
 {
 	t_env	*temp;
 	int		len;
 
 	len = ft_strlen(key);
 	temp = *list;
+	if (!str)
+		return ;
 	while (temp)
 	{
 		if (ft_strncmp(key, temp->key, len + 1) == 0)
-			temp->content = str;
+		{
+			free(temp->content);
+			temp->content = ft_strdup(str);
+			if (!temp->content)
+				exit_free(var);
+		}
 		temp = temp->next;
 	}
 }

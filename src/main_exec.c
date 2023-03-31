@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 15:45:14 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 13:41:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_struct(t_minish *var, char **envp)
 	var->env_tab = NULL;
 	var->builtins = NULL;
 	set_env(var, envp, &(var->env_list), &(var->exp_list));
-	modify_var(&(var->env_list), "_", "/usr/bin/env");
+	modify_var(var, &(var->env_list), "_", "/usr/bin/env");
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
 }
 
