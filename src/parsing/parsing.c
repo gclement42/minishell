@@ -24,7 +24,6 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	start = i;
 	while (cmd[i])
 	{
-		//printf("%c", cmd[i]);
 		if (cmd[i] == '\'' || cmd[i] == '"' \
 			|| cmd[i] == '>' || cmd[i] == '<')
 			parse_router(cmd, &i, &start, lst);
@@ -128,7 +127,9 @@ static void	copystd_and_exec_builtins(t_cmd *lst, t_minish *env)
 	len = ft_strlen(arg->content);
 	if (count_type_in_lst(lst, PIPE) == 0 && arg && \
 		((ft_memcmp(arg->content, "export", len) == 0 && len == 6)
-			|| (ft_memcmp(arg->content, "unset", len) == 0 && len == 5)))
+			|| (ft_memcmp(arg->content, "unset", len) == 0 && len == 5)
+			|| (ft_memcmp(arg->content, "cd", len) == 0 && len == 2)
+			|| (ft_memcmp(arg->content, "exit", len) == 0 && len == 4)))
 	{
 		stdin_copy = dup(0);
 		stdout_copy = dup(1);

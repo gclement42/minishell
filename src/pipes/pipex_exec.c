@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/04/03 13:48:48 by jlaisne          ###   ########.fr       */

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/03 10:41:35 by jlaisne          ###   ########.fr       */
@@ -85,7 +85,7 @@ static	t_env	*create_tmp_lst_env(char *arg)
 	int		i;
 
 	i = 0;
-	if (arg[0] == '=')
+	if (arg[0] == '=' || !ft_strchr(arg, '='))
 		new = ft_lstnew_env(arg, NULL);
 	else
 	{

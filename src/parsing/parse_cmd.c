@@ -6,13 +6,13 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/31 14:07:48 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 17:47:02 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	char **count_and_malloc(t_cmd *lst, int *len)
+static	char	**count_and_malloc(t_cmd *lst, int *len)
 {
 	t_cmd	*tmp;
 	char	**arr_exec;
@@ -26,7 +26,7 @@ static	char **count_and_malloc(t_cmd *lst, int *len)
 		else
 		{
 			if (tmp->type != ARG && tmp->type != OPT)
-				break;
+				break ;
 			*len += 1;
 			tmp = tmp->next;
 		}

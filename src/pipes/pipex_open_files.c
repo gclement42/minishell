@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 09:11:53 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 13:58:01 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	open_fd_in(t_pipex *var, char *filename, t_cmd *lst)
 {
 	int	count;
 
+	if (filename[0] == '<' || filename[0] == '>')
+		return (msg_unexpected_token(filename[0]));
 	count = count_type_in_lst(lst, PIPE);
 	var->fdin = open(filename, O_RDONLY, 0777);
 	if (var->fdin == -1)
@@ -36,8 +38,8 @@ void	open_fd_in(t_pipex *var, char *filename, t_cmd *lst)
 
 void	open_fd_out(t_pipex *var, char *filename, int redirect)
 {
-	if (filename[0] == '<')
-		return (ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2));
+	if (filename[0] == '<' || filename[0] == '>')
+		return (msg_unexpected_token(filename[0]));
 	if (redirect == 0)
 		var->fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else
@@ -63,7 +65,7 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 
 	while (lst)
 	{
-    len = ft_strlen(lst->content);
+		len = ft_strlen(lst->content);
 		if (lst->type == REDIRECT)
 		{
 			if (ft_memcmp("<", lst->content, len) == 0)
