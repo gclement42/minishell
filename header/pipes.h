@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 13:37:02 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 14:17:37 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 void	pipex(t_minish *env, t_cmd *lst);
 
 /* ----- Utils -----*/
-void	join_slash(char **env);
+void	join_slash(t_minish *env, char **path);
 t_cmd	*lst_next(t_cmd *lst);
 void	wait_id(t_pipex *var);
 void	close_pipes(t_pipex *var);
@@ -37,9 +37,8 @@ void	display_error_cmd(t_minish *env, char **tab, char *msg, char *cmd);
 void	close_pipes(t_pipex *var);
 
 /* ----- Exec functions ----- */
-char	**get_command(char *arg, char **env);
 void	exec_command(t_minish *env, char **path, char **cmd, char *envp[]);
-char	**get_path(char *envp[]);
+char	**get_path(t_minish *env, char **envp);
 /* ----- Dup ----- */
 
 void	duplicate_fd(int fd, t_pipex *var, t_cmd *lst);

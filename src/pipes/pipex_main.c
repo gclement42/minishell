@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 13:37:09 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 14:17:09 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 		env->var->pipefds = init_pipes(env);
 	if (envp)
 	{
-		env->var->env_cmd = get_path(envp);
+		env->var->env_cmd = get_path(env, envp);
 		if (!env->var->env_cmd)
 			display_error(env, env->var->env_cmd, "Env tab not properly allocated");
 	}

@@ -3,44 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/23 11:50:14 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/03 14:17:33 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-void	join_slash(char **env)
+void	join_slash(t_minish *env, char **path)
 {
 	int		i;
 	char	*temp;
 
 	i = 0;
-	while (env[i])
+	while (path[i])
 	{
-		temp = ft_strdup(env[i]);
+		temp = ft_strdup(path[i]);
 		if (!temp)
-			display_error(env, "Error in  malloc");
-		free(env[i]);
-		env[i] = ft_strjoin(temp, "/");
-		if (!env[i])
-			display_error(env, "Error in  malloc");
+			display_error(env, path, "Error in  malloc");
+		free(path[i]);
+		path[i] = ft_strjoin(temp, "/");
+		if (!path[i])
+			display_error(env, path, "Error in  malloc");
 		free(temp);
 		i++;
 	}
-}
-
-char	**get_command(char *arg, char **env)
-{
-	char	**cmd;
-
-	(void) arg;
-	cmd = ft_split(arg, ' ');
-	if (!cmd)
-		display_error(env, "Error in malloc");
-	return (cmd);
 }
 
 void	wait_id(t_pipex *var)

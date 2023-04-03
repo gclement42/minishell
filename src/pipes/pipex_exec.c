@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 13:48:48 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 14:16:51 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-char	**get_path(char **envp)
+char	**get_path(t_minish *env, char **envp)
 {
 	char	*path;
 	char	**tab;
@@ -31,7 +31,7 @@ char	**get_path(char **envp)
 			free(path);
 			if (!tab)
 				return (NULL);
-			join_slash(tab);
+			join_slash(env, tab);
 			return (tab);
 		}
 		i++;
