@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/31 13:41:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 10:39:18 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int argc, char **argv, char *envp[])
 		termios_disable_quit();
 		var->cmd = readline(">>");
 		if (termios_restore(orig_ter) == 1)
-			run = 0; //FREE
+			run = 0;
 		if (var->cmd == NULL)
 			exit_env(var);
 		parsing(var->cmd, var);

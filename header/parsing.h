@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 19:43:09 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:37:14 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void		parse_router(char *cmd, int *i, size_t *start, t_cmd **lst);
 char		*replace_variable(char *str, t_minish *env, int skip_quote);
 char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
-void		search_if_redirect(t_pipex *var, t_cmd *lst);
-void		create_heredoc(t_cmd *lst, t_pipex *var);
+void		search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env);
+void		create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env);
 t_cmd		*check_if_replace_var(t_cmd *lst, t_minish *env);
 
 /* cmd list utils */

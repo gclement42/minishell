@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/31 13:58:53 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/03 10:31:04 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,20 +95,22 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 
 	id = fork();
 	if (id < 0)
-		exit (1); // FREE
+		exit_free(env);
 	init_sigaction(signal_parsing);
 	if (is_here_doc(lst) == 0)
 	{
 		init_sigaction(new_signal_here_doc);
 		if (termios_disable_quit() == 1)
-			exit (1); // FREE
+			exit_free(env); // FREE
 	}
 	if (id == 0)
 	{
 		search_if_redirect(env->var, lst, env);
 		pipex(env, lst);
 		free_cmd_list(lst);
-		exit(return_status);
+		if (env->var->env_cmd)
+			free_2d_array(env->var->env_cmd);
+		exit_free(env);
 	}
 }
 
@@ -153,18 +155,18 @@ int	parsing(char *cmd, t_minish *env)
 	}
 	lst = create_lst_cmd(cmd, env);
 	if (!lst)
-		return (-1); //FREE
+		return (-1);
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
-	display_lst(lst);
+	// display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
-		exit (1); //FREE
+		exit_env(env);
 	fork_parsing(lst, env);
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))
 		return_status = WEXITSTATUS(env->var->status);
 	copystd_and_exec_builtins(lst, env);
-	return (free_cmd_list(lst), free(env->var), 1);
+	return (1);
 }

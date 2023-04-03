@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/31 13:36:35 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 13:25:01 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	sort_export(t_env **list)
 	temp = *list;
 	while (temp->next)
 	{
-		if (ft_strncmp(temp->key, temp->next->key, 20000) > 0)
+		if (ft_strncmp(temp->key, temp->next->key, ft_strlen(temp->next->key)) > 0)
 		{
 			holder_c = temp->content;
 			holder_k = temp->key;
@@ -67,7 +67,7 @@ static void	replace_content(t_minish *var, t_env *new_var)
 	{
 		new_var->content = ft_strdup("''");
 		if (!new_var->content)
-			exit(1); //FREE
+			exit_free(var);
 		modify_var(var, &var->exp_list, new_var->key, new_var->content);
 	}
 	else
@@ -92,7 +92,7 @@ static void	add_export(t_minish *var, t_env *new_var)
 			{
 				new_var->content = ft_strdup("''");
 				if (!new_var->content)
-					exit(1); //FREE
+					exit_free(var);
 				add_var_env(&var->exp_list, new_var->key, new_var->content);
 			}
 			else
