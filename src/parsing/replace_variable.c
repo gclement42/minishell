@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 19:50:59 by gclement         ###   ########.fr       */
+/*   Updated: 2023/03/31 16:56:24 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*replace_variable(char *str, t_minish *env, int b_skip_quote)
 			str = join_new_content(new_content, str, i);
 			if (new_content && ft_strchr(new_content, '$'))
 				i += ft_strlen(new_content);
-			if (str[i] != '$' || new_content)
+			if (str[i] != '$' || !new_content)
 				i--;
 			if (!str)
 				return (NULL);

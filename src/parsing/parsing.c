@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/31 13:58:53 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/03 14:08:32 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	start = i;
 	while (cmd[i])
 	{
-		//printf("%c", cmd[i]);
 		if (cmd[i] == '\'' || cmd[i] == '"' \
 			|| cmd[i] == '>' || cmd[i] == '<')
 			parse_router(cmd, &i, &start, lst);
@@ -107,8 +106,7 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	{
 		search_if_redirect(env->var, lst, env);
 		pipex(env, lst);
-		free_cmd_list(lst);
-		exit(return_status);
+		//exit_free(env);
 	}
 }
 
@@ -126,7 +124,9 @@ static void	copystd_and_exec_builtins(t_cmd *lst, t_minish *env)
 	len = ft_strlen(arg->content);
 	if (count_type_in_lst(lst, PIPE) == 0 && arg && \
 		((ft_memcmp(arg->content, "export", len) == 0 && len == 6)
-			|| (ft_memcmp(arg->content, "unset", len) == 0 && len == 5)))
+			|| (ft_memcmp(arg->content, "unset", len) == 0 && len == 5)
+			|| (ft_memcmp(arg->content, "cd", len) == 0 && len == 2)
+			|| (ft_memcmp(arg->content, "exit", len) == 0 && len == 4)))
 	{
 		stdin_copy = dup(0);
 		stdout_copy = dup(1);
@@ -157,7 +157,7 @@ int	parsing(char *cmd, t_minish *env)
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
-	display_lst(lst);
+	//display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit (1); //FREE
@@ -166,5 +166,5 @@ int	parsing(char *cmd, t_minish *env)
 	if (WEXITSTATUS(env->var->status))
 		return_status = WEXITSTATUS(env->var->status);
 	copystd_and_exec_builtins(lst, env);
-	return (free_cmd_list(lst), free(env->var), 1);
+	return (free(env->var), 1);
 }

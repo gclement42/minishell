@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cut_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 13:28:13 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 17:46:35 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ char	*remove_quote(char *str)
 			tmp = str[i++];
 		dest[++x] = str[i];
 	}
-	return (dest);
+	return (free(str), dest);
 }
 
 void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)

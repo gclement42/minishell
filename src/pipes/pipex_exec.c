@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/31 14:17:24 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 14:39:26 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,16 @@ char	**get_path(char **envp)
 				"PATH=", ft_strlen(envp[i])));
 			if (!path)
 				return (NULL);
-			break ;
+			tab = ft_split(path, ':');
+			free(path);
+			if (!tab)
+				return (NULL);
+			join_slash(tab);
+			return (tab);
 		}
-		free(path);
 		i++;
 	}
-	tab = ft_split(path, ':');
-	free(path);
-	if (!tab)
-		return (NULL);
-	join_slash(tab);
-	return (tab);
+	return (envp);
 }
 
 static void	execution(t_pipex *var, char *path, char **cmd, char **envp)

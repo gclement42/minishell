@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 18:14:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/28 10:31:38 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/03 13:21:48 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 	else if (argc == 0 || lst->content[0] == '\0' || \
 		(lst && ft_strchr(lst->content, '~') != 0) || lst->content[0] == '<')
 	{
+
 		if ((lst && check_is_good_arg_cd(lst->next->content) == 1) || lst->content[0] == '\0')
 		{
 			cd(var, NULL);
