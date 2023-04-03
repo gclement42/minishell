@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/30 15:46:37 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 14:07:14 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	exit_env(t_minish *var)
 {
 	ft_putstr_fd("exit\n", 1);
 	exit_free(var);
-	exit(return_status);
 }
 
 static void	exit_num_arg(t_cmd *lst, t_minish *var)
@@ -62,8 +61,9 @@ void	exit_parsing(t_cmd *lst, t_minish *var)
 	if (lst->next)
 	{
 		arg = exit_num_parsing(lst, var);
+		// printf("%s\n", arg);
 		code = ft_atoll(arg);
-		printf("%lld\n", code);
+		// printf("%lld\n", code);
 		if ((lst->next->next && lst->next->next->type == ARG && code == 0) || code == 0)
 		{
 			if (code == 0 && arg[0] != '0' \

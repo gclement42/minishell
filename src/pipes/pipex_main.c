@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/30 14:51:05 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/03 13:37:09 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,32 @@ static void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 	if (check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
-		exit(0); // FREE
+		exit_free(env);
 	}
 	else
 	{
 		cmd = create_arr_exec(lst);
 		if (!cmd)
-			display_error(var->env_cmd, "Command tab not properly allocated");
-		exec_command(var, var->env_cmd, cmd, envp);
+			display_error(env, var->env_cmd, "Command tab not properly allocated");
+		exec_command(env, var->env_cmd, cmd, envp);
 	}
 }
 
-int	*init_pipes(t_pipex *var)
+static int	*init_pipes(t_minish *env)
 {
 	int	i;
 	int	*pipefds;
 
 	i = 0;
-	pipefds = malloc(sizeof(int) * (2 * var->numpipes));
+	pipefds = malloc(sizeof(int) * (2 * env->var->numpipes));
 	if (!pipefds)
-		exit (1); //FREE
-	while (i < var->numpipes)
+		exit_free(env);
+	while (i < env->var->numpipes)
 	{
 		if (pipe(pipefds + i * 2) < 0)
 		{
 			perror("couldn't pipe");
-			exit(1);
+			exit_free(env);
 		}
 		i++;
 	}
@@ -55,13 +55,15 @@ int	*init_pipes(t_pipex *var)
 static void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 {
 	env->var->numpipes = count_type_in_lst(lst, PIPE);
+	env->var->pipefds = NULL;
+	env->var->env_cmd = NULL;
 	if (env->var->numpipes > 0)
-		env->var->pipefds = init_pipes(env->var);
+		env->var->pipefds = init_pipes(env);
 	if (envp)
 	{
 		env->var->env_cmd = get_path(envp);
 		if (!env->var->env_cmd)
-			display_error(env->var->env_cmd, "Env tab not properly allocated");
+			display_error(env, env->var->env_cmd, "Env tab not properly allocated");
 	}
 }
 
@@ -96,7 +98,7 @@ void	pipex(t_minish *env, t_cmd *lst)
 {
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
-		exit (1); //FREE
+		exit_free(env);
 	if (check_if_unexpected_token(lst) == 0)
 		return ;
 	if (get_node(lst, CMD, PIPE) != NULL)

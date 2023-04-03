@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:13:28 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 13:55:29 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 10:16:35 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,11 @@ char	**lst_to_tab(t_env **lst)
 		if (!temp->content)
 			temp->content = " ";
 		tab[i] = ft_strjoin(hold, temp->content);
+		free(hold);
 		if (!tab[i])
 			return(NULL);
 		i++;
 		temp = temp->next;
 	}
-	tab[i] = '\0';
-	return (tab);
+	return (tab[i] = '\0', tab);
 }

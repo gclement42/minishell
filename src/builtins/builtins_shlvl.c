@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 14:06:42 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/31 14:08:16 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/03/31 16:56:04 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static void	create_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
 	t_env	*key;
 	t_env	*ptr;
 
-	key = ft_lstnew_env("SHLVL", "1");
+	key = ft_lstnew_env(ft_strdup("SHLVL"), ft_strdup("1"));
 	ptr = duplicate_node(key);
 	if (!ptr || !key)
-		exit_free(var); //FREE
+		exit_free(var);
 	ft_lstadd_back_env(env_l, key);
 	ft_lstadd_back_env(exp_l, ptr);
 }
@@ -59,7 +59,6 @@ void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
 				modify_var(var, &temp_env, "SHLVL", str_lvl);
 				modify_var(var, &temp_exp, "SHLVL", str_lvl);
 				free(str_lvl);
-				break ;
 			}
 			temp_env = temp_env->next;
 		}
@@ -79,13 +78,14 @@ static void	init_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *v
 	var->lvl = set_strlvl(var->lvl);
 	str_lvl = ft_itoa(var->lvl);
 	if (!str_lvl)
-		exit_free(var); //FREE
-	key = ft_lstnew_env("SHLVL", str_lvl);
+		exit_free(var);
+	key = ft_lstnew_env(ft_strdup("SHLVL"), str_lvl);
 	ptr = duplicate_node(key);
 	if (!ptr || !key)
-		exit_free(var); //FREE
+		exit_free(var);
 	ft_lstadd_back_env(env_l, ptr);
 	ft_lstadd_back_env(exp_l, ptr);
+	free(str_lvl);
 }
 
 void	modify_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *var)
@@ -107,7 +107,7 @@ void	modify_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *var)
 				var->lvl = set_strlvl(var->lvl);
 				str_lvl = ft_itoa(var->lvl);
 				if (!str_lvl)
-					exit_free(var); //FREE
+					exit_free(var);
 				modify_var(var, &temp_env, "SHLVL",  str_lvl);
 				modify_var(var, &temp_exp, "SHLVL", str_lvl);
 				free(str_lvl);

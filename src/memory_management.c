@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/31 13:51:44 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 13:56:18 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,11 @@ void	exit_free(t_minish *var)
 		free(var->oldpwd);
 	if (var->builtins)
 		free(var->builtins);
+	if (var->var)
+		free(var->var);
 	if (var)
 		free(var);
+	exit (return_status);
 }
 
 void	free_env_list(t_env *lst)

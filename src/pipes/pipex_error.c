@@ -6,13 +6,13 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:42:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/19 16:23:10 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 13:54:03 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-void	display_error_cmd(char **tab, char *msg, char *cmd)
+void	display_error_cmd(t_minish *env, char **tab, char *msg, char *cmd)
 {
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(": ", 2);
@@ -20,16 +20,22 @@ void	display_error_cmd(char **tab, char *msg, char *cmd)
 	ft_putstr_fd("\n", 2);
 	if (tab)
 		free_tab(tab);
-	exit (127);
+	if (env->env_tab)
+		free_2d_array(env->env_tab);
+	return_status = 127;
+	exit_free(env);
 }
 
-void	display_error(char **tab, char *msg)
+void	display_error(t_minish *env, char **tab, char *msg)
 {
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
 	if (tab)
 		free_tab(tab);
-	exit (1);
+	if (env->env_tab)
+		free_2d_array(env->env_tab);
+	return_status = 1;
+	exit_free(env);
 }
 
 void	free_tab(char **tab)

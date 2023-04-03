@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/31 14:39:26 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/03 13:48:48 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,59 +39,57 @@ char	**get_path(char **envp)
 	return (envp);
 }
 
-static void	execution(t_pipex *var, char *path, char **cmd, char **envp)
+static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 {
-	// DEAL WITH EXEC COMMAND ERRORS
 	if (execve(path, cmd, envp) == -1)
 	{
 		perror("exec");
-		// close_pipes(var);
-		free_tab(var->env_cmd);
-		exit (1);
-	//	free(path);
+		free(path);
+		free_tab(env->var->env_cmd);
+		exit_free(env);
 	}
 }
 
-static void	check_cmd(t_pipex *var, char **cmd, char **envp, char **env)
+static void	check_cmd(t_minish *env, char **cmd, char **envp, char **path)
 {
 	if (!cmd[0])
 	{
-		free_tab(env);
-		display_error_cmd(cmd, "permission denied: ", cmd[0]);
+		free_tab(path);
+		display_error_cmd(env, cmd, "permission denied: ", cmd[0]);
 	}
 	if (cmd[0][0] == '.' && cmd[0][1] == '/' && access(cmd[0], X_OK) == -1)
 	{
-		free_tab(env);
-		display_error_cmd(cmd, "command not found", cmd[0]);
+		free_tab(path);
+		display_error_cmd(env, cmd, "command not found", cmd[0]);
 	}
 	if (access(cmd[0], X_OK) != -1)
-		execution(var, cmd[0], cmd, envp);
+		execution(env, cmd[0], cmd, envp);
 }
 
-void	exec_command(t_pipex *var, char **env, char **cmd, char *envp[])
+void	exec_command(t_minish *env, char **path, char **cmd, char *envp[])
 {
 	int		i;
 	char	*exe;
 
 	i = 0;
-	check_cmd(var, cmd, envp, env);
-	while (env[i])
+	check_cmd(env, cmd, envp, path);
+	while (path[i])
 	{
-		exe = ft_strjoin(env[i], cmd[0]);
+		exe = ft_strjoin(path[i], cmd[0]);
 		if (!exe)
-			display_error(env, "execution line not properly allocated");
+			display_error(env, path, "execution line not properly allocated");
 		if (access(exe, X_OK) == -1)
 		{
-			if (!env[i + 1])
+			if (!path[i + 1])
 			{
-				free_tab(env);
+				free_tab(path);
 				free(exe);
-				display_error_cmd(cmd, "command not found", cmd[0]);
+				display_error_cmd(env, cmd, "command not found", cmd[0]);
 			}
 			free(exe);
 			i++;
 		}
 		else
-			execution(var, exe, cmd, envp);
+			execution(env, exe, cmd, envp);
 	}
 }
