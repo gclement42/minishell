@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 10:49:26 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 14:13:01 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	parsing_env(t_minish *var, t_cmd *lst)
 		}
 		lst = lst->next;
 	}
-	get_env(var, NULL);
+	get_env(var);
 }
 
 void	export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
