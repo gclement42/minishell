@@ -104,7 +104,7 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	{
 		init_sigaction(new_signal_here_doc);
 		if (termios_disable_quit() == 1)
-			exit_free(env); // FREE
+			exit_free(env);
 	}
 	if (id == 0)
 	{
@@ -113,7 +113,9 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		free_cmd_list(lst);
 		if (env->var->env_cmd)
 			free_2d_array(env->var->env_cmd);
+		printf("\nIN PARSING CHILD\n");
 		exit_free(env);
+		exit (1);
 	}
 }
 

@@ -15,6 +15,7 @@
 void	exit_env(t_minish *var)
 {
 	ft_putstr_fd("exit\n", 1);
+	// exit_free_child(var);
 	exit_free(var);
 }
 
@@ -38,7 +39,7 @@ char	*exit_num_parsing(t_cmd *lst, t_minish *var)
 		exit_free(var);
 	if (temp->next)
 	{
-		while (temp)
+		while (temp) // && ft_atoll(temp->content) != 0
 		{
 			holder = arg;
 			arg = ft_strjoin(holder, temp->content);
@@ -63,15 +64,19 @@ void	exit_parsing(t_cmd *lst, t_minish *var)
 		if (lst->next->type == S_SPACES)
 			lst = lst->next;
 		arg = exit_num_parsing(lst, var);
+	//	printf("%s\n", arg);
 		code = ft_atoll(arg);
 		if ((lst->next->next && lst->next->next->type == ARG && code == 0) || code == 0)
 		{
 			if (code == 0 && arg[0] != '0' \
 				&& arg[1] != '\0')
 				exit_num_arg(lst, var);
-			printf("exit\nminishell: exit: too many arguments\n");
-			return_status = 1;
-			return ;
+			if (check_isspace(arg) != ft_strlen(arg))
+			{
+		 		printf("exit\nminishell: exit: too many arguments\n");
+				return_status = 1;
+				return ;
+			}
 		}
 		else
 		{

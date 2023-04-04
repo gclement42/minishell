@@ -43,6 +43,7 @@ int			wordcount(char const *str, char c);
 void		exit_free(t_minish *var);
 char		**lst_to_tab(t_env **lst);
 long long	ft_atoll(const char *str);
+size_t		check_isspace(const char *str);
 
 /* ---- Utils list---- */
 void		ft_lstadd_back_env(t_env **lst, t_env *new);

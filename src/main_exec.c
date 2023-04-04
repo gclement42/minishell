@@ -21,6 +21,7 @@ void	init_struct(t_minish *var, char **envp)
 	var->env_tab = NULL;
 	var->builtins = NULL;
 	var->cd_path = NULL;
+	var->var = NULL;
 	set_env(var, envp, &(var->env_list), &(var->exp_list));
 	modify_var(var, &(var->env_list), "_", "/usr/bin/env");
 	set_shlvl(var, &(var->env_list), &(var->exp_list));

@@ -55,7 +55,8 @@ void	exit_free(t_minish *var)
 void	free_env_list(t_env *lst)
 {
 	t_env	*temp;
-
+	
+	printf("\nCOUNT\n");
 	while (lst->next)
 	{
 		temp = lst->next;
@@ -80,7 +81,8 @@ void	free_cmd_list(t_cmd *lst)
 	while (lst)
 	{
 		temp = lst->next;
-    	free(lst->content);
+  	if (lst->content && lst->type != S_SPACES)
+      free(lst->content);
 		free(lst);
 		lst = temp;
 	}
