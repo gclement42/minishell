@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 17:16:00 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 18:43:10 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*free_2d_array(char **ptr)
+void	free_2d_array(char **ptr)
 {
 	int	i;
 
@@ -23,7 +23,6 @@ void	*free_2d_array(char **ptr)
 		i++;
 	}
 	free(ptr);
-	return (NULL);
 }
 
 void	free_and_exit(char *msg, char **arg)
@@ -44,6 +43,8 @@ void	exit_free(t_minish *var)
 		free(var->oldpwd);
 	if (var->builtins)
 		free(var->builtins);
+	if (var->cd_path)
+		free(var->cd_path);
 	if (var->var)
 		free(var->var);
 	if (var)
@@ -80,8 +81,8 @@ void	free_cmd_list(t_cmd *lst)
 	while (lst)
 	{
 		temp = lst->next;
-  	  if (lst->content && lst->type != S_SPACES)
-    free(lst->content);
+  	if (lst->content && lst->type != S_SPACES)
+      free(lst->content);
 		free(lst);
 		lst = temp;
 	}

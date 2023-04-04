@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:08:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/31 17:25:30 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/03 17:30:18 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ t_env	*ft_lstnew_env(char *key, char *content)
 	ptr = (void *)malloc(sizeof(t_env));
 	if (!ptr)
 		return (NULL);
-	ptr->key = key;
-	ptr->content = content;
+	ptr->key = ft_strdup(key);
+	ptr->content = ft_strdup(content);
 	ptr->next = NULL;
 	return (ptr);
 }

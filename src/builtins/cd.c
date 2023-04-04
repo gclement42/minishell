@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 16:10:38 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 18:52:09 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	update_pwd(t_minish *var)
 		{
 			if (ft_strnstr(temp->key, "PWD", 4))
 			{
+				free(old_pwd);
 				old_pwd = ft_strdup(temp->content);
 				if (!old_pwd)
 					exit_free(var);
@@ -53,6 +54,7 @@ static void	update_pwd_home(t_minish *var, char *home_dir)
 		{
 			if (ft_strnstr(temp->key, "PWD", 4))
 			{
+				free(old_pwd);
 				old_pwd = ft_strdup(temp->content);
 				if (!old_pwd)
 					exit_free(var);
@@ -106,6 +108,8 @@ int	cd(t_minish *var, char *path)
 	}
 	else
 	{
+		if (var->cd_path)
+			free(var->cd_path);
 		var->cd_path = get_cwd();
 		if (var->cd_path == NULL)
 			exit_free(var);

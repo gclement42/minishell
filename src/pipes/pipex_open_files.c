@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 13:58:01 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/03 14:30:31 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ static void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 	if (!line)
 		printf("minishell: warning: here-document delimited by end-of-file \
 		(wanted %s)\n", eof->content);
-	while (!ft_strlen(line) || ft_strncmp(eof->content, line, ft_strlen(line)))
+	while (!ft_strlen(line) || ft_strncmp(eof->content, line, ft_strlen(line))
+		|| ft_strlen(line) != ft_strlen(eof->content))
 	{
 		if (eof->marks != QUOTE)
 			line = replace_variable(line, env, 0);

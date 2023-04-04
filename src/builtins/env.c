@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 13:13:09 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 17:56:04 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
 			exit_free(var);
 		ptr_env = ft_lstnew_env(tab[0], tab[1]);
 		ft_lstadd_back_env(env, ptr_env);
-		free(tab);
+		free_2d_array(tab);
 		ptr_exp = duplicate_node(ptr_env);
 		ft_lstadd_back_env(exp, ptr_exp);
 		if (!ptr_env || !ptr_exp)

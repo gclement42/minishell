@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 14:16:51 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 19:14:43 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char	**get_path(t_minish *env, char **envp)
 
 static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 {
+	free(env->var->pipefds);
 	if (execve(path, cmd, envp) == -1)
 	{
 		perror("exec");

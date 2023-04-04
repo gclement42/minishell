@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 17:11:32 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/04 09:42:01 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,11 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	get_redirect(cmd, &i, lst, &start);
 	get_frst_word(cmd, &i, lst);
 	start = i;
-	while (cmd[i])
+	while (cmd[i++])
 	{
 		if (cmd[i] == '\'' || cmd[i] == '"' \
 			|| cmd[i] == '>' || cmd[i] == '<')
 			parse_router(cmd, &i, &start, lst);
-		i++;
 	}
 	if (start < (size_t)i && cmd[start])
 	{
@@ -36,19 +35,22 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 			return (NULL);
 		if (is_all_char(word, ' ') == 0)
 			get_word_with_space(word, lst, 1);
+		else
+			free (word);
 	}
 	return (*lst);
 }
 
-static	t_cmd	*create_lst_cmd(char *cmd, t_minish *env)
+static	t_cmd	*create_lst_cmd(char *cmd, t_minish *env, int *b)
 {
 	char	**split_by_pipe;
 	t_cmd	*lst;
 	int		i;
 
 	i = 0;
+	*b = 0;
 	lst = NULL;
-	cmd = replace_variable(cmd, env, 1);
+	cmd = replace_variable(cmd, env, 1, b);
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
 		return (ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
@@ -65,6 +67,8 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_minish *env)
 	}
 	if (cmd[ft_strlen(cmd) - 1] == '|')
 		new_node_cmd("|", SPACES, CMD, &lst);
+	if (*b == 1)
+		free (cmd);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
@@ -150,19 +154,17 @@ int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	t_cmd	*cmd_node;
+	int		b;
 
 	if (!cmd || cmd[0] == '\0')
-	{
-		return_status = 0;
-		return (1);
-	}
-	lst = create_lst_cmd(cmd, env);
+		return (return_status = 0);
+	lst = create_lst_cmd(cmd, env, &b);
 	if (!lst)
 		return (-1);
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
-	// display_lst(lst);
+	display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit_env(env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 15:47:12 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:19:02 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	exit_parsing(t_cmd *lst, t_minish *var)
 
 	if (lst->next)
 	{
+		if (lst->next->type == S_SPACES)
+			lst = lst->next;
 		arg = exit_num_parsing(lst, var);
 	//	printf("%s\n", arg);
 		code = ft_atoll(arg);
