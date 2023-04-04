@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 11:07:48 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/04 10:07:06 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*join_all_arg(t_cmd *lst, int bools)
 	char	*tmp;
 
 	lst = get_node(lst, ARG, PIPE);
-	tmp = lst->content;
+	tmp = ft_strdup(lst->content);
 	lst = lst->next;
 	arg_join = tmp;
 	while (lst && (lst->type == ARG || lst->type == S_SPACES))
@@ -30,7 +30,10 @@ char	*join_all_arg(t_cmd *lst, int bools)
 			arg_join = ft_strjoin(tmp, lst->content);
 			if (!arg_join)
 				return (NULL);
+			free (tmp);
 			tmp = arg_join;
+			if (!tmp)
+				return (NULL);
 			lst = lst->next;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 09:44:53 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:01:44 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ char	**create_arr_exec(t_cmd *cmd)
 		if (cmd->type != S_SPACES && \
 		(cmd->type == OPT || cmd->type == ARG || cmd->type == CMD))
 		{
-			arr_exec[x] = cmd->content;
+			arr_exec[x] = ft_strdup(cmd->content);
+			if (!arr_exec[x])
+				return (free_2d_array(arr_exec));
 			x++;
 		}
 		cmd = cmd->next;
@@ -89,38 +91,3 @@ int	is_all_char(char *word, char c)
 	return (1);
 }
 
-void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
-{
-	char	**split_word;
-	int		x;
-	char	*tmp;
-
-	x = 0;
-	if (ft_strchr(word, ' ') && is_all_char(word, ' ') == 0)
-	{
-		split_word = ft_split(word, ' ');
-		if (word[0] == ' ')
-			new_node_cmd(" ", -1, S_SPACES, lst);
-		while (split_word[x])
-		{
-			if (word[ft_strlen(word) - 1] == ' ' && !split_word[x + 1] && !is_eol)
-			{
-				tmp = ft_strjoin(split_word[x], " ");
-				check_is_opt_or_arg(tmp, ' ', lst);
-				return (free(split_word[x]), free(split_word),free(word));
-			}
-			check_is_opt_or_arg(split_word[x], ' ', lst);
-			x++;
-			if (split_word[x])
-				new_node_cmd(" ", -1, S_SPACES, lst);
-		}
-		return (free(word), free(split_word));
-	}
-	if (is_all_char(word, ' ') == 1)
-	{
-		new_node_cmd(" ", -1, S_SPACES, lst);
-		free(word);
-	}
-	else
-		check_is_opt_or_arg(word, SPACES, lst);
-}
