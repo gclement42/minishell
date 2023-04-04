@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/04 10:24:27 by gclement         ###   ########.fr       */
@@ -83,7 +83,7 @@ void	free_cmd_list(t_cmd *lst)
 	{
 		temp = lst->next;
 		if (lst->content)
-    		free(lst->content);
+      free(lst->content);
 		free(lst);
 		lst = temp;
 	}

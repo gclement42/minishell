@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 13:25:01 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/04 10:57:16 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	add_export(t_minish *var, t_env *new_var)
 			else
 			{
 				add_var_env(&var->env_list, new_var->key, new_var->content);
-				add_var_env(&var->exp_list, new_var->key, new_var->content);
+				add_var_env(&var->exp_list,  new_var->key, new_var->content);
 			}
 		}
 		else
@@ -110,7 +110,10 @@ static void	add_export(t_minish *var, t_env *new_var)
 void	export_env(t_minish *var, t_env *new_var, int argc)
 {
 	if (argc != 0)
+	{
 		add_export(var, new_var);
+		free_env_list(new_var);
+	}
 	else
 		print_export_list(&(var->exp_list));
 	return_status = 0;
