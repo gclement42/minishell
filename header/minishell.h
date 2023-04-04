@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 18:26:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 09:54:25 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ void		get_cmd_line(t_minish *var, t_env **lst);
 void		builtin_cmp(t_minish *var);
 void		init_struct(t_minish *var, char **envp);
 
-void		free_2d_array(char **ptr);
+void		*free_2d_array(char **ptr);
 
 #endif

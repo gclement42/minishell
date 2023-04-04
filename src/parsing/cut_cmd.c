@@ -6,28 +6,11 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 19:06:24 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 10:58:45 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	parse_router(char *cmd, int *i, size_t *start, t_cmd **lst)
-{
-	char	*word;
-
-	if (*start < ((size_t)*i) && cmd[*start] != '"' && cmd[*start] != '\'')
-	{
-		word = ft_substr(cmd, *start, *i - *start);
-		if (!word)
-			return ;
-		get_word_with_space(word, lst, 0);
-	}
-	if (cmd[*i] == '\'' || cmd[*i] == '"')
-		get_word(cmd, i, start, lst);
-	if (cmd[*i] == '>' || cmd[*i] == '<')
-		get_redirect(cmd, i, lst, start);
-}
 
 void	*get_file(char *cmd, int *i, t_cmd **lst)
 {
@@ -88,41 +71,6 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 	*i = tmp;
 }
 
-char	*remove_quote(char *str)
-{
-	int		i;
-	char	*dest;
-	int		x;
-	char	tmp;
-
-	i = -1;
-	if (!str)
-		return (NULL);
-	while (str[++i])
-		if (!(str[i] == '\'' || str[i] == '"'))
-			i += count_len(&str[i], str[i]);
-	dest = ft_calloc((i + 1), sizeof(char));
-	if (!dest)
-		return (NULL);
-	i = -1;
-	x = -1;
-	tmp = 0;
-	while (str[++i] && dest)
-	{
-		if ((str[i] == '\'' || str[i] == '"') && tmp == 0)
-			tmp = str[i++];
-		if (str[i] == tmp)
-		{
-			tmp = 0;
-			i++;
-		}
-		if ((str[i] == '\'' || str[i] == '"') && tmp == 0)
-			tmp = str[i++];
-		dest[++x] = str[i];
-	}
-	return (free(str), dest);
-}
-
 void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
 {
 	int		x;
@@ -144,11 +92,8 @@ void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
 	else
 	{
 		if (is_all_char(word, ' ') == 0 || get_marks(marks) != SPACE)
-		{
-			ft_putstr_fd("\nCR\n", 2);			
 			if (!new_node_cmd(word, get_marks(marks), ARG, lst))
 				return ;
-		}
 	}
 }
 

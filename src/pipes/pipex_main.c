@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 19:16:12 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 10:23:41 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 		cmd = create_arr_exec(lst);
 		if (!cmd)
 			display_error(env, var->env_cmd, "Command tab not properly allocated");
+		ft_putstr_fd("\nEXEC CHILD\n", 2);
+		free_cmd_list(lst);
 		exec_command(env, var->env_cmd, cmd, envp);
 	}
 }

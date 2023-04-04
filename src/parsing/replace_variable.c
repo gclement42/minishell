@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 09:33:13 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:03:02 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static char	*join_content_next_var(char *content, char *var_content)
 	return (free(var_content), free(eow), join_content);
 }
 
-static	char	*join_new_content(char *new_content, char *content, int size, int *b)
+static	char	*join_new_content(char *new_content, char *content, \
+	int size, int *b)
 {
 	char	*str_begin;
 	char	*str;

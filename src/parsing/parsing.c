@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 09:42:01 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 10:27:02 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,7 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		pipex(env, lst);
 		free_cmd_list(lst);
 		if (env->var->env_cmd)
-			free_2d_array(env->var->env_cmd);
-		printf("\nIN PARSING CHILD\n");
+			free_2d_array(env->var->env_cmd);;
 		exit_free(env);
 		exit (1);
 	}
@@ -173,5 +172,5 @@ int	parsing(char *cmd, t_minish *env)
 	if (WEXITSTATUS(env->var->status))
 		return_status = WEXITSTATUS(env->var->status);
 	copystd_and_exec_builtins(lst, env);
-	return (1);
+	return (free_cmd_list(lst), free(env->var), 1);
 }
