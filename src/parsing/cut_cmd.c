@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/31 17:18:52 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 19:06:24 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,11 @@ void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
 	else
 	{
 		if (is_all_char(word, ' ') == 0 || get_marks(marks) != SPACE)
+		{
+			ft_putstr_fd("\nCR\n", 2);			
 			if (!new_node_cmd(word, get_marks(marks), ARG, lst))
 				return ;
+		}
 	}
 }
 

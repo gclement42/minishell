@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 14:17:09 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 19:16:12 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ static void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 	if (check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		builtins_router(lst, count_type_in_lst(lst, ARG), env);
+		free_cmd_list(lst);
+		free_2d_array(env->env_tab);
+		free_2d_array(env->var->env_cmd);
 		exit_free(env);
 	}
 	else
@@ -108,4 +111,5 @@ void	pipex(t_minish *env, t_cmd *lst)
 		child_proc(env, env->var, env->env_tab, get_node(lst, CMD, PIPE));
 	}
 	free_2d_array(env->env_tab);
+	free(env->var->pipefds);
 }

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/31 16:56:24 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 09:33:13 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*join_content_next_var(char *content, char *var_content)
 	return (free(var_content), free(eow), join_content);
 }
 
-static	char	*join_new_content(char *new_content, char *content, int size)
+static	char	*join_new_content(char *new_content, char *content, int size, int *b)
 {
 	char	*str_begin;
 	char	*str;
@@ -50,11 +50,16 @@ static	char	*join_new_content(char *new_content, char *content, int size)
 	str_begin = ft_memcpy(str_begin, content, size);
 	str_begin[size] = '\0';
 	if (new_content)
+	{
 		str = ft_strjoin(str_begin, new_content);
+		*b = 1;
+	}
 	else
-		str = str_begin;
+		str = ft_strdup(str_begin);
+	if (!str)
+		return (NULL);
 	str = join_content_next_var(content, str);
-	return (str);
+	return (free(str_begin), str);
 }
 
 void	skip_quote(int *i, char *str, char del)
@@ -64,7 +69,7 @@ void	skip_quote(int *i, char *str, char del)
 		*i += 1;
 }
 
-char	*replace_variable(char *str, t_minish *env, int b_skip_quote)
+char	*replace_variable(char *str, t_minish *env, int b_skip_quote, int *b)
 {
 	char	*new_content;
 	int		i;
@@ -81,13 +86,13 @@ char	*replace_variable(char *str, t_minish *env, int b_skip_quote)
 				new_content = ft_itoa(return_status);
 			else
 				new_content = search_key(env->env_list, &str[i + 1]);
-			str = join_new_content(new_content, str, i);
+			str = join_new_content(new_content, str, i, b);
+			if (!str)
+				return (NULL);
 			if (new_content && ft_strchr(new_content, '$'))
 				i += ft_strlen(new_content);
 			if (str[i] != '$' || !new_content)
 				i--;
-			if (!str)
-				return (NULL);
 		}
 	}
 	return (str);
@@ -95,15 +100,17 @@ char	*replace_variable(char *str, t_minish *env, int b_skip_quote)
 
 t_cmd	*check_if_replace_var(t_cmd *lst, t_minish *env)
 {
+	int	b;
 	//display_lst(lst);
+	b = 0;
 	while (lst)
 	{
 		if (lst->marks != QUOTE)
 		{
 			if (lst->type == CMD)
-				lst->content = replace_variable(lst->content, env, 1);
+				lst->content = replace_variable(lst->content, env, 1, &b);
 			else
-				lst->content = replace_variable(lst->content, env, 0);
+				lst->content = replace_variable(lst->content, env, 0, &b);
 		}
 		if (lst->type == CMD)
 			lst->content = remove_quote(lst->content);

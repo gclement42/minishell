@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 10:39:18 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 18:36:57 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_struct(t_minish *var, char **envp)
 	var->oldpwd = NULL;
 	var->env_tab = NULL;
 	var->builtins = NULL;
+	var->cd_path = NULL;
 	set_env(var, envp, &(var->env_list), &(var->exp_list));
 	modify_var(var, &(var->env_list), "_", "/usr/bin/env");
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
@@ -28,9 +29,9 @@ void	init_struct(t_minish *var, char **envp)
 int	main(int argc, char **argv, char *envp[])
 {
 	t_minish		*var;
-	struct	termios	orig_ter;
+	struct termios	orig_ter;
 	int				run;
-	
+
 	run = 1;
 	var = malloc(sizeof(t_minish));
 	if (!var)

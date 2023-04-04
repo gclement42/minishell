@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 13:22:51 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 18:52:09 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	update_pwd(t_minish *var)
 		{
 			if (ft_strnstr(temp->key, "PWD", 4))
 			{
+				free(old_pwd);
 				old_pwd = ft_strdup(temp->content);
 				if (!old_pwd)
 					exit_free(var);
@@ -53,6 +54,7 @@ static void	update_pwd_home(t_minish *var, char *home_dir)
 		{
 			if (ft_strnstr(temp->key, "PWD", 4))
 			{
+				free(old_pwd);
 				old_pwd = ft_strdup(temp->content);
 				if (!old_pwd)
 					exit_free(var);
@@ -94,7 +96,7 @@ static int	cd_home(t_minish *var)
 
 int	cd(t_minish *var, char *path)
 {
-	var->oldpwd = ft_strdup(get_cwd());
+	var->oldpwd = get_cwd();
 	if (!var->oldpwd)
 		exit_free(var);
 	if (!path)
@@ -106,12 +108,12 @@ int	cd(t_minish *var, char *path)
 	}
 	else
 	{
-		printf("here");
+		if (var->cd_path)
+			free(var->cd_path);
 		var->cd_path = get_cwd();
 		if (var->cd_path == NULL)
 			exit_free(var);
 		update_pwd(var);
-		free(var->oldpwd);
 		return (0);
 	}
 }
