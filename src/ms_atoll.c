@@ -6,13 +6,13 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 18:54:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/22 13:48:00 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 14:50:38 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_isspace(const char *str)
+size_t	check_isspace(const char *str)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ static int	check_isspace(const char *str)
 
 long long	ft_atoll(const char *str)
 {
-	int		i;
+	size_t		i;
 	long long	nb;
 	int			sign;
 

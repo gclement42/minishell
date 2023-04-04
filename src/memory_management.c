@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 13:56:18 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 17:16:00 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	exit_free(t_minish *var)
 void	free_env_list(t_env *lst)
 {
 	t_env	*temp;
-
+	
+	printf("\nCOUNT\n");
 	while (lst->next)
 	{
 		temp = lst->next;
@@ -79,7 +80,7 @@ void	free_cmd_list(t_cmd *lst)
 	while (lst)
 	{
 		temp = lst->next;
-    if (lst->content && lst->type != S_SPACES)
+  	  if (lst->content && lst->type != S_SPACES)
     free(lst->content);
 		free(lst);
 		lst = temp;

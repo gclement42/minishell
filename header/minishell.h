@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/31 11:06:57 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 17:08:23 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int			wordcount(char const *str, char c);
 void		exit_free(t_minish *var);
 char		**lst_to_tab(t_env **lst);
 long long	ft_atoll(const char *str);
+size_t		check_isspace(const char *str);
 
 /* ---- Utils list---- */
 void		ft_lstadd_back_env(t_env **lst, t_env *new);

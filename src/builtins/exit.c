@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 14:07:14 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 15:47:12 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	exit_env(t_minish *var)
 {
 	ft_putstr_fd("exit\n", 1);
+	// exit_free_child(var);
 	exit_free(var);
 }
 
@@ -38,7 +39,7 @@ char	*exit_num_parsing(t_cmd *lst, t_minish *var)
 		exit_free(var);
 	if (temp->next)
 	{
-		while (temp && ft_atoll(temp->content) != 0)
+		while (temp) // && ft_atoll(temp->content) != 0
 		{
 			holder = arg;
 			arg = ft_strjoin(holder, temp->content);
@@ -61,17 +62,19 @@ void	exit_parsing(t_cmd *lst, t_minish *var)
 	if (lst->next)
 	{
 		arg = exit_num_parsing(lst, var);
-		// printf("%s\n", arg);
+	//	printf("%s\n", arg);
 		code = ft_atoll(arg);
-		// printf("%lld\n", code);
 		if ((lst->next->next && lst->next->next->type == ARG && code == 0) || code == 0)
 		{
 			if (code == 0 && arg[0] != '0' \
 				&& arg[1] != '\0')
 				exit_num_arg(lst, var);
-			printf("exit\nminishell: exit: too many arguments\n");
-			return_status = 1;
-			return ;
+			if (check_isspace(arg) != ft_strlen(arg))
+			{
+		 		printf("exit\nminishell: exit: too many arguments\n");
+				return_status = 1;
+				return ;
+			}
 		}
 		else
 		{

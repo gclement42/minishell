@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 13:22:51 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 16:10:38 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int	cd_home(t_minish *var)
 
 int	cd(t_minish *var, char *path)
 {
-	var->oldpwd = ft_strdup(get_cwd());
+	var->oldpwd = get_cwd();
 	if (!var->oldpwd)
 		exit_free(var);
 	if (!path)
@@ -106,12 +106,10 @@ int	cd(t_minish *var, char *path)
 	}
 	else
 	{
-		printf("here");
 		var->cd_path = get_cwd();
 		if (var->cd_path == NULL)
 			exit_free(var);
 		update_pwd(var);
-		free(var->oldpwd);
 		return (0);
 	}
 }

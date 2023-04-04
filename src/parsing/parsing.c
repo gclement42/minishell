@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 10:31:04 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/03 17:11:32 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	{
 		init_sigaction(new_signal_here_doc);
 		if (termios_disable_quit() == 1)
-			exit_free(env); // FREE
+			exit_free(env);
 	}
 	if (id == 0)
 	{
@@ -109,7 +109,9 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		free_cmd_list(lst);
 		if (env->var->env_cmd)
 			free_2d_array(env->var->env_cmd);
+		printf("\nIN PARSING CHILD\n");
 		exit_free(env);
+		exit (1);
 	}
 }
 
