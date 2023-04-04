@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 18:43:10 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 10:00:09 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_2d_array(char **ptr)
+void	*free_2d_array(char **ptr)
 {
 	int	i;
 
@@ -23,6 +23,7 @@ void	free_2d_array(char **ptr)
 		i++;
 	}
 	free(ptr);
+	return (NULL);
 }
 
 void	free_and_exit(char *msg, char **arg)
@@ -55,8 +56,7 @@ void	exit_free(t_minish *var)
 void	free_env_list(t_env *lst)
 {
 	t_env	*temp;
-	
-	printf("\nCOUNT\n");
+
 	while (lst->next)
 	{
 		temp = lst->next;
@@ -81,8 +81,8 @@ void	free_cmd_list(t_cmd *lst)
 	while (lst)
 	{
 		temp = lst->next;
-  	if (lst->content && lst->type != S_SPACES)
-      free(lst->content);
+		if (lst->content)
+			free(lst->content);
 		free(lst);
 		lst = temp;
 	}

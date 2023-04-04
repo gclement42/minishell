@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 19:28:54 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:07:48 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void	echo_parsing(t_cmd *lst)
 	{
 		arg_join = join_all_arg(lst, 0);
 		if (!arg_join)
-			exit (0);
+			exit (0); // FREE
 	}
 	if (get_node(lst, OPT, PIPE))
 		print_echo(1, arg_join);
 	else
 		print_echo(0, arg_join);
-	free (arg_join);
+	// free (arg_join);
 }

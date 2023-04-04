@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 09:42:01 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 09:58:18 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,18 @@ int	is_here_doc(t_cmd *lst)
 	return (1);
 }
 
-void	display_lst(t_cmd *lst)
-{
-	(void) lst;
-	while (lst)
-	{
-		printf("content = %s\n", lst->content);
-		printf("type = %d\n", lst->type);
-		printf("marks = %d\n", lst->marks);
-		lst = lst->next;
-	}
-	printf("-------------------------------------------------------\n");
-}
+// void	display_lst(t_cmd *lst)
+// {
+// 	(void) lst;
+// 	while (lst)
+// 	{
+// 		printf("content = %s\n", lst->content);
+// 		printf("type = %d\n", lst->type);
+// 		printf("marks = %d\n", lst->marks);
+// 		lst = lst->next;
+// 	}
+// 	printf("-------------------------------------------------------\n");
+// }
 
 static void	fork_parsing(t_cmd *lst, t_minish *env)
 {
@@ -113,9 +113,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		free_cmd_list(lst);
 		if (env->var->env_cmd)
 			free_2d_array(env->var->env_cmd);
-		printf("\nIN PARSING CHILD\n");
 		exit_free(env);
-		exit (1);
+		// exit (1);
 	}
 }
 
@@ -164,7 +163,7 @@ int	parsing(char *cmd, t_minish *env)
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
-	display_lst(lst);
+	// display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit_env(env);

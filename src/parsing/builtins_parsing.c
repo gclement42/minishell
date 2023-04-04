@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 15:17:49 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 10:57:34 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ static	t_env	*create_tmp_lst_env(char *arg)
 		if (!split_key_value)
 			return (NULL);
 		new = ft_lstnew_env(split_key_value[0], split_key_value[1]);
+		free_2d_array(split_key_value);
 	}
 	if (!new)
 		return (NULL);
