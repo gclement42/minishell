@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 11:00:06 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:47:09 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 
 int	is_special_char(char c)
 {
-	if (((c >= 33 && c <= 47) || (c >= 58 && c <= 63)
+	if (((c >= 33 && c <= 47) || (c >= 58 && c <= 63) \
 		|| (c >= 91 && c <= 96) || (c >= 123 && c <= 126)) \
 		|| c == '@')
 		return (1);
@@ -57,7 +57,7 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	int	i;
 
 	i = 0;
-	if (!str[i] || ((str[i] != '$' && str[i] != ' ') && str[i] != '/' &&\
+	if (!str[i] || ((str[i] != '$' && str[i] != ' ') && str[i] != '/' && \
 		(!ft_isalpha(str[i]) || str[i] == '=' || is_special_char(str[i]))))
 	{
 		printf("minishell : %s : `%s' : not a valid identifier\n", \
@@ -67,7 +67,8 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	i++;
 	while (str[i])
 	{
-		if ((ft_isalnum(str[i]) == 0 && is_special_char(str[i])) && str[i] != '/' && \
+		if ((ft_isalnum(str[i]) == 0 && is_special_char(str[i]))
+			&& str[i] != '/' && \
 		str[i] != '=' && str[i] != ' ' && str[i] != '$')
 		{
 			printf("minishell : %s : `%s' : not a valid identifier\n", \
@@ -114,7 +115,8 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 			return (msg_invalid_opt(lst->content, cmd_name), NULL);
 		if (lst->type == ARG)
 		{
-			if (lst->next && lst->next->type == ARG && !ft_strchr(lst->content, ' '))
+			if (lst->next && lst->next->type == ARG && \
+				!ft_strchr(lst->content, ' '))
 				lst->content = join_all_arg(lst, 1);
 			new = create_tmp_lst_env(lst->content);
 			if (!new)
@@ -123,8 +125,6 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 				free (new);
 			else
 				ft_lstadd_back_env(&env_lst, new);
-			while (lst->next && lst->type != S_SPACES)
-				lst = lst->next;
 		}
 		lst = lst->next;
 	}

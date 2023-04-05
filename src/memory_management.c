@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 10:24:27 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:40:16 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	free_cmd_list(t_cmd *lst)
 {
 	t_cmd	*temp;
 
-	ft_putstr_fd("\nFREE CMD LST\n", 2);
 	while (lst)
 	{
 		temp = lst->next;

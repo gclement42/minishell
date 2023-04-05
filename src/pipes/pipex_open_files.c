@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 09:55:34 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/05 10:31:53 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 		|| ft_strlen(line) != ft_strlen(eof->content))
 	{
 		if (eof->marks != QUOTE)
-			line = replace_variable(line, env, 0, 0);
+			line = check_if_replace_var(line, env, 0, 0);
 		if (bools == 1)
 		{
 			if (write(fd, line, ft_strlen(line) + 1) < 0)

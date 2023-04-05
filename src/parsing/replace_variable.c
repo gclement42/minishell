@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 11:03:02 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/05 10:45:41 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,23 @@ static char	*join_content_next_var(char *content, char *var_content)
 {
 	char	*eow;
 	char	*join_content;
-	int		start;
+	int		s;
 
-	start = 0;
-	while (content[start] != '$')
-		start++;
-	start++;
-	if (ft_isdigit(content[start]) || is_special_char(content[start]))
-		start++;
+	s = 0;
+	while (content[s] && content[s] != '$')
+		s++;
+	s++;
+	if (content[s] && (ft_isdigit(content[s]) || is_special_char(content[s])))
+		s++;
 	else
-		while (content[start] && ft_isalnum(content[start]) && \
-			content[start] != '?' \
-		&& content[start] != '"' && content[start] != '\'')
-			start++;
-	if (content[start] == '?')
-		if (content[start - 1] && content[start - 1] == '$')
-			start++;
-	eow = ft_substr(content, start, (ft_strlen(content)) - start);
+		while (content[s] && ft_isalnum(content[s])
+			&& content[s] != '?' && content[s] != '"'
+			&& content[s] != '\'')
+			s++;
+	if (content[s] && content[s] == '?')
+		if (content[s - 1] && content[s - 1] == '$')
+			s++;
+	eow = ft_substr(content, s, (ft_strlen(content)) - s);
 	if (!eow)
 		return (NULL);
 	join_content = ft_strjoin(var_content, eow);
@@ -45,16 +45,14 @@ static	char	*join_new_content(char *new_content, char *content, \
 	char	*str_begin;
 	char	*str;
 
+	*b = 1;
 	str_begin = malloc((size + 1) * sizeof(char));
 	if (!str_begin)
 		return (NULL);
 	str_begin = ft_memcpy(str_begin, content, size);
 	str_begin[size] = '\0';
 	if (new_content)
-	{
 		str = ft_strjoin(str_begin, new_content);
-		*b = 1;
-	}
 	else
 		str = ft_strdup(str_begin);
 	if (!str)
@@ -70,52 +68,47 @@ void	skip_quote(int *i, char *str, char del)
 		*i += 1;
 }
 
-char	*replace_variable(char *str, t_minish *env, int b_skip_quote, int *b)
+char	*replace_variable(char *str, t_minish *env, int *i, int *b)
 {
 	char	*new_content;
+	int		bools;
+
+	bools = 0;
+	if (str[*i + 1] == '?')
+	{
+		new_content = ft_itoa(return_status);
+		bools = 1;
+	}
+	else
+		new_content = search_key(env->env_list, &str[*i + 1]);
+	str = join_new_content(new_content, str, *i, b);
+	if (!str)
+		return (NULL);
+	if (new_content && ft_strchr(new_content, '$'))
+		*i += ft_strlen(new_content);
+	if (str[*i] != '$' || !new_content)
+		*i -= 1;
+	if (bools == 1)
+		free (new_content);
+	return (str);
+}
+
+char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote, int *b)
+{
 	int		i;
 
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '\'' && b_skip_quote == 1)
+		if (str[i] == '\'' && bskip_quote == 1)
 			skip_quote(&i, str, '\'');
-		if (str[i] == '$' && (str[i + 1] && (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1]) \
-		|| str[i + 1] == '?' || str[i + 1] == '"' || str[i + 1] == '\'')))
-		{
-			if (str[i + 1] == '?')
-				new_content = ft_itoa(return_status);
-			else
-				new_content = search_key(env->env_list, &str[i + 1]);
-			str = join_new_content(new_content, str, i, b);
-			if (!str)
-				return (NULL);
-			if (new_content && ft_strchr(new_content, '$'))
-				i += ft_strlen(new_content);
-			if (str[i] != '$' || !new_content)
-				i--;
-		}
+		if (!str[i])
+			break ;
+		if (str[i] == '$' && (str[i + 1]
+				&& (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1])
+					|| str[i + 1] == '?' || str[i + 1] == '"'
+					|| str[i + 1] == '\'')))
+			str = replace_variable(str, env, &i, b);
 	}
 	return (str);
-}
-
-t_cmd	*check_if_replace_var(t_cmd *lst, t_minish *env)
-{
-	int	b;
-	//display_lst(lst);
-	b = 0;
-	while (lst)
-	{
-		if (lst->marks != QUOTE)
-		{
-			if (lst->type == CMD)
-				lst->content = replace_variable(lst->content, env, 1, &b);
-			else
-				lst->content = replace_variable(lst->content, env, 0, &b);
-		}
-		if (lst->type == CMD)
-			lst->content = remove_quote(lst->content);
-		lst = lst->next;
-	}
-	return (lst);
 }

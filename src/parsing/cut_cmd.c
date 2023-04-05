@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cut_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 10:58:45 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:10:14 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
 		x++;
 	if (last->type == OPT && !ft_strchr(last->content, ' '))
 		last->content = ft_strjoin(last->content, word);
-	else if (word[tmp] == '-' \
-	&& !ft_isalpha(word[x + 1]) && !get_node(*lst, ARG, PIPE))
+	else if (word[tmp] && word[tmp] == '-' && !ft_isalpha(word[x + 1])
+		&& !get_node(*lst, ARG, PIPE))
 		new_node_cmd(word, get_marks(marks), OPT, lst);
 	else
 	{
@@ -109,7 +109,10 @@ void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	if (!word)
 		return (NULL);
 	check_is_opt_or_arg(word, cmd[*i], lst);
-	if (cmd[*i + len + 1] != '\'' && cmd[*i + len + 1] != '"')
+	if (!cmd[*i + len])
+		*i += len;
+	else if (cmd[*i + len + 1] != '\''
+		&& cmd[*i + len + 1] != '"')
 		*i += len + 1;
 	else
 		*i += len;

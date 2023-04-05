@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 10:07:06 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:51:34 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,10 @@ char	*join_all_arg(t_cmd *lst, int bools)
 		else
 		{
 			arg_join = ft_strjoin(tmp, lst->content);
+			free (tmp);
 			if (!arg_join)
 				return (NULL);
-			free (tmp);
 			tmp = arg_join;
-			if (!tmp)
-				return (NULL);
 			lst = lst->next;
 		}
 	}
@@ -83,5 +81,5 @@ void	echo_parsing(t_cmd *lst)
 		print_echo(1, arg_join);
 	else
 		print_echo(0, arg_join);
-	// free (arg_join);
+	free (arg_join);
 }
