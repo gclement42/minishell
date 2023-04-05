@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 11:38:33 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:36:28 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_minish *env, int *b)
 	lst = NULL;
 	cmd = check_if_replace_var(cmd, env, 1, b);
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
-		return (ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2), NULL);
+		return (g_return_status = 2, ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);
@@ -79,19 +79,6 @@ int	is_here_doc(t_cmd *lst)
 	if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
 		return (0);
 	return (1);
-}
-
-void	display_lst(t_cmd *lst)
-{
-	(void) lst;
-	while (lst)
-	{
-		printf("content = %s\n", lst->content);
-		printf("type = %d\n", lst->type);
-		printf("marks = %d\n", lst->marks);
-		lst = lst->next;
-	}
-	printf("-------------------------------------------------------\n");
 }
 
 static void	fork_parsing(t_cmd *lst, t_minish *env)
@@ -129,6 +116,8 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 
 	if (!arg)
 		return ;
+	if (check_if_unexpected_token(lst) == 0)
+		return ;
 	if (count_type_in_lst(arg, PIPE) == 0 && arg)
 	{
 		stdin_copy = dup(0);
@@ -158,7 +147,6 @@ int	parsing(char *cmd, t_minish *env)
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
-  display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit_env(env);
@@ -166,6 +154,6 @@ int	parsing(char *cmd, t_minish *env)
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))
 		g_return_status = WEXITSTATUS(env->var->status);
-	copystd_and_exec_builtins(lst, env);
+	copystd_and_exec_builtins(get_node(lst, ARG, PIPE), lst, env);
 	return (1);
 }

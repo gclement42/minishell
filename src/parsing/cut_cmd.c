@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cut_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 11:10:14 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:12:29 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 				return ;
 			*i += len;
 			if (get_file(cmd, i, lst) == NULL)
-				return (msg_unexpected_token('>'));//!
+				return (msg_unexpected_token('>'));
 			*start = *i + 1;
 			tmp = *i;
 		}
