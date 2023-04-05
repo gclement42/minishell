@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 09:31:06 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:52:50 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ char		*join_all_arg(t_cmd *lst, int bools);
 /* Builtins parsing */
 t_env		*export_variable_parsing(t_cmd *lst, char *cmd_name);
 void		cd_parsing(t_cmd *lst, int argc, t_minish *var);
-void		echo_parsing(t_cmd *lst);
+void		echo_parsing(t_cmd *lst, t_minish *var);
 void		unset_parsing(t_minish *var, t_cmd *lst);
 void		exit_parsing(t_cmd *lst, t_minish *var);
 void		export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst);
-void		pwd_parsing(t_cmd *lst);
+void		pwd_parsing(t_cmd *lst, t_minish *var);
 char	    *exit_num_parsing(t_cmd *lst, t_minish *var);
 void		parsing_env(t_minish *var, t_cmd *arg);
 

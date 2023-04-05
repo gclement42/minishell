@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:19:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/17 14:18:27 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/04 16:13:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,12 @@ void	echo_no_backslash(char *echo_line)
 		ft_putchar_fd(echo_line[i], 1);
 		i++;
 	}
-	return_status = 0;
 }
 
 void	echo_backslash(char *echo_line)
 {
 	ft_putstr_fd(echo_line, 1);
 	ft_putchar_fd('\n', 1);
-	return_status = 0;
 }
 
 void	print_echo(int option, char *echo_line)
@@ -40,4 +38,5 @@ void	print_echo(int option, char *echo_line)
 		echo_backslash(echo_line);
 	else
 		echo_no_backslash(echo_line);
+	g_return_status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 13:34:17 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/14 14:10:28 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/04 14:15:19 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,20 @@ int	termios_disable_quit(void)
 	termios_tmp.c_cc[VQUIT] = (cc_t)(uintptr_t)SIG_IGN;
 	if (tcsetattr(STDERR_FILENO, 0, &termios_tmp) != 0)
 		return (1);
+	return (0);
+}
+
+int	init_sigaction(void (*signal_handler)(int))
+{
+	struct sigaction	sa;
+
+	if (sigemptyset(&sa.sa_mask) == -1)
+		return (0);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = signal_handler;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		return (-1);
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		return (-1);
 	return (0);
 }

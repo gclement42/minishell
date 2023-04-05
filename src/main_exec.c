@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 18:36:57 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:10:28 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-unsigned char	return_status = 0;
+
+unsigned char	g_return_status = 0;
 
 void	init_struct(t_minish *var, char **envp)
 {
@@ -22,6 +23,8 @@ void	init_struct(t_minish *var, char **envp)
 	var->builtins = NULL;
 	var->cd_path = NULL;
 	var->var = NULL;
+	var->builtins = init_bultins_arr();
+	termios_save(&var->orig_ter);
 	set_env(var, envp, &(var->env_list), &(var->exp_list));
 	modify_var(var, &(var->env_list), "_", "/usr/bin/env");
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
@@ -30,7 +33,6 @@ void	init_struct(t_minish *var, char **envp)
 int	main(int argc, char **argv, char *envp[])
 {
 	t_minish		*var;
-	struct termios	orig_ter;
 	int				run;
 
 	run = 1;
@@ -40,20 +42,18 @@ int	main(int argc, char **argv, char *envp[])
 	(void)argv;
 	(void)argc;
 	init_struct(var, envp);
-	var->builtins = init_bultins_arr();
-	termios_save(&orig_ter);
 	while (run)
 	{
-		init_sigaction(signal_handler_newl);
+		if (init_sigaction(signal_handler_newl) == -1)
+			exit_free(var);
 		termios_disable_quit();
 		var->cmd = readline(">>");
-		if (termios_restore(orig_ter) == 1)
+		if (termios_restore(var->orig_ter) == 1)
 			run = 0;
 		if (var->cmd == NULL)
 			exit_env(var);
 		parsing(var->cmd, var);
-		if (ft_strlen(var->cmd) > 0)
-			add_history(var->cmd);
+		add_history(var->cmd);
 		free(var->cmd);
 	}
 	exit_env(var);

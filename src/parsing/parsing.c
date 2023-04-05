@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 10:27:02 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:29:19 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,19 +79,6 @@ int	is_here_doc(t_cmd *lst)
 	return (1);
 }
 
-// void	display_lst(t_cmd *lst)
-// {
-// 	(void) lst;
-// 	while (lst)
-// 	{
-// 		printf("content = %s\n", lst->content);
-// 		printf("type = %d\n", lst->type);
-// 		printf("marks = %d\n", lst->marks);
-// 		lst = lst->next;
-// 	}
-// 	printf("-------------------------------------------------------\n");
-// }
-
 static void	fork_parsing(t_cmd *lst, t_minish *env)
 {
 	pid_t	id;
@@ -99,10 +86,12 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	id = fork();
 	if (id < 0)
 		exit_free(env);
-	init_sigaction(signal_parsing);
+	if (init_sigaction(signal_parsing) == -1)
+		exit_free(env);
 	if (is_here_doc(lst) == 0)
 	{
-		init_sigaction(new_signal_here_doc);
+		if (init_sigaction(new_signal_here_doc) == -1)
+			exit_free(env);
 		if (termios_disable_quit() == 1)
 			exit_free(env);
 	}
@@ -112,9 +101,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		pipex(env, lst);
 		free_cmd_list(lst);
 		if (env->var->env_cmd)
-			free_2d_array(env->var->env_cmd);;
+			free_2d_array(env->var->env_cmd);
 		exit_free(env);
-		// exit (1);
 	}
 }
 
@@ -124,17 +112,11 @@ static void	copystd_and_exec_builtins(t_cmd *lst, t_minish *env)
 	int		stdin_copy;
 	int		stdout_copy;
 	int		stderr_copy;
-	size_t	len;
 
 	arg = get_node(lst, CMD, PIPE);
 	if (!arg)
 		return ;
-	len = ft_strlen(arg->content);
-	if (count_type_in_lst(lst, PIPE) == 0 && arg && \
-		((ft_memcmp(arg->content, "export", len) == 0 && len == 6)
-			|| (ft_memcmp(arg->content, "unset", len) == 0 && len == 5)
-			|| (ft_memcmp(arg->content, "cd", len) == 0 && len == 2)
-			|| (ft_memcmp(arg->content, "exit", len) == 0 && len == 4)))
+	if (count_type_in_lst(lst, PIPE) == 0 && arg)
 	{
 		stdin_copy = dup(0);
 		stdout_copy = dup(1);
@@ -156,21 +138,20 @@ int	parsing(char *cmd, t_minish *env)
 	int		b;
 
 	if (!cmd || cmd[0] == '\0')
-		return (return_status = 0);
+		return (g_return_status = 0);
 	lst = create_lst_cmd(cmd, env, &b);
 	if (!lst)
 		return (-1);
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
-	// display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit_env(env);
 	fork_parsing(lst, env);
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))
-		return_status = WEXITSTATUS(env->var->status);
+		g_return_status = WEXITSTATUS(env->var->status);
 	copystd_and_exec_builtins(lst, env);
-	return (free_cmd_list(lst), free(env->var), 1);
+	return (1);
 }

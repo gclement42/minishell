@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 10:23:41 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:06:27 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 	{
 		cmd = create_arr_exec(lst);
 		if (!cmd)
-			display_error(env, var->env_cmd, "Command tab not properly allocated");
-		ft_putstr_fd("\nEXEC CHILD\n", 2);
+			display_error(env, var->env_cmd, \
+						"Command tab not properly allocated");
 		free_cmd_list(lst);
 		exec_command(env, var->env_cmd, cmd, envp);
 	}
@@ -68,7 +68,8 @@ void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 	{
 		env->var->env_cmd = get_path(env, envp);
 		if (!env->var->env_cmd)
-			display_error(env, env->var->env_cmd, "Env tab not properly allocated");
+			display_error(env, env->var->env_cmd, \
+						"Env tab not properly allocated");
 	}
 }
 
@@ -87,7 +88,8 @@ void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 			perror("fork: ");
 		else if (id == 0)
 		{
-			init_sigaction(signal_fork);
+			if (init_sigaction(signal_fork) == -1)
+				exit_free(env);
 			duplicate_fd(fd, var, lst);
 			close_pipes(var);
 			execute_child(env, var, lst, envp);
@@ -108,7 +110,8 @@ void	pipex(t_minish *env, t_cmd *lst)
 		return ;
 	if (get_node(lst, CMD, PIPE) != NULL)
 	{
-		init_sigaction(signal_fork);
+		if (init_sigaction(signal_fork) == -1)
+			exit_free(env);
 		init_struct_pipex(env, env->env_tab, lst);
 		child_proc(env, env->var, env->env_tab, get_node(lst, CMD, PIPE));
 	}

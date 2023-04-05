@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 10:24:27 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:08:10 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,6 @@ void	*free_2d_array(char **ptr)
 	return (NULL);
 }
 
-void	free_and_exit(char *msg, char **arg)
-{
-	ft_putstr_fd(msg, 2);
-	if (arg)
-		free_2d_array(arg);
-	exit (EXIT_SUCCESS);
-}
-
 void	exit_free(t_minish *var)
 {
 	if (var->env_list)
@@ -50,7 +42,7 @@ void	exit_free(t_minish *var)
 		free(var->var);
 	if (var)
 		free(var);
-	exit (return_status);
+	exit (g_return_status);
 }
 
 void	free_env_list(t_env *lst)
@@ -78,12 +70,11 @@ void	free_cmd_list(t_cmd *lst)
 {
 	t_cmd	*temp;
 
-	ft_putstr_fd("\nFREE CMD LST\n", 2);
 	while (lst)
 	{
 		temp = lst->next;
 		if (lst->content)
-      free(lst->content);
+			free(lst->content);
 		free(lst);
 		lst = temp;
 	}

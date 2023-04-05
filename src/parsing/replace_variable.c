@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_variable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 11:03:02 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:26:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*replace_variable(char *str, t_minish *env, int b_skip_quote, int *b)
 		|| str[i + 1] == '?' || str[i + 1] == '"' || str[i + 1] == '\'')))
 		{
 			if (str[i + 1] == '?')
-				new_content = ft_itoa(return_status);
+				new_content = ft_itoa(g_return_status);
 			else
 				new_content = search_key(env->env_list, &str[i + 1]);
 			str = join_new_content(new_content, str, i, b);

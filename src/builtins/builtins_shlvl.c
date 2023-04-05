@@ -6,14 +6,20 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 14:06:42 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/31 16:56:04 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/04 13:53:58 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static int	set_strlvl(int	strlvl)
+static int	set_strlvl(char	*content)
 {
+	int	strlvl;
+
+	if (ft_atoi(content) == 0)
+		return (0);
+	else
+		strlvl = ft_atoi(content) + 1;
 	if (strlvl > 999 && strlvl < 99999999)
 		strlvl = 999;
 	else if (strlvl > 99999999)
@@ -50,12 +56,10 @@ void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
 		{
 			if (ft_strnstr(temp_env->key, "SHLVL", 6))
 			{
-				var->lvl = ft_atoi(temp_env->content);
-				var->lvl++;
-				var->lvl = set_strlvl(var->lvl);
+				var->lvl = set_strlvl(temp_env->content);
 				str_lvl = ft_itoa(var->lvl);
 				if (!str_lvl)
-					exit_free(var); //FREE
+					exit_free(var);
 				modify_var(var, &temp_env, "SHLVL", str_lvl);
 				modify_var(var, &temp_exp, "SHLVL", str_lvl);
 				free(str_lvl);
@@ -67,15 +71,14 @@ void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l)
 		create_shlvl(var, env_l, exp_l);
 }
 
-static void	init_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *var)
+static void	init_shlvl(t_env **exp_l, t_env **env_l, \
+						t_env *new_var, t_minish *var)
 {
 	t_env	*key;
 	t_env	*ptr;
 	char	*str_lvl;
 
-	var->lvl = ft_atoi(new_var->content);
-	var->lvl++;
-	var->lvl = set_strlvl(var->lvl);
+	var->lvl = set_strlvl(new_var->content);
 	str_lvl = ft_itoa(var->lvl);
 	if (!str_lvl)
 		exit_free(var);
@@ -88,7 +91,8 @@ static void	init_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *v
 	free(str_lvl);
 }
 
-void	modify_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *var)
+void	modify_shlvl(t_env **exp_l, t_env **env_l, \
+						t_env *new_var, t_minish *var)
 {
 	t_env	*temp_env;
 	t_env	*temp_exp;
@@ -102,13 +106,11 @@ void	modify_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *var)
 		{
 			if (ft_strnstr(temp_env->key, "SHLVL", 6))
 			{
-				var->lvl = ft_atoi(new_var->content);
-				var->lvl++;
-				var->lvl = set_strlvl(var->lvl);
+				var->lvl = set_strlvl(new_var->content);
 				str_lvl = ft_itoa(var->lvl);
 				if (!str_lvl)
 					exit_free(var);
-				modify_var(var, &temp_env, "SHLVL",  str_lvl);
+				modify_var(var, &temp_env, "SHLVL", str_lvl);
 				modify_var(var, &temp_exp, "SHLVL", str_lvl);
 				free(str_lvl);
 			}

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:42:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 13:54:03 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/04 14:26:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	display_error_cmd(t_minish *env, char **tab, char *msg, char *cmd)
 		free_tab(tab);
 	if (env->env_tab)
 		free_2d_array(env->env_tab);
-	return_status = 127;
+	g_return_status = 127;
 	exit_free(env);
 }
 
@@ -34,7 +34,7 @@ void	display_error(t_minish *env, char **tab, char *msg)
 		free_tab(tab);
 	if (env->env_tab)
 		free_2d_array(env->env_tab);
-	return_status = 1;
+	g_return_status = 1;
 	exit_free(env);
 }
 
