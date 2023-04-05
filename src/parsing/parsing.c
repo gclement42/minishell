@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 11:38:33 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:33:56 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int	parsing(char *cmd, t_minish *env)
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
-  display_lst(lst);
+  	//display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit_env(env);
@@ -166,6 +166,6 @@ int	parsing(char *cmd, t_minish *env)
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))
 		g_return_status = WEXITSTATUS(env->var->status);
-	copystd_and_exec_builtins(lst, env);
+	copystd_and_exec_builtins(get_node(lst, ARG, PIPE), lst, env);
 	return (1);
 }
