@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   replace_variable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/05 10:45:41 by gclement         ###   ########.fr       */
@@ -76,7 +76,7 @@ char	*replace_variable(char *str, t_minish *env, int *i, int *b)
 	bools = 0;
 	if (str[*i + 1] == '?')
 	{
-		new_content = ft_itoa(return_status);
+		new_content = ft_itoa(g_return_status);
 		bools = 1;
 	}
 	else

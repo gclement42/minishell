@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 14:13:01 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/04 14:26:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	unset_parsing(t_minish *var, t_cmd *lst)
 		{
 			printf("minishell : unset : `%s' : not a valid identifier\n", \
 				lst->content);
-			return_status = 1;
+			g_return_status = 1;
 			return ;
 		}
 		check_is_valid_identifier(lst->content, "unset");

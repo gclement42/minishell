@@ -22,7 +22,7 @@ static void	exit_num_arg(t_cmd *lst, t_minish *var)
 {
 	printf("minishell: exit: %s: numeric argument required\n", \
 		lst->next->content);
-	return_status = 2;
+	g_return_status = 2;
 	exit_env(var);
 }
 
@@ -31,9 +31,9 @@ static void	exit_multiple_arg(char *arg)
 	if (check_isspace(arg) != ft_strlen(arg))
 	{
 		printf("exit\nminishell: exit: too many arguments\n");
-		return_status = 1;
+		g_return_status = 1;
 		free(arg);
-		return ;
+		// termios_disable_quit();
 	}
 }
 
@@ -76,14 +76,15 @@ void	exit_parsing(t_cmd *lst, t_minish *var)
 			lst = lst->next;
 		arg = exit_num_parsing(lst, var);
 		code = ft_atoll(arg);
-		if ((lst->next->next && lst->next->next->type == ARG && code == 0) || code == 0)
+		if ((lst->next->next && lst->next->next->type == ARG && code == 0) \
+			|| code == 0)
 		{
 			exit_multiple_arg(arg);
 			return ;
 		}
 		else
 		{
-			return_status = (unsigned char)code;
+			g_return_status = (unsigned char)code;
 			free(arg);
 			exit_env(var);
 		}

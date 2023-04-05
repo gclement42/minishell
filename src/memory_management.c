@@ -26,14 +26,6 @@ void	*free_2d_array(char **ptr)
 	return (NULL);
 }
 
-void	free_and_exit(char *msg, char **arg)
-{
-	ft_putstr_fd(msg, 2);
-	if (arg)
-		free_2d_array(arg);
-	exit (EXIT_SUCCESS);
-}
-
 void	exit_free(t_minish *var)
 {
 	if (var->env_list)
@@ -50,7 +42,7 @@ void	exit_free(t_minish *var)
 		free(var->var);
 	if (var)
 		free(var);
-	exit (return_status);
+	exit (g_return_status);
 }
 
 void	free_env_list(t_env *lst)
@@ -82,7 +74,7 @@ void	free_cmd_list(t_cmd *lst)
 	{
 		temp = lst->next;
 		if (lst->content)
-      free(lst->content);
+			free(lst->content);
 		free(lst);
 		lst = temp;
 	}

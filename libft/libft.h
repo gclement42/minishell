@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:24:40 by gclement          #+#    #+#             */
-/*   Updated: 2023/01/17 11:24:16 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:36:20 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void			ft_lstclear(t_list **lst, void (*del)(void*));
 void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
-
+long long		ft_atoll(const char *str);
 int				ft_putnbr_base_and_count(va_list args, int type);
 int				ft_printf(const char *format, ...);
 int				ft_put_unsigned_int(unsigned int nbr, int fd);

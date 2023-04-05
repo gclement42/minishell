@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 17:56:04 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:43:40 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static void	init_env(t_env **env, t_env **exp)
+static void	init_env(t_minish *var, t_env **env, t_env **exp)
 {
 	t_env	*key;
 	t_env	*ptr;
@@ -22,19 +22,19 @@ static void	init_env(t_env **env, t_env **exp)
 	key = ft_lstnew_env(ft_strdup("PWD"), ft_strdup(cwd));
 	ptr = duplicate_node(key);
 	if (!ptr || !key)
-		exit(1); //FREE
+		exit_free(var);
 	ft_lstadd_back_env(env, key);
 	ft_lstadd_back_env(exp, ptr);
 	key = ft_lstnew_env(ft_strdup("SHLVL"), ft_strdup("1"));
 	ptr = duplicate_node(key);
 	if (!ptr || !key)
-		exit(1); //FREE
+		exit_free(var);
 	ft_lstadd_back_env(env, key);
 	ft_lstadd_back_env(exp, ptr);
 	key = ft_lstnew_env(ft_strdup("_"), ft_strdup("/usr/bin/env"));
 	ptr = duplicate_node(key);
 	if (!ptr || !key)
-		exit(1); //FREE
+		exit_free(var);
 	ft_lstadd_back_env(env, key);
 	ft_lstadd_back_env(exp, ptr);
 }
@@ -99,7 +99,7 @@ void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
 	}
 	ptr_env = *env;
 	if (!ptr_env)
-		init_env(env, exp);
+		init_env(var, env, exp);
 	else
 		return ;
 }

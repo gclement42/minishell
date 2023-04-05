@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 13:51:34 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:12:11 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*join_all_arg(t_cmd *lst, int bools)
 {
-	char	*arg_join;
-	char	*tmp;
+    char    *arg_join;
+    char    *tmp;
 
 	lst = get_node(lst, ARG, PIPE);
 	tmp = ft_strdup(lst->content);
@@ -58,7 +58,7 @@ void	check_opt(t_cmd *opt)
 	}
 }
 
-void	echo_parsing(t_cmd *lst)
+void	echo_parsing(t_cmd *lst, t_minish *var)
 {
 	char	*arg_join;
 	t_cmd	*opt;
@@ -75,7 +75,7 @@ void	echo_parsing(t_cmd *lst)
 	{
 		arg_join = join_all_arg(lst, 0);
 		if (!arg_join)
-			exit (0); // FREE
+			exit_free(var); // FREE
 	}
 	if (get_node(lst, OPT, PIPE))
 		print_echo(1, arg_join);

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 09:54:25 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 15:49:54 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # include "pipes.h"
 # include "parsing.h"
 
-extern unsigned char	return_status;
+extern unsigned char	g_return_status;
 
 /* ---- Utils ---- */
 char		*ft_strnstr_path(char *haystack, char *needle, size_t len);
@@ -49,7 +49,6 @@ size_t		check_isspace(const char *str);
 void		ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env		*ft_lstnew_env(char *key, char *content);
 t_env	    *duplicate_node(t_env* lst);
-void		print_list(t_env **list);
 void		free_env_list(t_env *lst);
 void		free_cmd_list(t_cmd *lst);
 int			ft_lstlen(t_env *lst);
@@ -60,7 +59,7 @@ void		signal_here_doc(int sig);
 void		new_signal_here_doc(int sig);
 void		signal_fork(int sig);
 void		signal_parsing(int sig);
-void		init_sigaction(void (*signal_handler)(int));
+int 		init_sigaction(void (*signal_handler)(int));
 int			termios_save(struct termios *termios_save);
 int			termios_restore(const struct termios termios_save);
 int			termios_disable_quit();

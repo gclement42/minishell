@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 09:51:41 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 13:13:18 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/04 14:03:37 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	modify_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *var);
 void	print_echo(int option, char *echo_line);
 
 /* ---- pwd ---- */
-void	get_pwd(void);
+void	get_pwd(t_minish *var);
 
 /* ---- export ---- */
 void	export_env(t_minish *var, t_env *new_var, int argc);
@@ -50,4 +50,6 @@ int		check_key(t_env **lst, char *key);
 void	modify_var(t_minish *var, t_env **list, char *key, char *str);
 char	*get_cwd(void);
 char	**copy_reverse_envp(t_minish *var, char **envp);
+void	print_list(t_env **list);
+void    print_export_list(t_env **list);
 #endif

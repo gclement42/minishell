@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:08:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 17:30:18 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:24:26 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-void	print_list(t_env **list)
-{
-	t_env	*temp;
-
-	temp = *list;
-	if (!temp)
-		return ;
-	printf("%s=%s\n", temp->key, temp->content);
-	while (temp->next != NULL)
-	{
-		temp = temp->next;
-		printf("%s=%s\n", temp->key, temp->content);
-	}
-}
 
 void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {
@@ -80,12 +64,15 @@ t_env	*ft_lstnew_env(char *key, char *content)
 	return (ptr);
 }
 
-t_env	*duplicate_node(t_env* lst)
+t_env	*duplicate_node(t_env *lst)
 {
-	t_env* new_node = malloc(sizeof(t_env));
+	t_env	*new_node;
+
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
+		return (NULL);
 	new_node->key = strdup(lst->key);
 	new_node->content = strdup(lst->content);
 	new_node->next = lst->next;
-
 	return (new_node);
 }

@@ -101,10 +101,12 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	id = fork();
 	if (id < 0)
 		exit_free(env);
-	init_sigaction(signal_parsing);
+	if (init_sigaction(signal_parsing) == -1)
+		exit_free(env);
 	if (is_here_doc(lst) == 0)
 	{
-		init_sigaction(new_signal_here_doc);
+		if (init_sigaction(new_signal_here_doc) == -1)
+			exit_free(env);
 		if (termios_disable_quit() == 1)
 			exit_free(env);
 	}
@@ -149,21 +151,21 @@ int	parsing(char *cmd, t_minish *env)
 	int		b;
 
 	if (!cmd || cmd[0] == '\0')
-		return (return_status = 0);
+		return (g_return_status = 0);
 	lst = create_lst_cmd(cmd, env, &b);
 	if (!lst)
 		return (-1);
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
-	//display_lst(lst);
+  display_lst(lst);
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit_env(env);
 	fork_parsing(lst, env);
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))
-		return_status = WEXITSTATUS(env->var->status);
-	copystd_and_exec_builtins(get_node(lst, CMD, PIPE), lst, env);
-	return (free_cmd_list(lst), free(env->var), 1);
+		g_return_status = WEXITSTATUS(env->var->status);
+	copystd_and_exec_builtins(lst, env);
+	return (1);
 }

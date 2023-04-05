@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_err.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 19:29:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/30 19:43:03 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:26:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	msg_invalid_opt(char *str, char *cmd)
 		ft_putchar_fd(str[i], 2);
 	ft_putstr_fd(": invalid option ", 2);
 	ft_putstr_fd("\n", 2);
-	return_status = 1;
+	g_return_status = 1;
 }
 
 void	msg_unexpected_token(char token)
