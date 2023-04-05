@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 14:58:09 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 09:54:41 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:18:27 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ static char	**put_value(char **ptr, const char *s, char c, int row)
 		{
 			if (s[l] == '\'' || s[l] == '"')
 				skip_quote(&l, (char *)s, s[l]);
-			l++;
+			else
+				l++;
 		}	
 		if ((l - i) > 0)
 		{

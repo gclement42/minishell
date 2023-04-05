@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   echo_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/04 16:12:11 by jlaisne          ###   ########.fr       */
@@ -17,25 +17,25 @@ char	*join_all_arg(t_cmd *lst, int bools)
     char    *arg_join;
     char    *tmp;
 
-    lst = get_node(lst, ARG, PIPE);
-    tmp = ft_strdup(lst->content);
-    lst = lst->next;
-    arg_join = tmp;
-    while (lst && (lst->type == ARG || lst->type == S_SPACES))
-    {
-        if (bools == 1 && lst->type == S_SPACES)
-            break ;
-        else
-        {
-            arg_join = ft_strjoin(tmp, lst->content);
-            free (tmp);
-            if (!arg_join)
-                return (NULL);
-            tmp = arg_join;
-            lst = lst->next;
-        }
-    }
-    return (arg_join);
+	lst = get_node(lst, ARG, PIPE);
+	tmp = ft_strdup(lst->content);
+	lst = lst->next;
+	arg_join = tmp;
+	while (lst && (lst->type == ARG || lst->type == S_SPACES))
+	{
+		if (bools == 1 && lst->type == S_SPACES)
+			break ;
+		else
+		{
+			arg_join = ft_strjoin(tmp, lst->content);
+			free (tmp);
+			if (!arg_join)
+				return (NULL);
+			tmp = arg_join;
+			lst = lst->next;
+		}
+	}
+	return (arg_join);
 }
 
 void	check_opt(t_cmd *opt)
