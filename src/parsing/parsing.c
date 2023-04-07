@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 15:33:56 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/07 15:01:33 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	start = i;
 	while (cmd[i++])
 	{
-		if (cmd[i] == '\'' || cmd[i] == '"' \
-			|| cmd[i] == '>' || cmd[i] == '<')
-			parse_router(cmd, &i, &start, lst);
+		parse_router(cmd, &i, &start, lst);
 		if (!cmd[i])
 			break ;
 	}
@@ -43,18 +41,17 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	return (*lst);
 }
 
-static	t_cmd	*create_lst_cmd(char *cmd, t_minish *env, int *b)
+static	t_cmd	*create_lst_cmd(char *cmd, int *b)
 {
 	char	**split_by_pipe;
 	t_cmd	*lst;
 	int		i;
 
 	i = 0;
-	*b = 0;
 	lst = NULL;
-	cmd = check_if_replace_var(cmd, env, 1, b);
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
-		return (ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2), NULL);
+		return (ft_putstr_fd("bash: syntax error near unexpected token `|'\n"
+				, 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);
@@ -67,18 +64,9 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_minish *env, int *b)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	if (cmd[ft_strlen(cmd) - 1] == '|')
-		new_node_cmd("|", SPACES, CMD, &lst);
 	if (*b == 1)
 		free (cmd);
 	return (free_2d_array(split_by_pipe), lst);
-}
-
-int	is_here_doc(t_cmd *lst)
-{
-	if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
-		return (0);
-	return (1);
 }
 
 void	display_lst(t_cmd *lst)
@@ -150,11 +138,14 @@ int	parsing(char *cmd, t_minish *env)
 	t_cmd	*cmd_node;
 	int		b;
 
+	b = 0;
 	if (!cmd || cmd[0] == '\0')
 		return (g_return_status = 0);
-	lst = create_lst_cmd(cmd, env, &b);
+	cmd = check_if_replace_var(cmd, env, 1, &b);
+	lst = create_lst_cmd(cmd, &b);
 	if (!lst)
 		return (-1);
+	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
@@ -167,5 +158,7 @@ int	parsing(char *cmd, t_minish *env)
 	if (WEXITSTATUS(env->var->status))
 		g_return_status = WEXITSTATUS(env->var->status);
 	copystd_and_exec_builtins(get_node(lst, ARG, PIPE), lst, env);
-	return (1);
+	if (env->var)
+		free(env->var);
+	return (free_cmd_list(lst), 1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/05 11:38:45 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/07 14:54:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 		free_cmd_list(lst);
 		free_2d_array(env->env_tab);
 		free_2d_array(env->var->env_cmd);
+		free(env->var->pipefds);
 		exit_free(env);
 	}
 	else
@@ -31,7 +32,7 @@ void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 		if (!cmd)
 			display_error(env, var->env_cmd, \
 						"Command tab not properly allocated");
-		free_cmd_list(lst);
+		free_cmd_list(env->cmd_lst);
 		exec_command(env, var->env_cmd, cmd, envp);
 	}
 }
@@ -81,7 +82,7 @@ void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 	fd = 0;
 	while (lst)
 	{
-		if (check_if_unexpected_token(lst) == 0)
+		if (check_if_unexpected_token(lst, env) == 0)
 			return ;
 		id = fork();
 		if (id == -1)
@@ -106,7 +107,7 @@ void	pipex(t_minish *env, t_cmd *lst)
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit_free(env);
-	if (check_if_unexpected_token(lst) == 0)
+	if (check_if_unexpected_token(lst, env) == 0)
 		return ;
 	if (get_node(lst, CMD, PIPE) != NULL)
 	{

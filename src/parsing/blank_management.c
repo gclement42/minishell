@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:57:56 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 11:01:50 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/07 13:24:58 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,22 @@ void	parse_router(char *cmd, int *i, size_t *start, t_cmd **lst)
 {
 	char	*word;
 
-	if (*start < ((size_t)*i) && \
-		cmd[*start] != '"' && cmd[*start] != '\'')
+	if (cmd[*i] == '\'' || cmd[*i] == '"' \
+	|| cmd[*i] == '>' || cmd[*i] == '<')
 	{
-		word = ft_substr(cmd, *start, *i - *start);
-		if (!word)
-			return ;
-		get_word_with_space(word, lst, 0);
+		if (*start < ((size_t)*i) && \
+			cmd[*start] != '"' && cmd[*start] != '\'')
+		{
+			word = ft_substr(cmd, *start, *i - *start);
+			if (!word)
+				return ;
+			get_word_with_space(word, lst, 0);
+		}
+		if (cmd[*i] == '\'' || cmd[*i] == '"')
+			get_word(cmd, i, start, lst);
+		if (cmd[*i] == '>' || cmd[*i] == '<')
+			get_redirect(cmd, i, lst, start);
 	}
-	if (cmd[*i] == '\'' || cmd[*i] == '"')
-		get_word(cmd, i, start, lst);
-	if (cmd[*i] == '>' || cmd[*i] == '<')
-		get_redirect(cmd, i, lst, start);
 }
 
 static char	*malloc_dest(char *str)
@@ -74,6 +78,8 @@ char	*remove_quote(char *str)
 		if ((str[i] == '\'' || str[i] == '"') && tmp == 0)
 			tmp = str[i++];
 		dest[++x] = str[i];
+		if (!str[i])
+			break ;
 	}
 	return (free(str), dest);
 }

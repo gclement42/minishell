@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:56:40 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 19:11:27 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/06 14:50:44 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst)
 
 	new = malloc(sizeof(t_cmd));
 	if (!new)
-		return (NULL);
+		return (free(word), NULL);
 	new->content = ft_strdup(word);
 	if (!new->content)
 		return (NULL);

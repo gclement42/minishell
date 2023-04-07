@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/03 14:17:37 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/07 14:41:36 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	wait_id(t_pipex *var);
 void	close_pipes(t_pipex *var);
 
 /* ----- Open ----- */
-void	open_fd_in(t_pipex *var, char *filename, t_cmd *lst);
-void	open_fd_out(t_pipex *var, char *filename, int redirect);
+int		open_fd_in(t_pipex *var, char *filename, t_cmd *lst);
+int		open_fd_out(t_pipex *var, char *filename, int redirect);
 void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env);
 void    create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env);
 
