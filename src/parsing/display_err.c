@@ -32,4 +32,6 @@ void	msg_unexpected_token(char token)
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putchar_fd(token, 2);
 	ft_putstr_fd("'\n", 2);
+	g_return_status = 2;
+	exit (g_return_status);
 }

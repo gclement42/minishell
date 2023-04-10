@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ms_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 14:58:09 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/07 13:46:23 by gclement         ###   ########.fr       */

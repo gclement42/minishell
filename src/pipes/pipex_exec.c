@@ -53,10 +53,10 @@ static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 
 static void	check_cmd(t_minish *env, char **cmd, char **envp, char **path)
 {
-	if (!cmd[0])
+	if (cmd[0][0] == '\0')
 	{
 		free_tab(path);
-		display_error_cmd(env, cmd, "permission denied: ", cmd[0]);
+		display_error_cmd(env, cmd, "command not found", cmd[0]);
 	}
 	if (cmd[0][0] == '.' && cmd[0][1] == '/' && access(cmd[0], X_OK) == -1)
 	{
