@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/06 17:10:04 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/10 15:36:49 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 	{
 		perror("exec");
 		free(path);
-		free_tab(env->var->env_cmd);
+		free_2d_array(env->var->env_cmd);
 		exit_free(env);
 	}
 }
@@ -55,13 +55,21 @@ static void	check_cmd(t_minish *env, char **cmd, char **envp, char **path)
 {
 	if (cmd[0][0] == '\0')
 	{
-		free_tab(path);
-		display_error_cmd(env, cmd, "command not found", cmd[0]);
+		free_2d_array(path);
+		display_error_cmd(env, cmd, "command not found", "''");
 	}
 	if (cmd[0][0] == '.' && cmd[0][1] == '/' && access(cmd[0], X_OK) == -1)
 	{
-		free_tab(path);
-		display_error_cmd(env, cmd, "command not found", cmd[0]);
+		free_2d_array(path);
+		display_error_cmd(env, cmd, "No such file or directory", cmd[0]);
+	}
+	if (cmd[0][0] == '/')
+	{
+		free_2d_array(path);
+		if (opendir(cmd[0]))
+			display_error_dir(env, cmd, "Is a directory", cmd[0]);
+		else
+			display_error_cmd(env, cmd, "No such file or directory", cmd[0]);
 	}
 	if (access(cmd[0], X_OK) != -1)
 		execution(env, cmd[0], cmd, envp);
@@ -83,7 +91,7 @@ void	exec_command(t_minish *env, char **path, char **cmd, char *envp[])
 		{
 			if (!path[i + 1])
 			{
-				free_tab(path);
+				free_2d_array(path);
 				free(exe);
 				free(env->var->pipefds);
 				display_error_cmd(env, cmd, "command not found", cmd[0]);

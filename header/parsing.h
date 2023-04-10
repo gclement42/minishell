@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/07 14:33:15 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/10 10:27:39 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void		parsing_env(t_minish *var, t_cmd *arg);
 
 /* TMP */
 void		display_lst(t_cmd *lst);
+void	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env);
 
 #endif
 

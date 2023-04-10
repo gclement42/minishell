@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/07 15:01:33 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/10 15:18:34 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,6 @@ void	display_lst(t_cmd *lst)
 	printf("-------------------------------------------------------\n");
 }
 
-int	is_here_doc(t_cmd *lst)
-{
-	if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
-		return (0);
-	return (1);
-}
-
 static void	fork_parsing(t_cmd *lst, t_minish *env)
 {
 	pid_t	id;
@@ -123,7 +116,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 
 	if (!arg)
 		return ;
-	if (check_if_unexpected_token(lst) == 0)
+	if (check_if_unexpected_token(lst, env) == 0)
 		return ;
 	if (count_type_in_lst(arg, PIPE) == 0 && arg)
 	{
@@ -157,15 +150,10 @@ int	parsing(char *cmd, t_minish *env)
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
-	env->var = malloc(sizeof(t_pipex));
-	if (!env->var)
-		exit_env(env);
 	fork_parsing(lst, env);
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))
 		g_return_status = WEXITSTATUS(env->var->status);
 	copystd_and_exec_builtins(get_node(lst, ARG, PIPE), lst, env);
-	if (env->var)
-		free(env->var);
 	return (free_cmd_list(lst), 1);
 }

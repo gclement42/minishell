@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_dup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 12:22:01 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/03/30 11:04:36 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/10 15:31:43 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
+
+void	close_all(void)
+{
+	int i;
+	
+	i = 0;
+	while (i < 1024)
+	{
+		close(i);
+		i++;
+	}
+}
 
 void	close_pipes(t_pipex *var)
 {

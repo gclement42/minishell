@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/03 18:52:09 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/10 13:12:29 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,60 +14,31 @@
 
 static void	update_pwd(t_minish *var)
 {
-	t_env	*temp;
-	char	*old_pwd;
-
-	temp = var->env_list;
-	if ((check_key(&temp, "PWD") == 0) && (check_key(&temp, "OLDPWD") == 0))
-	{
-		old_pwd = NULL;
-		while (temp)
-		{
-			if (ft_strnstr(temp->key, "PWD", 4))
-			{
-				free(old_pwd);
-				old_pwd = ft_strdup(temp->content);
-				if (!old_pwd)
-					exit_free(var);
-			}
-			temp = temp->next;
-		}
-		modify_var(var, &var->env_list, "PWD", var->cd_path);
-		modify_var(var, &var->env_list, "OLDPWD", old_pwd);
-	}
 	if ((check_key(&var->exp_list, "PWD") == 0))
-		add_var_env(&var->env_list, "PWD", var->cd_path);
+		modify_var(var, &var->exp_list, "PWD", var->cd_path);
 	if ((check_key(&var->exp_list, "OLDPWD") == 0))
-		add_var_env(&var->env_list, "OLDPWD", var->oldpwd);
+		modify_var(var, &var->exp_list, "OLDPWD", var->oldpwd);
+	if ((check_key(&var->env_list, "PWD") == 0))
+		modify_var(var, &var->exp_list, "PWD", var->cd_path);
+	if ((check_key(&var->env_list, "OLDPWD") == 0))
+		modify_var(var, &var->env_list, "OLDPWD", var->oldpwd);
 }
 
 static void	update_pwd_home(t_minish *var, char *home_dir)
 {
-	t_env	*temp;
-	char	*old_pwd;
-
-	temp = var->env_list;
-	if ((check_key(&temp, "PWD") == 0) && (check_key(&temp, "OLDPWD") == 0))
-	{
-		old_pwd = NULL;
-		while (temp)
-		{
-			if (ft_strnstr(temp->key, "PWD", 4))
-			{
-				free(old_pwd);
-				old_pwd = ft_strdup(temp->content);
-				if (!old_pwd)
-					exit_free(var);
-			}
-			temp = temp->next;
-		}
-		modify_var(var, &var->env_list, "PWD", home_dir);
-		modify_var(var, &var->env_list, "OLDPWD", old_pwd);
-	}
+	char	*dir;
+	
+	dir = ft_strdup(home_dir);
+	if (!dir)
+		exit_free(var);
 	if ((check_key(&var->exp_list, "PWD") == 0))
-		add_var_env(&var->env_list, "PWD", var->cd_path);
+		modify_var(var, &var->exp_list, "PWD", dir);
 	if ((check_key(&var->exp_list, "OLDPWD") == 0))
-		add_var_env(&var->env_list, "OLDPWD", var->oldpwd);
+		modify_var(var, &var->exp_list, "OLDPWD", var->oldpwd);
+	if ((check_key(&var->env_list, "PWD") == 0))
+		modify_var(var, &var->exp_list, "PWD", dir);
+	if ((check_key(&var->env_list, "OLDPWD") == 0))
+		modify_var(var, &var->env_list, "OLDPWD", var->oldpwd);
 }
 
 static int	cd_home(t_minish *var)
