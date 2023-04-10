@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/05 13:57:54 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/06 17:10:04 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	exec_command(t_minish *env, char **path, char **cmd, char *envp[])
 			{
 				free_tab(path);
 				free(exe);
+				free(env->var->pipefds);
 				display_error_cmd(env, cmd, "command not found", cmd[0]);
 			}
 			free(exe);

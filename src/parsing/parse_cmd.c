@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 11:01:44 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/07 14:32:50 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**create_arr_exec(t_cmd *cmd)
 	return (arr_exec[x] = NULL, arr_exec);
 }
 
-int	check_if_unexpected_token(t_cmd *node)
+int	check_if_unexpected_token(t_cmd *node, t_minish *env)
 {
 	int	i;
 
@@ -73,7 +73,15 @@ int	check_if_unexpected_token(t_cmd *node)
 		node->content[i] == ' ')
 		i++;
 	if (node->content[i] || node->type == PIPE)
-		return (msg_unexpected_token(node->content[i]), 0);
+	{
+		msg_unexpected_token(node->content[i]);
+		free_cmd_list(env->cmd_lst);
+		free_2d_array(env->env_tab);
+		free_2d_array(env->var->env_cmd);
+		free(env->var->pipefds);
+		g_return_status = 2;
+		exit_free(env);
+	}
 	return (1);
 }
 

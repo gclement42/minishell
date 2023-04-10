@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 15:25:07 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/06 16:30:00 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init_struct(t_minish *var, char **envp)
 	var->builtins = NULL;
 	var->cd_path = NULL;
 	var->var = NULL;
+	var->cmd_lst = NULL;
 	var->builtins = init_bultins_arr();
 	termios_save(&var->orig_ter);
 	set_env(var, envp, &(var->env_list), &(var->exp_list));

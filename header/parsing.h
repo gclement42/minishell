@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 10:32:34 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/07 14:33:15 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
 void		search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env);
 void		create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env);
+int			is_here_doc(t_cmd *lst);
 char		*check_if_replace_var(char *str, t_minish *env, int bskip_quote, int *b);
 
 /* cmd list utils */
@@ -51,7 +52,7 @@ char		*search_key(t_env *lst_env, char *key);
 int			count_type_in_lst(t_cmd *lst, t_type type);
 int			check_is_valid_identifier(char *str, char *cmd);
 int			is_all_char(char *word, char c);
-int			check_if_unexpected_token(t_cmd *node);
+int			check_if_unexpected_token(t_cmd *node, t_minish *env);
 void		msg_invalid_opt(char *str, char *cmd);
 char		**ft_ms_split(char const *s, char c);
 void		skip_quote(int *i, char *str, char del);

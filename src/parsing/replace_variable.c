@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   replace_variable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 10:45:41 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/07 13:20:46 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*join_content_next_var(char *content, char *var_content)
+static char	*join_content_next_var(char *content, char *var_content, char *n_c)
 {
 	char	*eow;
 	char	*join_content;
@@ -21,7 +21,8 @@ static char	*join_content_next_var(char *content, char *var_content)
 	s = 0;
 	while (content[s] && content[s] != '$')
 		s++;
-	s++;
+	if (n_c)
+		s++;
 	if (content[s] && (ft_isdigit(content[s]) || is_special_char(content[s])))
 		s++;
 	else
@@ -57,7 +58,7 @@ static	char	*join_new_content(char *new_content, char *content, \
 		str = ft_strdup(str_begin);
 	if (!str)
 		return (NULL);
-	str = join_content_next_var(content, str);
+	str = join_content_next_var(content, str, new_content);
 	return (free(str_begin), str);
 }
 
@@ -96,11 +97,17 @@ char	*replace_variable(char *str, t_minish *env, int *i, int *b)
 char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote, int *b)
 {
 	int		i;
+	int		b_dq;
 
 	i = -1;
+	b_dq = 0;
 	while (str[++i])
 	{
-		if (str[i] == '\'' && bskip_quote == 1)
+		if (str[i] == '"' && bskip_quote == 1 && b_dq == 0)
+			b_dq = 1;
+		else if (str[i] == '"' && b_dq == 1)
+			b_dq = 0;
+		if (str[i] == '\'' && bskip_quote == 1 && b_dq == 0)
 			skip_quote(&i, str, '\'');
 		if (!str[i])
 			break ;

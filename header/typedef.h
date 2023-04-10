@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 10:14:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 14:14:05 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/06 16:28:54 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ typedef struct s_pipex
 	int		status;
 }	t_pipex;
 
+typedef struct s_cmd
+{
+	char			*content;
+	t_marks			marks;
+	t_type			type;
+	struct s_cmd	*next;
+}	t_cmd;
+
 typedef struct s_minish
 {
 	struct termios	orig_ter;
@@ -66,14 +74,8 @@ typedef struct s_minish
 	char		*dir;
 	char		*oldpwd;
 	int			lvl;
+	t_cmd		*cmd_lst;
 }	t_minish;
 
-typedef struct s_cmd
-{
-	char			*content;
-	t_marks			marks;
-	t_type			type;
-	struct s_cmd	*next;
-}	t_cmd;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 14:12:29 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/06 16:10:52 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 				return ;
 			*i += len;
 			if (get_file(cmd, i, lst) == NULL)
-				return (msg_unexpected_token('>'));
+				return ;
 			*start = *i + 1;
 			tmp = *i;
 		}
@@ -85,16 +85,18 @@ void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
 	while (word[x] && word[x] != ' ')
 		x++;
 	if (last->type == OPT && !ft_strchr(last->content, ' '))
+	{
 		last->content = ft_strjoin(last->content, word);
+		if (ft_strchr(last->content, ' '))
+			last->type = ARG;
+	}
 	else if (word[tmp] && word[tmp] == '-' && !ft_isalpha(word[x + 1])
 		&& !get_node(*lst, ARG, PIPE))
 		new_node_cmd(word, get_marks(marks), OPT, lst);
 	else
-	{
 		if (is_all_char(word, ' ') == 0 || get_marks(marks) != SPACE)
 			if (!new_node_cmd(word, get_marks(marks), ARG, lst))
 				return ;
-	}
 }
 
 void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)

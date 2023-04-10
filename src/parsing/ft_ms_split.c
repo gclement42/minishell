@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 14:58:09 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 14:08:52 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/07 13:46:23 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ static int	wordcount_split(char const *str, char c)
 	i = 0;
 	while (i <= ft_strlen(str))
 	{
-		while (str[i] == c)
+		while (str[i] && str[i] == c)
 			i++;
-		if (str[i] != c && str[i])
+		if (str[i] && str[i] != c)
 		{
 			count++;
-			while (str[i] != c && str[i])
+			while (str[i] && str[i] != c)
 				i++;
 		}
 		i++;
@@ -50,25 +50,45 @@ static char	**create_2d_array(int row)
 	return (ptr);
 }
 
+static	int	count_len_split(int *bools, const char *s, char c, int i)
+{
+	int	l;
+
+	l = 0;
+	while (s[i] && (s[i] != c || *bools == 0))
+	{
+		if (s[i] == '\'' || s[i] == '"')
+		{
+			skip_quote(&i, (char *)s, s[i]);
+			l += i - l;
+		}
+		if (!s[i])
+			break ;
+		if (s[i] != ' ')
+			*bools = 1;
+		l++;
+		i++;
+	}
+	return (l);
+}
+
 static char	**put_value(char **ptr, const char *s, char c, int row)
 {
 	int				l;
 	unsigned int	i;
+	int				bools;
 
 	i = 0;
+	bools = 0;
 	while (s[i])
 	{
-		while (s[i] == c)
+		while (s[i] && s[i] == c)
 			i++;
 		l = i;
-		while (s[l] && s[l] != c)
-		{
-			if (s[l] == '\'' || s[l] == '"')
-				skip_quote(&l, (char *)s, s[l]);
-			l++;
-		}	
+		l += count_len_split(&bools, s, c, i);
 		if ((l - i) > 0)
 		{
+			bools = 0;
 			ptr[row] = ft_substr(s, i, (l - i));
 			if (!ptr[row++])
 				return (free_2d_array(&*ptr));
