@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/10 10:27:39 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/10 16:23:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			count_type_in_lst(t_cmd *lst, t_type type);
 int			check_is_valid_identifier(char *str, char *cmd);
 int			is_all_char(char *word, char c);
 int			check_if_unexpected_token(t_cmd *node, t_minish *env);
-void		msg_invalid_opt(char *str, char *cmd);
+void		msg_invalid_opt(char *str, char *cmd, int ret_v);
 char		**ft_ms_split(char const *s, char c);
 void		skip_quote(int *i, char *str, char del);
 int			is_special_char(char c);

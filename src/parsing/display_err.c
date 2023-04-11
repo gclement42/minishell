@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   display_err.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 19:29:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/07 14:22:11 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/10 16:22:55 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	msg_invalid_opt(char *str, char *cmd)
+void	msg_invalid_opt(char *str, char *cmd, int ret_v)
 {
 	int		i;
 
@@ -24,7 +24,7 @@ void	msg_invalid_opt(char *str, char *cmd)
 		ft_putchar_fd(str[i], 2);
 	ft_putstr_fd(": invalid option ", 2);
 	ft_putstr_fd("\n", 2);
-	g_return_status = 1;
+	g_return_status = ret_v;
 }
 
 void	msg_unexpected_token(char token)

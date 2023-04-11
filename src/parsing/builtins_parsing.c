@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/10 13:44:05 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/10 16:24:06 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 	while (lst && lst->type != PIPE)
 	{
 		if (lst->type == OPT)
-			return (msg_invalid_opt(lst->content, cmd_name), NULL);
+			return (msg_invalid_opt(lst->content, cmd_name, 1), NULL);
 		if (lst->type == ARG)
 		{
 			if (lst->next && lst->next->type == ARG && \

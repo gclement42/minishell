@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/04 14:26:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/10 16:23:27 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	parsing_env(t_minish *var, t_cmd *lst)
 	while (lst && lst->type != PIPE)
 	{
 		if (lst->type == OPT)
-			return (msg_invalid_opt(lst->content, "env"));
+			return (msg_invalid_opt(lst->content, "env", 1));
 		if (lst->type == ARG)
 		{
 			if (!ft_strchr(lst->content, '='))
@@ -70,7 +70,8 @@ void	unset_parsing(t_minish *var, t_cmd *lst)
 			g_return_status = 1;
 			return ;
 		}
-		check_is_valid_identifier(lst->content, "unset");
+		if (check_is_valid_identifier(lst->content, "unset") == 0)
+			return ;
 		remove_var_env(var, lst->content);
 		while (lst && lst->type == ARG && !ft_strchr(lst->content, ' '))
 			lst = lst->next;
