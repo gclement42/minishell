@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 10:59:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/11 09:28:27 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,6 @@ void	parsing_env(t_minish *var, t_cmd *lst)
 	{
 		if (lst->type == OPT)
 			return (msg_invalid_opt(lst->content, "env", 1));
-		if (lst->type == ARG)
-		{
-			if (!ft_strchr(lst->content, '='))
-			{
-				ft_putstr_fd("env: ", 2);
-				ft_putstr_fd(lst->content, 2);
-				ft_putstr_fd(": No such file or directory\n", 2);
-				return ;
-			}
-		}
 		lst = lst->next;
 	}
 	get_env(var);
@@ -39,20 +29,20 @@ void	export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
 
 	if (argc == 0 || env->key[0] == '#')
 	{
-		if (lst && check_is_valid_identifier(env->key, "export") == 0 && argc != 0)
-			return ;
+		if (lst && check_is_valid_identifier(env->key, "export") == 0
+			&& argc != 0)
+			return (free_env_list(env));
 		export_env(var, env, 0);
 		return ;
 	}
-	while (env && lst && lst->type != PIPE)
+	while (env)
 	{
 		if (check_is_valid_identifier(env->key, "export") == 0)
-			return ;
+			return (free_env_list(env));
 		tmp = env->next;
 		env->next = NULL;
 		export_env(var, env, argc);
 		env = tmp;
-		lst = lst->next;
 	}
 }
 

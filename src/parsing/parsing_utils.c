@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/22 13:24:06 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/11 10:36:51 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*search_key(t_env *lst_env, char *key)
 
 	i = 0;
 	if (key[0] == '?')
-		return (ft_itoa(errno));
+		return (ft_itoa(g_return_status));
 	while (ft_isalnum(key[i]))
 		i++;
 	while (lst_env && key[0] != '\0')
@@ -70,18 +70,12 @@ char	*search_key(t_env *lst_env, char *key)
 	return (NULL);
 }
 
-int	count_type_in_lst(t_cmd *lst, t_type type)
+int	is_special_char(char c)
 {
-	int	count;
-
-	count = 0;
-	if (!lst)
-		return (0);
-	while (lst)
-	{
-		if (lst->type == type)
-			count++;
-		lst = lst->next;
-	}
-	return (count);
+	if (((c >= 33 && c <= 47) || (c >= 58 && c <= 63) \
+		|| (c >= 91 && c <= 96) || (c >= 123 && c <= 126)) \
+		|| c == '@')
+		return (1);
+	return (0);
 }
+

@@ -6,29 +6,29 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/10 16:04:55 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/11 09:59:48 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-int	open_fd_in(t_pipex *var, char *filename, t_cmd *lst)
+int	open_fd_in(t_minish *env, char *filename, t_cmd *lst)
 {
 	int	count;
 
 	if (filename[0] == '<' || filename[0] == '>')
 		return (msg_unexpected_token(filename[0]), 0);
 	count = count_type_in_lst(lst, PIPE);
-	var->fdin = open(filename, O_RDONLY, 0777);
-	if (var->fdin == -1)
+	env->var->fdin = open(filename, O_RDONLY, 0777);
+	if (env->var->fdin == -1)
 	{
-		perror("infile");
+		perror(filename);
 		if (count == 0)
 			return (0);
 	}
-	if (var->fdin > -1)
+	if (env->var->fdin > -1)
 	{
-		if (dup2(var->fdin, STDIN_FILENO) < 0)
+		if (dup2(env->var->fdin, STDIN_FILENO) < 0)
 		{
 			perror("dup2");
 			return (0);
@@ -37,22 +37,22 @@ int	open_fd_in(t_pipex *var, char *filename, t_cmd *lst)
 	return (1);
 }
 
-int	open_fd_out(t_pipex *var, char *filename, int redirect)
+int	open_fd_out(t_minish *env, char *filename, int redirect)
 {
 	if (filename[0] == '<' || filename[0] == '>')
 		return (msg_unexpected_token(filename[0]), 0);
 	if (redirect == 0)
-		var->fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		env->var->fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else
-		var->fdout = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (var->fdout == -1)
+		env->var->fdout = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (env->var->fdout == -1)
 	{
 		perror("outfile");
 		return (0);
 	}
 	else
 	{
-		if (dup2(var->fdout, STDOUT_FILENO) < 0)
+		if (dup2(env->var->fdout, STDOUT_FILENO) < 0)
 		{
 			perror("dup2");
 			return (0);

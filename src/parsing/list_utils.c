@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:56:40 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/06 14:50:44 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/11 10:36:58 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,20 @@ t_cmd	*get_node(t_cmd *lst, t_type type, t_type end)
 		return (lst);
 	else
 		return (NULL);
+}
+
+int	count_type_in_lst(t_cmd *lst, t_type type)
+{
+	int	count;
+
+	count = 0;
+	if (!lst)
+		return (0);
+	while (lst)
+	{
+		if (lst->type == type)
+			count++;
+		lst = lst->next;
+	}
+	return (count);
 }

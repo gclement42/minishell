@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/10 15:26:55 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/11 09:56:18 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	close_pipes(t_pipex *var);
 void	close_all(void);
 
 /* ----- Open ----- */
-int		open_fd_in(t_pipex *var, char *filename, t_cmd *lst);
-int		open_fd_out(t_pipex *var, char *filename, int redirect);
+int		open_fd_in(t_minish *env, char *filename, t_cmd *lst);
+int		open_fd_out(t_minish *env, char *filename, int redirect);
 void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env);
 void    create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env);
 
