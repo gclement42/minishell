@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/10 16:23:27 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/11 10:59:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,41 @@ void	export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
 	}
 }
 
-void	unset_parsing(t_minish *var, t_cmd *lst)
+static void	unset_arg_parsing(t_minish *var, t_cmd *lst)
 {
 	while (lst)
-	{
-		if (lst->next && lst->next->type == ARG && \
-			!ft_strchr(lst->content, ' '))
-			lst->content = join_all_arg(lst, 1);
-		if (ft_strchr(lst->content, '='))
 		{
-			printf("minishell : unset : `%s' : not a valid identifier\n", \
-				lst->content);
-			g_return_status = 1;
-			return ;
+			if (lst->next && lst->next->type == ARG && \
+				!ft_strchr(lst->content, ' '))
+				lst->content = join_all_arg(lst, 1);
+			if (ft_strchr(lst->content, '='))
+			{
+				printf("minishell : unset : `%s' : not a valid identifier\n", \
+					lst->content);
+				g_return_status = 1;
+				return ;
+			}
+			if (check_is_valid_identifier(lst->content, "unset") == 0)
+				return ;
+			remove_var_env(var, lst->content);
+			while (lst && lst->type == ARG && !ft_strchr(lst->content, ' '))
+				lst = lst->next;
+			if (lst && lst->next)
+				lst = lst->next;
 		}
-		if (check_is_valid_identifier(lst->content, "unset") == 0)
-			return ;
-		remove_var_env(var, lst->content);
-		while (lst && lst->type == ARG && !ft_strchr(lst->content, ' '))
-			lst = lst->next;
-		if (lst && lst->next)
-			lst = lst->next;
-	}
+}
+
+void	unset_parsing(t_minish *var, t_cmd *lst)
+{
+	t_cmd	*opt;
+
+	if (!lst->next)
+		return ;
+	opt = get_node(lst, OPT, PIPE);
+	if (opt)
+		msg_invalid_opt(opt->content, "unset", 2);
+	else if (lst->next && lst->next->content[0] == '_')
+		return ;
+	else
+		unset_arg_parsing(var, lst);
 }

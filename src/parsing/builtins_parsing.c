@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/10 16:24:06 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/11 11:07:59 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)
 		parsing_env(var, cmd_node);
 	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0 && cmd_len == 5)
-		unset_parsing(var, arg_node);
+		unset_parsing(var, cmd_node);
 	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0 && cmd_len == 6)
 		export_parsing(var, argc, env_lst, arg_node);
 	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0 && cmd_len == 4)
@@ -45,9 +45,11 @@ void	builtins_router(t_cmd *lst, int argc, t_minish *var)
 
 int	is_special_char(char c)
 {
+	if (c == '_')
+		return (0);
 	if (((c >= 33 && c <= 47) || (c >= 58 && c <= 63) \
 		|| (c >= 91 && c <= 96) || (c >= 123 && c <= 126)) \
-		|| c == '@')
+		|| c == '@' || (c >= '0' && c <= '9'))
 		return (1);
 	return (0);
 }
@@ -58,7 +60,7 @@ int	check_is_valid_identifier(char *str, char *cmd)
 
 	i = 0;
 	if (!str[i] || ((str[i] != '$' && str[i] != ' ') && str[i] != '/' && \
-		(!ft_isalpha(str[i]) || str[i] == '=' || is_special_char(str[i]))))
+		(str[i] == '=' || is_special_char(str[i]))))
 	{
 		printf("minishell : %s : `%s' : not a valid identifier\n", \
 			cmd, str);
