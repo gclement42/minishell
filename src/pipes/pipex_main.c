@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/04/11 10:50:16 by gclement         ###   ########.fr       */
@@ -92,14 +92,15 @@ void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 		{
 			if (init_sigaction(signal_fork) == -1)
 				exit_free(env);
-			duplicate_fd(fd, var, lst);
+			duplicate_fd(fd, var, lst);	
 			close_pipes(var);
 			execute_child(env, var, lst, envp);
 		}
 		fd += 2;
 		lst = lst_next(lst);
 	}
-	close_pipes(env->var);
+	close_pipes(var);
+	close_all();
 	wait_id(var);
 }
 

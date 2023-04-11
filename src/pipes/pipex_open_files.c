@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/04/11 09:59:48 by gclement         ###   ########.fr       */
@@ -24,14 +24,14 @@ int	open_fd_in(t_minish *env, char *filename, t_cmd *lst)
 	{
 		perror(filename);
 		if (count == 0)
-			return (free_cmd_list(lst), exit_free(env), 1);
+			return (0);
 	}
 	if (env->var->fdin > -1)
 	{
 		if (dup2(env->var->fdin, STDIN_FILENO) < 0)
 		{
 			perror("dup2");
-			exit(EXIT_FAILURE);
+			return (0);
 		}
 	}
 	return (1);
@@ -48,14 +48,14 @@ int	open_fd_out(t_minish *env, char *filename, int redirect)
 	if (env->var->fdout == -1)
 	{
 		perror("outfile");
-		return (free_cmd_list(env->cmd_lst), exit_free(env), 1);
+		return (0);
 	}
 	else
 	{
 		if (dup2(env->var->fdout, STDOUT_FILENO) < 0)
 		{
 			perror("dup2");
-			exit(EXIT_FAILURE);
+			return (0);
 		}
 	}
 	return (1);
@@ -72,14 +72,20 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 		len = ft_strlen(lst->content);
 		if (lst->type == REDIRECT)
 		{
-			if (ft_memcmp("<", lst->content, len) == 0)
-				b = open_fd_in(env, lst->next->content, lst);
-			else if (ft_memcmp("<<", lst->content, len) == 0)
+			if (!lst->next)
+			{
+				printf("minishell: parse error near `\\n'\n");
+				g_return_status = 1;
+				exit_free(env);
+			}
+			if (ft_memcmp("<", lst->content, len) == 0 && lst->next->content)
+				b = open_fd_in(var, lst->next->content, lst);
+			else if (ft_memcmp("<<", lst->content, len) == 0 && lst->next->content)
 				create_heredoc(lst, var, env);
-			if (ft_memcmp(">", lst->content, len) == 0)
-				b = open_fd_out(env, lst->next->content, 0);
-			else if (ft_memcmp(">>", lst->content, len) == 0)
-				open_fd_out(env, lst->next->content, 1);
+			if (ft_memcmp(">", lst->content, len) == 0 && lst->next->content)
+				b = open_fd_out(var, lst->next->content, 0);
+			else if (ft_memcmp(">>", lst->content, len) == 0 && lst->next->content)
+				open_fd_out(var, lst->next->content, 1);
 		}
 		if (b == 0)
 			return (free_cmd_list(env->cmd_lst), exit_free(env));

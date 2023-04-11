@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/11 13:34:23 by gclement         ###   ########.fr       */
@@ -53,7 +53,7 @@ int			count_type_in_lst(t_cmd *lst, t_type type);
 int			check_is_valid_identifier(char *str, char *cmd);
 int			is_all_char(char *word, char c);
 int			check_if_unexpected_token(t_cmd *node, t_minish *env);
-void		msg_invalid_opt(char *str, char *cmd);
+void		msg_invalid_opt(char *str, char *cmd, int ret_v);
 char		**ft_ms_split(char const *s, char c);
 void		skip_quote(int *i, char *str, char del);
 int			is_special_char(char c);
@@ -77,6 +77,7 @@ void		parsing_env(t_minish *var, t_cmd *arg);
 
 /* TMP */
 void		display_lst(t_cmd *lst);
+void	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env);
 
 #endif
 

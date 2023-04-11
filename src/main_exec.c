@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/06 16:30:00 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/10 15:52:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ void	init_struct(t_minish *var, char **envp)
 	set_env(var, envp, &(var->env_list), &(var->exp_list));
 	modify_var(var, &(var->env_list), "_", "/usr/bin/env");
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
+	var->var = malloc(sizeof(t_pipex));
+	if (!var->var)
+		exit_env(var);
 }
 
 int	main(int argc, char **argv, char *envp[])

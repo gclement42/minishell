@@ -17,9 +17,8 @@ int	check_is_good_arg_cd(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] == '.')
+	while (str[i] && str[i] == '.')
 		i++;
-	printf("i = %d\n", i);
 	if (i == 2)
 		return (1);
 	else
@@ -36,8 +35,7 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 	else if (argc == 0 || lst->content[0] == '\0' || \
 		(lst && ft_strchr(lst->content, '~') != 0) || lst->content[0] == '<')
 	{
-
-		if ((lst && check_is_good_arg_cd(lst->next->content) == 1) || lst->content[0] == '\0')
+		if ((lst && lst->next && check_is_good_arg_cd(lst->next->content) == 1) || lst->content[0] == '\0')
 		{
 			cd(var, NULL);
 			return ;
@@ -45,7 +43,7 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 		while (argc != 0 && lst->content[i])
 		{
 			if (lst->content[i] != '~')
-				return (ft_putstr_fd("errr", 2));//quasi sur que c'est pas le bon msg d'erreur
+				return (ft_putstr_fd("errr", 2)); //quasi sur que c'est pas le bon msg d'erreur
 			i++;
 		}
 		if (cd(var, NULL) == -1)

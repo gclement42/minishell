@@ -30,7 +30,7 @@ void	pwd_parsing(t_cmd *lst, t_minish *var)
 
 	opt = get_node(lst, OPT, PIPE);
 	if (opt)
-		msg_invalid_opt(opt->content, "pwd");
+		msg_invalid_opt(opt->content, "pwd", 2);
 	else
 		get_pwd(var);
 }

@@ -29,7 +29,7 @@ void	echo_no_backslash(char *echo_line)
 void	echo_backslash(char *echo_line)
 {
 	ft_putstr_fd(echo_line, 1);
-	ft_putchar_fd('\n', 2);
+	ft_putchar_fd('\n', 1);
 }
 
 void	print_echo(int option, char *echo_line)
