@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:19:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 14:26:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/11 09:19:25 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	get_pwd(t_minish *var)
 	if (str == NULL)
 		exit_free(var);
 	printf("%s\n", str);
+	free(str);
 	g_return_status = 0;
 }
 

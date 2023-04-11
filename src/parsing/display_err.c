@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 19:29:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/07 14:22:11 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/11 09:36:09 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,4 @@ void	msg_unexpected_token(char token)
 	ft_putchar_fd(token, 2);
 	ft_putstr_fd("'\n", 2);
 	g_return_status = 2;
-	exit (g_return_status);
 }

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/07 13:20:46 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/11 08:36:27 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ static char	*join_content_next_var(char *content, char *var_content, char *n_c)
 		s++;
 	if (content[s] && (ft_isdigit(content[s]) || is_special_char(content[s])))
 		s++;
-	else
-		while (content[s] && ft_isalnum(content[s])
-			&& content[s] != '?' && content[s] != '"'
-			&& content[s] != '\'')
-			s++;
+	while (content[s] && (ft_isalnum(content[s]) || is_special_char(content[s]))
+		&& content[s] != '?' && content[s] != '"'
+		&& content[s] != '\'')
+		s++;
 	if (content[s] && content[s] == '?')
 		if (content[s - 1] && content[s - 1] == '$')
 			s++;
@@ -59,7 +58,7 @@ static	char	*join_new_content(char *new_content, char *content, \
 	if (!str)
 		return (NULL);
 	str = join_content_next_var(content, str, new_content);
-	return (free(str_begin), str);
+	return (free(str_begin), free(content), str);
 }
 
 void	skip_quote(int *i, char *str, char del)
@@ -75,13 +74,12 @@ char	*replace_variable(char *str, t_minish *env, int *i, int *b)
 	int		bools;
 
 	bools = 0;
+	str = ft_strdup(str);
+	if (!str)
+		return (NULL);
 	if (str[*i + 1] == '?')
-	{
-		new_content = ft_itoa(g_return_status);
 		bools = 1;
-	}
-	else
-		new_content = search_key(env->env_list, &str[*i + 1]);
+	new_content = search_key(env->env_list, &str[*i + 1]);
 	str = join_new_content(new_content, str, *i, b);
 	if (!str)
 		return (NULL);

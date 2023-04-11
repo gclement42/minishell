@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cut_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/06 16:10:52 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:35:08 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*get_file(char *cmd, int *i, t_cmd **lst)
+void	*get_file(char *cmd, int *i)
 {
 	size_t	len;
 	char	*word;
@@ -33,8 +33,7 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 			if (count_len(&cmd[*i], '<') < len)
 				len = count_len(&cmd[*i], '<');
 			word = ft_substr(cmd, *i, len);
-			if (!word || !new_node_cmd(word, get_marks(cmd[*i]), FILES, lst))
-				return (NULL);
+			word = remove_quote(word);
 			return (*i += len, word);
 		}
 		*i += 1;
@@ -57,10 +56,10 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 			if (cmd[*i + 1] == cmd[*i])
 				len = 2;
 			word = ft_substr(cmd, *i, len);
-			if (!word || new_node_cmd(word, SPACES, REDIRECT, lst) == NULL)
+			if (!word || !new_node_cmd(word, SPACES, REDIRECT, lst))
 				return ;
 			*i += len;
-			if (get_file(cmd, i, lst) == NULL)
+			if (!new_node_cmd(get_file(cmd, i), get_marks(cmd[*i]), FILES, lst))
 				return ;
 			*start = *i + 1;
 			tmp = *i;
@@ -74,24 +73,25 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
 {
 	int		x;
-	int		tmp;
+	int		beg;
 	t_cmd	*last;
 
 	x = 0;
 	last = cmd_lst_last(lst);
 	while (word[x] && (word[x] == '\'' || word[x] == '"'))
 		x++;
-	tmp = x;
+	beg = x;
 	while (word[x] && word[x] != ' ')
 		x++;
-	if (last->type == OPT && !ft_strchr(last->content, ' '))
+	if (last && last->type == OPT && !ft_strchr(last->content, ' '))
 	{
 		last->content = ft_strjoin(last->content, word);
+		if (!last->content)
+			return ;
 		if (ft_strchr(last->content, ' '))
 			last->type = ARG;
 	}
-	else if (word[tmp] && word[tmp] == '-' && !ft_isalpha(word[x + 1])
-		&& !get_node(*lst, ARG, PIPE))
+	else if (word[beg] && word[beg] == '-' && !get_node(*lst, ARG, PIPE))
 		new_node_cmd(word, get_marks(marks), OPT, lst);
 	else
 		if (is_all_char(word, ' ') == 0 || get_marks(marks) != SPACE)

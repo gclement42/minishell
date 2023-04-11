@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/07 15:01:33 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/11 10:46:07 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,6 @@ void	display_lst(t_cmd *lst)
 	printf("-------------------------------------------------------\n");
 }
 
-int	is_here_doc(t_cmd *lst)
-{
-	if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
-		return (0);
-	return (1);
-}
-
 static void	fork_parsing(t_cmd *lst, t_minish *env)
 {
 	pid_t	id;
@@ -123,7 +116,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 
 	if (!arg)
 		return ;
-	if (check_if_unexpected_token(lst) == 0)
+	if (check_if_unexpected_token(lst, env) == 0)
 		return ;
 	if (count_type_in_lst(arg, PIPE) == 0 && arg)
 	{
@@ -133,7 +126,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		close(0);
 		close(1);
 		close(2);
-		builtins_router(lst, count_type_in_lst(lst, ARG), env);
+		builtins_router(get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG), env);
 		dup2(stdin_copy, 0);
 		dup2(stdout_copy, 1);
 		dup2(stderr_copy, 2);
@@ -160,6 +153,7 @@ int	parsing(char *cmd, t_minish *env)
 	env->var = malloc(sizeof(t_pipex));
 	if (!env->var)
 		exit_env(env);
+	display_lst(lst);
 	fork_parsing(lst, env);
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))

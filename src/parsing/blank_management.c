@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:57:56 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/07 13:24:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/11 10:34:48 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,33 +84,37 @@ char	*remove_quote(char *str)
 	return (free(str), dest);
 }
 
-void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
+static void	split_word_by_space(char *word, t_cmd **lst, int is_eol)
 {
-	char	**split_word;
 	int		x;
 	char	*tmp;
+	char	**split_word;
 
 	x = 0;
-	if (ft_strchr(word, ' ') && is_all_char(word, ' ') == 0)
+	split_word = ft_split(word, ' ');
+	while (split_word[x])
 	{
-		split_word = ft_split(word, ' ');
-		if (word[0] == ' ')
-			new_node_cmd(" ", -1, S_SPACES, lst);
-		while (split_word[x])
+		if (word[ft_strlen(word) - 1] == ' ' && !split_word[x + 1] && !is_eol)
 		{
-			if (word[ft_strlen(word) - 1] == ' ' && !split_word[x + 1] && !is_eol)
-			{
-				tmp = ft_strjoin(split_word[x], " ");
-				check_is_opt_or_arg(tmp, ' ', lst);
-				return (free(split_word[x]), free(split_word),free(word));
-			}
-			check_is_opt_or_arg(split_word[x], ' ', lst);
-			x++;
-			if (split_word[x])
-				new_node_cmd(" ", -1, S_SPACES, lst);
+			tmp = ft_strjoin(split_word[x], " ");
+			check_is_opt_or_arg(tmp, ' ', lst);
+			return (free(split_word[x]), free(split_word), free(word));
 		}
-		return (free(word), free(split_word));
+		check_is_opt_or_arg(split_word[x], ' ', lst);
+		x++;
+		if (split_word[x])
+			new_node_cmd(" ", -1, S_SPACES, lst);
 	}
+	return (free(word), free(split_word));
+}
+
+void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
+{
+
+	if (word[0] == ' ')
+		new_node_cmd(" ", -1, S_SPACES, lst);
+	if (ft_strchr(word, ' ') && is_all_char(word, ' ') == 0)
+		return (split_word_by_space(word, lst, is_eol));
 	if (is_all_char(word, ' ') == 1)
 	{
 		new_node_cmd(" ", -1, S_SPACES, lst);

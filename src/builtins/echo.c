@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:19:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/05 13:26:37 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/10 10:30:22 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ void	echo_no_backslash(char *echo_line)
 		return ;
 	while (echo_line[i])
 	{
-		ft_putchar_fd(echo_line[i], 2);
+		ft_putchar_fd(echo_line[i], 1);
 		i++;
 	}
 }
 
 void	echo_backslash(char *echo_line)
 {
-	ft_putstr_fd(echo_line, 2);
+	ft_putstr_fd(echo_line, 1);
 	ft_putchar_fd('\n', 2);
 }
 
