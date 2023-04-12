@@ -6,48 +6,48 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 13:39:14 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 13:39:46 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/12 10:54:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t    check_isspace(const char *str)
+size_t	check_isspace(const char *str)
 {
-    int    i;
+	size_t	i;
 
-    i = 0;
-    while (str[i] == ' ' || str[i] == '\t'
-        || str[i] == '\n' || str[i] == '\v'
-        || str[i] == '\f' || str[i] == '\r')
-        i++;
-    return (i);
+	i = 0;
+	while (str[i] == ' ' || str[i] == '\t'
+		|| str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r')
+		i++;
+	return (i);
 }
 
-long long    ft_atoll(const char *str)
+long long	ft_atoll(const char *str)
 {
-    size_t        i;
-    long long    nb;
-    int            sign;
+	size_t		i;
+	long long	nb;
+	int			sign;
 
-    i = check_isspace(str);
-    nb = 0;
-    sign = 1;
-    if ((str[i] == '+' || str[i] == '-')
-        && (str[i + 1] >= '0' && str[i + 1] <= '9'))
-    {
-        if (str[i] == '-')
-            sign = -1;
-        i++;
-    }
-    while (str[i] >= '0' && str[i] <= '9')
-    {
-        if (nb != ((nb * 10) + (str[i] - '0')) * sign / 10)
-            return (0);
-        nb = nb * 10 + (str[i] - '0');
-        i++;
-    }
-    if ((str[i] <= '0' || str[i] >= '9') && str[i] != '\0')
-        return (0);
-    return (nb * sign);
+	i = check_isspace(str);
+	nb = 0;
+	sign = 1;
+	if ((str[i] == '+' || str[i] == '-')
+		&& (str[i + 1] >= '0' && str[i + 1] <= '9'))
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		// if (nb != ((nb * 10) + (str[i] - '0')) * sign / 10)
+		// 	return (0);
+		nb = nb * 10 + ((int)str[i] - '0');
+		i++;
+	}
+	if ((str[i] <= '0' || str[i] >= '9') && str[i] != '\0')
+		return (0);
+	return (nb * sign);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/12 13:20:46 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/12 10:52:41 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static	t_cmd	*create_lst_cmd(char *cmd, int *b)
 	i = 0;
 	lst = NULL;
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
-		return (g_return_status = 2, ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2), NULL);
+		return (g_return_status = 2, ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);
@@ -114,11 +114,11 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	int		stdout_copy;
 	int		stderr_copy;
 
-	if (!arg)
+	if (!arg && ft_memcmp(lst->content, "exit", 4))
 		return ;
 	if (check_if_unexpected_token(lst, env) == 0)
 		return ;
-	if (count_type_in_lst(arg, PIPE) == 0 && arg)
+	if (lst && count_type_in_lst(arg, PIPE) == 0)
 	{
 		stdin_copy = dup(0);
 		stdout_copy = dup(1);
@@ -130,7 +130,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		dup2(stdin_copy, 0);
 		dup2(stdout_copy, 1);
 		dup2(stderr_copy, 2);
-	}
+		}
 }
 
 int	parsing(char *cmd, t_minish *env)

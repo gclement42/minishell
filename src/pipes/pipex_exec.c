@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/10 15:36:49 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/11 14:52:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ static void	check_cmd(t_minish *env, char **cmd, char **envp, char **path)
 		free_2d_array(path);
 		if (opendir(cmd[0]))
 			display_error_dir(env, cmd, "Is a directory", cmd[0]);
+		else if (access(cmd[0], X_OK) != -1)
+			execution(env, cmd[0], cmd, envp);
 		else
 			display_error_cmd(env, cmd, "No such file or directory", cmd[0]);
 	}
