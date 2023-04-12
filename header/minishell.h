@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 15:49:54 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/11 15:07:09 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <termios.h>
-# include "exec.h"
 # include "typedef.h"
+# include "exec.h"
 # include "pipes.h"
 # include "parsing.h"
 
