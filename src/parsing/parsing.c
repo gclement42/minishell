@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/12 10:52:41 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/12 14:06:42 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,9 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	int		stdout_copy;
 	int		stderr_copy;
 
-	if (!arg && ft_memcmp(lst->content, "exit", 4))
-		return ;
 	if (check_if_unexpected_token(lst, env) == 0)
+		return ;
+	if (!arg && ft_memcmp(lst->content, "exit", 4))
 		return ;
 	if (lst && count_type_in_lst(arg, PIPE) == 0)
 	{
@@ -146,7 +146,7 @@ int	parsing(char *cmd, t_minish *env)
 	lst = create_lst_cmd(cmd, &b);
 	if (!lst)
 		return (-1);
-	display_lst(lst);
+	// display_lst(lst);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

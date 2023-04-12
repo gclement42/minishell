@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 17:25:31 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/12 13:30:34 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ int	check_if_unexpected_token(t_cmd *node, t_minish *env)
 		i++;
 	if (node->content[i] || node->type == PIPE)
 	{
+		g_return_status = 2;
 		msg_unexpected_token(node->content[i]);
 		free_cmd_list(env->cmd_lst);
 		free_2d_array(env->env_tab);
 		free_2d_array(env->var->env_cmd);
 		free(env->var->pipefds);
-		g_return_status = 2;
 		exit_free(env);
 	}
 	return (1);

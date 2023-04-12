@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/12 10:48:26 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/12 14:26:58 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ void	exit_env(t_minish *var)
 	exit_free(var);
 }
 
-static void	exit_arg(t_minish *var, char **exit_args, int code)
+static void	exit_arg(t_minish *var, char **exit_args, long long code)
 {
+	if (code == 0 && (exit_args[0][0] == '-' || exit_args[0][0] == '+') \
+		&& exit_args[0][1] == '0' && exit_args[0][2] == '\0')
+		return ;
 	if (code == 0 && (exit_args[0][0] != 0 && exit_args[0][1] != '\0'))
 	{
 		printf("minishell: exit: %s: numeric argument required\n", exit_args[0]);
@@ -79,12 +82,10 @@ void	exit_parsing(t_cmd *lst, t_minish *var)
 		if (!exit_args)
 			exit_free(var);
 		code = ft_atoll(exit_args[0]);
-		// printf("arg = %s && code = %lld\n", exit_args[0], code);
 		exit_arg(var, exit_args, code);
 		if (g_return_status == 1)
 			return ;
 		g_return_status = (unsigned char)code;
-		//printf("%d\n", g_return_status);
 		if (lst)
 			free_cmd_list(lst);
 		free_2d_array(exit_args);
