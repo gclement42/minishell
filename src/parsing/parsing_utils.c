@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 10:36:51 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:45:38 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ char	*search_key(t_env *lst_env, char *key)
 
 int	is_special_char(char c)
 {
+	if (c == '_')
+		return (0);
 	if (((c >= 33 && c <= 47) || (c >= 58 && c <= 63) \
 		|| (c >= 91 && c <= 96) || (c >= 123 && c <= 126)) \
-		|| c == '@')
+		|| c == '@' || (c >= '0' && c <= '9'))
 		return (1);
 	return (0);
 }

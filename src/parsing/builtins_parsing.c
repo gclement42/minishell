@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 10:49:31 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/11 13:45:31 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,6 @@ void	builtins_router(t_cmd *cmd_node, int argc, t_minish *var)
 		echo_parsing(cmd_node, var);
 	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
 		exit_parsing(cmd_node, var);
-
-}
-
-int	is_special_char(char c)
-{
-	if (c == '_')
-		return (0);
-	if (((c >= 33 && c <= 47) || (c >= 58 && c <= 63) \
-		|| (c >= 91 && c <= 96) || (c >= 123 && c <= 126)) \
-		|| c == '@' || (c >= '0' && c <= '9'))
-		return (1);
-	return (0);
 }
 
 int	check_is_valid_identifier(char *str, char *cmd)
