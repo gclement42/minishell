@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/04/11 14:32:47 by jlaisne          ###   ########.fr       */
@@ -74,7 +74,7 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 		{
 			if (!lst->next)
 			{
-				printf("minishell: parse error near `\\n'\n");
+				printf("syntax error near unexpected token `newline'\n");
 				g_return_status = 1;
 				exit_free(env);
 			}

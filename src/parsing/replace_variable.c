@@ -6,33 +6,28 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 08:36:27 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/12 10:57:41 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*join_content_next_var(char *content, char *var_content, char *n_c)
+static char	*join_content_next_var(char *content, char *var_content, char *n_c, int s)
 {
 	char	*eow;
 	char	*join_content;
-	int		s;
 
-	s = 0;
-	while (content[s] && content[s] != '$')
-		s++;
 	if (n_c)
 		s++;
 	if (content[s] && (ft_isdigit(content[s]) || is_special_char(content[s])))
 		s++;
 	while (content[s] && (ft_isalnum(content[s]) || is_special_char(content[s]))
-		&& content[s] != '?' && content[s] != '"'
-		&& content[s] != '\'')
+		&& content[s] != '?' && (content[s] != '\'' && content[s] != '"' && content[s] != '$'))
 		s++;
 	if (content[s] && content[s] == '?')
 		if (content[s - 1] && content[s - 1] == '$')
 			s++;
-	eow = ft_substr(content, s, (ft_strlen(content)) - s);
+	eow = ft_substr(content, s, (ft_strlen(content) - s));
 	if (!eow)
 		return (NULL);
 	join_content = ft_strjoin(var_content, eow);
@@ -57,7 +52,7 @@ static	char	*join_new_content(char *new_content, char *content, \
 		str = ft_strdup(str_begin);
 	if (!str)
 		return (NULL);
-	str = join_content_next_var(content, str, new_content);
+	str = join_content_next_var(content, str, new_content, size);
 	return (free(str_begin), free(content), str);
 }
 
@@ -109,10 +104,10 @@ char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote, int *b)
 			skip_quote(&i, str, '\'');
 		if (!str[i])
 			break ;
-		if (str[i] == '$' && (str[i + 1]
-				&& (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1])
-					|| str[i + 1] == '?' || str[i + 1] == '"'
-					|| str[i + 1] == '\'')))
+		if (str[i] == '$' && (str[i + 1] \
+			&& (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1]) \
+			|| str[i + 1] == '?' || str[i + 1] == '"' \
+			|| str[i + 1] == '\'')))
 			str = replace_variable(str, env, &i, b);
 	}
 	return (str);

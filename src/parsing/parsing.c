@@ -146,6 +146,7 @@ int	parsing(char *cmd, t_minish *env)
 	lst = create_lst_cmd(cmd, &b);
 	if (!lst)
 		return (-1);
+	display_lst(lst);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/12 13:21:43 by jlaisne          ###   ########.fr       */
@@ -37,10 +37,7 @@ void	builtins_router(t_cmd *cmd_node, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0 && cmd_len == 4)
 		echo_parsing(cmd_node, var);
 	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
-	{
-		ft_putstr_fd("1", 2);
 		exit_parsing(cmd_node, var);
-	}
 }
 
 int	check_is_valid_identifier(char *str, char *cmd)
