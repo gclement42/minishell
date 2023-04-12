@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 13:56:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:20:46 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ int	parsing(char *cmd, t_minish *env)
 	lst = create_lst_cmd(cmd, &b);
 	if (!lst)
 		return (-1);
+	display_lst(lst);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

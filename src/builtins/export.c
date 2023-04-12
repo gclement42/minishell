@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/11 14:38:49 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/12 10:17:08 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static void	replace_content(t_minish *var, t_env *new_var)
 			exit_free(var);
 		modify_var(var, &var->exp_list, new_var->key, new_var->content);
 	}
-	else if (check_key(&var->exp_list, new_var->key) == 0)
+	else if (!check_key(&var->exp_list, new_var->key)
+		&& check_key(&var->env_list, new_var->key))
 	{
 		modify_var(var, &var->exp_list, new_var->key, new_var->content);
 		add_var_env(&var->env_list, new_var->key, new_var->content);
