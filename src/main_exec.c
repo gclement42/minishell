@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/10 15:52:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 13:30:32 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char *envp[])
 		if (init_sigaction(signal_handler_newl) == -1)
 			exit_free(var);
 		termios_disable_quit();
-		var->cmd = readline(">>");
+		var->cmd = readline("\033[1;31m minishell $> \033[0m");
 		if (termios_restore(var->orig_ter) == 1)
 			run = 0;
 		if (var->cmd == NULL)
