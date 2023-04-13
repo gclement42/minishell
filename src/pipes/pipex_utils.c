@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 14:26:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 10:44:20 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,18 @@ void	join_slash(t_minish *env, char **path)
 		free(temp);
 		i++;
 	}
+}
+
+char	**init_empty_tab(char **tab)
+{
+	tab = malloc(sizeof(char *) * 2);
+	if (!tab)
+		return (NULL);
+	tab[0] = ft_strdup("");
+	if (!tab[0])
+		return (NULL);
+	tab[1] = NULL;
+	return (tab);
 }
 
 void	wait_id(t_pipex *var)

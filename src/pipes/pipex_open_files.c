@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/11 14:32:47 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 10:19:27 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,14 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 			}
 			if (ft_memcmp("<", lst->content, len) == 0 && lst->next->content)
 				b = open_fd_in(env, lst->next->content, lst);
-			else if (ft_memcmp("<<", lst->content, len) == 0 && lst->next->content)
+			else if (ft_memcmp("<<", lst->content, len) == 0 \
+				&& lst->next->content)
 				create_heredoc(lst, var, env);
-			if (ft_memcmp(">", lst->content, len) == 0 && lst->next->content)
+			if (ft_memcmp(">", lst->content, len) == 0 \
+				&& lst->next->content)
 				b = open_fd_out(env, lst->next->content, 0);
-			else if (ft_memcmp(">>", lst->content, len) == 0 && lst->next->content)
+			else if (ft_memcmp(">>", lst->content, len) == 0 \
+				&& lst->next->content)
 				open_fd_out(env, lst->next->content, 1);
 		}
 		if (b == 0)
@@ -92,5 +95,3 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 		lst = lst->next;
 	}
 }
-
-
