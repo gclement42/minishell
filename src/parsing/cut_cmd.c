@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 13:35:08 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 10:53:17 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*get_file(char *cmd, int *i)
 	return (NULL);
 }
 
-void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
+void	*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 {
 	size_t	len;
 	char	*word;
@@ -57,17 +57,17 @@ void	get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 				len = 2;
 			word = ft_substr(cmd, *i, len);
 			if (!word || !new_node_cmd(word, SPACES, REDIRECT, lst))
-				return ;
+				return (NULL);
 			*i += len;
 			if (!new_node_cmd(get_file(cmd, i), get_marks(cmd[*i]), FILES, lst))
-				return ;
+				return (*start = *i + 1, NULL);
 			*start = *i + 1;
 			tmp = *i;
 		}
 		else
 			*i += 1;
 	}
-	*i = tmp;
+	return (*i = tmp, lst);
 }
 
 void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
@@ -122,7 +122,6 @@ void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	return (lst);
 }
 
-/* Surement des leaks ici */
 void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 {
 	size_t	len;
@@ -132,7 +131,7 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 	while (cmd[*i] == ' ')
 		*i += 1;
 	len = *i;
-	while (cmd[len] && cmd[len] != ' ')
+	while (cmd[len] && cmd[len] != ' ' && cmd[len] != '>')
 	{
 		if (cmd[len] == '"' || cmd[len] == '\'')
 		{

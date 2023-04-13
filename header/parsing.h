@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 13:34:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 10:28:26 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		builtins_router(t_cmd *cmd_node, int argc, t_minish *var);
 void		get_opt(char *cmd, int *i, t_cmd **lst);
 void		get_frst_word(char *cmd, int *i, t_cmd **lst);
 void		*get_word(char *cmd, int *i, size_t *start, t_cmd **lst);
-void		get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
+void		*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
 void		*get_file(char *cmd, int *i);
 void		get_word_with_space(char *word, t_cmd **lst, int is_eol);
 char        *remove_quote(char *str);
@@ -33,8 +33,6 @@ void		parse_router(char *cmd, int *i, size_t *start, t_cmd **lst);
 char		*replace_variable(char *str, t_minish *env, int *i, int *b);
 char		*prompt_for_quote_termination(char *cmd, char c);
 char	    **create_arr_exec(t_cmd *cmd);
-void		search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env);
-void		create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env);
 int			is_here_doc(t_cmd *lst);
 char		*check_if_replace_var(char *str, t_minish *env, int bskip_quote, int *b);
 
@@ -77,7 +75,6 @@ void		parsing_env(t_minish *var, t_cmd *arg);
 
 /* TMP */
 void		display_lst(t_cmd *lst);
-void	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env);
 
 #endif
 

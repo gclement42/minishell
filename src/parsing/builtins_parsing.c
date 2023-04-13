@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 14:01:22 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 14:24:30 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	builtins_router(t_cmd *cmd_node, int argc, t_minish *var)
 
 	env_lst = NULL;
 	arg_node = get_node(cmd_node, ARG, PIPE);
+	if (!cmd_node)
+		return ;
 	cmd_len = ft_strlen(cmd_node->content);
 	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
 		env_lst = export_variable_parsing(cmd_node, cmd_node->content);
@@ -33,7 +35,7 @@ void	builtins_router(t_cmd *cmd_node, int argc, t_minish *var)
 	if (ft_memcmp(cmd_node->content, "unset", cmd_len) == 0 && cmd_len == 5)
 		unset_parsing(var, cmd_node);
 	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0 && cmd_len == 6)
-		export_parsing(var, argc, env_lst, arg_node);
+		export_parsing(var, argc, env_lst, cmd_node);
 	if (ft_memcmp(cmd_node->content, "echo", cmd_len) == 0 && cmd_len == 4)
 		echo_parsing(cmd_node, var);
 	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
@@ -127,7 +129,7 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 	while (lst && lst->type != PIPE)
 	{
 		if (lst->type == OPT)
-			return (msg_invalid_opt(lst->content, cmd_name, 1), NULL);
+			return (msg_invalid_opt(lst->content, cmd_name, 2), NULL);
 		if (lst->type == ARG)
 			env_lst = create_export_lst(env_lst, lst, cmd_name);
 		if (lst)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/12 13:30:34 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 09:40:50 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,22 @@ int	check_if_unexpected_token(t_cmd *node, t_minish *env)
 	i = 0;
 	while (node && node->type != CMD)
 		node = node->next;
-	while (ft_isalnum(node->content[i]) || \
-		(node->content[i] >= 33 && node->content[i] <= 47)
-		|| node->content[i] == ' ' || node->content[i] == ')'
-		|| node->content[i] == '}')
+	while (node->content && (ft_isalnum(node->content[i]) || \
+		(node->content[i] >= 33 && node->content[i] <= 47) \
+		|| node->content[i] == ' ' || node->content[i] == ')' \
+		|| node->content[i] == '}'))
 		i++;
 	if (node->content[i] || node->type == PIPE)
 	{
 		g_return_status = 2;
 		msg_unexpected_token(node->content[i]);
 		free_cmd_list(env->cmd_lst);
-		free_2d_array(env->env_tab);
-		free_2d_array(env->var->env_cmd);
-		free(env->var->pipefds);
+		if (env->env_tab)
+			free_2d_array(env->env_tab);
+		if (env->var->env_cmd)
+			free_2d_array(env->var->env_cmd);
+		if (env->var->pipefds)
+			free(env->var->pipefds);
 		exit_free(env);
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/13 10:19:49 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 13:25:47 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,14 @@ void	pipex(t_minish *env, t_cmd *lst)
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
 		exit_free(env);
-	if (check_if_unexpected_token(lst, env) == 0)
+	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
-	if (get_node(lst, CMD, PIPE) != NULL)
+	if (get_node(lst, CMD, -1) != NULL)
 	{
 		if (init_sigaction(signal_fork) == -1)
 			exit_free(env);
 		init_struct_pipex(env, env->env_tab, lst);
-		child_proc(env, env->var, env->env_tab, get_node(lst, CMD, PIPE));
+		child_proc(env, env->var, env->env_tab, get_node(lst, CMD, -1));
 	}
 	free_pipe_struct(env);
 }
