@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ms_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 14:58:09 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/07 13:46:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 08:41:15 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,11 @@ char	**ft_ms_split(char const *s, char c)
 	ptr = create_2d_array(wordcount_split(s, c));
 	if (!ptr)
 		return (NULL);
+	if (wordcount_split(s, c) == 1 && s[ft_strlen(s) - 1] == '|')
+	{
+		ptr[0] = (char *)s;
+		return (ptr[1] = NULL, ptr);
+	}
 	ptr = put_value(ptr, s, c, row);
 	return (ptr);
 }

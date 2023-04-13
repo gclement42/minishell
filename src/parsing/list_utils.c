@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:56:40 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 10:36:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:24:18 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst)
 {
 	t_cmd	*new;
 
+	if (!word)
+		return (NULL);
 	new = malloc(sizeof(t_cmd));
 	if (!new)
 		return (free(word), NULL);
@@ -35,6 +37,8 @@ t_cmd	*cmd_lst_last(t_cmd **lst)
 {
 	t_cmd	*tmp;
 
+	if (!*lst)
+		return (NULL);
 	tmp = *lst;
 	while (tmp->next)
 		tmp = tmp->next;

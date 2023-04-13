@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 08:54:47 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 10:06:13 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,20 @@ static void	dup_heredoc(t_pipex *var, int pipe_fd[2], t_cmd *lst)
 	}
 }
 
-void	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env)
+int	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
 
 	if (lst->next->content[0] == '<'
-		|| lst->next->content[0] == '>')
-		return (msg_unexpected_token(lst->next->content[0]));
+		|| lst->next->content[0] == '>'
+		|| lst->next->content[0] == '|')
+		return (msg_unexpected_token(lst->next->content[0]), 0);
 	if (pipe(pipe_fd) < 0)
-		return (perror("pipe"), exit (g_return_status));
+		return (perror("pipe"), exit (g_return_status), 0);
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork"), exit(g_return_status));
+		return (perror("fork"), exit(g_return_status), 0);
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
@@ -88,7 +89,7 @@ void	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env)
 			write_in_heredoc(pipe_fd[1], lst->next, 1, env);
 		else
 			write_in_heredoc(pipe_fd[1], lst->next, 0, env);
-		return (free_cmd_list(env->cmd_lst), exit_free(env));
+		return (free_cmd_list(env->cmd_lst), exit_free(env), 1);
 	}
-	dup_heredoc(var, pipe_fd, lst);
+	return (dup_heredoc(var, pipe_fd, lst), 1);
 }

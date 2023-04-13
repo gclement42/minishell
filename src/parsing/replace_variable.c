@@ -6,13 +6,14 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/12 10:57:41 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 10:31:33 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*join_content_next_var(char *content, char *var_content, char *n_c, int s)
+static char	*join_content_next_var(char *content, char *var_content,
+	char *n_c, int s)
 {
 	char	*eow;
 	char	*join_content;
@@ -22,7 +23,8 @@ static char	*join_content_next_var(char *content, char *var_content, char *n_c, 
 	if (content[s] && (ft_isdigit(content[s]) || is_special_char(content[s])))
 		s++;
 	while (content[s] && (ft_isalnum(content[s]) || is_special_char(content[s]))
-		&& content[s] != '?' && (content[s] != '\'' && content[s] != '"' && content[s] != '$'))
+		&& content[s] != '?'
+		&& (content[s] != '\'' && content[s] != '"' && content[s] != '$'))
 		s++;
 	if (content[s] && content[s] == '?')
 		if (content[s - 1] && content[s - 1] == '$')
@@ -69,9 +71,6 @@ char	*replace_variable(char *str, t_minish *env, int *i, int *b)
 	int		bools;
 
 	bools = 0;
-	str = ft_strdup(str);
-	if (!str)
-		return (NULL);
 	if (str[*i + 1] == '?')
 		bools = 1;
 	new_content = search_key(env->env_list, &str[*i + 1]);
@@ -94,6 +93,9 @@ char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote, int *b)
 
 	i = -1;
 	b_dq = 0;
+	str = ft_strdup(str);
+	if (!str)
+		return (NULL);
 	while (str[++i])
 	{
 		if (str[i] == '"' && bskip_quote == 1 && b_dq == 0)
@@ -105,9 +107,9 @@ char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote, int *b)
 		if (!str[i])
 			break ;
 		if (str[i] == '$' && (str[i + 1] \
+			&& str[i + 1] != '>' && str[i + 1] != '<' && str[i + 1] != '"'\
 			&& (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1]) \
-			|| str[i + 1] == '?' || str[i + 1] == '"' \
-			|| str[i + 1] == '\'')))
+			|| str[i + 1] == '?' || str[i + 1] == '\'')))
 			str = replace_variable(str, env, &i, b);
 	}
 	return (str);

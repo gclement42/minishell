@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/10 15:52:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 14:29:30 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int argc, char **argv, char *envp[])
 	(void)argv;
 	(void)argc;
 	init_struct(var, envp);
-	while (run)
+	while (1)
 	{
 		if (init_sigaction(signal_handler_newl) == -1)
 			exit_free(var);

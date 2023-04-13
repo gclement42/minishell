@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/12 10:52:41 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 14:01:08 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	get_redirect(cmd, &i, lst, &start);
 	get_frst_word(cmd, &i, lst);
 	start = i;
-	while (cmd[i++])
+	while (cmd[i])
 	{
 		parse_router(cmd, &i, &start, lst);
 		if (!cmd[i])
 			break ;
+		i++;
 	}
 	if (start < (size_t)i && cmd[start])
 	{
@@ -99,7 +100,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	}
 	if (id == 0)
 	{
-		search_if_redirect(env->var, lst, env);
+		if (!search_if_redirect(env->var, lst, env))
+			return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
 		free_cmd_list(lst);
 		if (env->var->env_cmd)
@@ -114,11 +116,12 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	int		stdout_copy;
 	int		stderr_copy;
 
-	if (!arg && ft_memcmp(lst->content, "exit", 4))
+	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
-	if (check_if_unexpected_token(lst, env) == 0)
+	if (!arg && !ft_memcmp(lst->content, "exit", 4))
 		return ;
-	if (lst && count_type_in_lst(arg, PIPE) == 0)
+	if (lst && count_type_in_lst(arg, PIPE) == 0
+		&& check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		stdin_copy = dup(0);
 		stdout_copy = dup(1);
@@ -126,11 +129,13 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		close(0);
 		close(1);
 		close(2);
-		builtins_router(get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG), env);
+		if (search_if_redirect(env->var, lst, env))
+			builtins_router(
+				get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG), env);
 		dup2(stdin_copy, 0);
 		dup2(stdout_copy, 1);
 		dup2(stderr_copy, 2);
-		}
+	}
 }
 
 int	parsing(char *cmd, t_minish *env)

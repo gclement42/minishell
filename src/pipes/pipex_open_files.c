@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/11 14:32:47 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 11:14:00 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	open_fd_in(t_minish *env, char *filename, t_cmd *lst)
 {
 	int	count;
 
-	if (filename[0] == '<' || filename[0] == '>')
+	if (filename[0] == '<' || filename[0] == '>' || filename[0] == '|')
 		return (msg_unexpected_token(filename[0]), 0);
 	count = count_type_in_lst(lst, PIPE);
 	env->var->fdin = open(filename, O_RDONLY, 0777);
@@ -39,7 +39,7 @@ int	open_fd_in(t_minish *env, char *filename, t_cmd *lst)
 
 int	open_fd_out(t_minish *env, char *filename, int redirect)
 {
-	if (filename[0] == '<' || filename[0] == '>')
+	if (filename[0] == '<' || filename[0] == '>' || filename[0] == '|')
 		return (msg_unexpected_token(filename[0]), 0);
 	if (redirect == 0)
 		env->var->fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -61,7 +61,7 @@ int	open_fd_out(t_minish *env, char *filename, int redirect)
 	return (1);
 }
 
-void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
+int	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 {
 	size_t	len;
 	int		b;
@@ -73,24 +73,21 @@ void	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 		if (lst->type == REDIRECT)
 		{
 			if (!lst->next)
-			{
-				printf("syntax error near unexpected token `newline'\n");
-				g_return_status = 1;
-				exit_free(env);
-			}
-			if (ft_memcmp("<", lst->content, len) == 0 && lst->next->content)
+				return (msg_unexpected_token(0), 0);
+			if (!ft_memcmp("<", lst->content, len) && lst->next->content)
 				b = open_fd_in(env, lst->next->content, lst);
-			else if (ft_memcmp("<<", lst->content, len) == 0 && lst->next->content)
-				create_heredoc(lst, var, env);
-			if (ft_memcmp(">", lst->content, len) == 0 && lst->next->content)
+			else if (!ft_memcmp("<<", lst->content, len) && lst->next->content)
+				b = create_heredoc(lst, var, env);
+			if (!ft_memcmp(">", lst->content, len) && lst->next->content)
 				b = open_fd_out(env, lst->next->content, 0);
-			else if (ft_memcmp(">>", lst->content, len) == 0 && lst->next->content)
-				open_fd_out(env, lst->next->content, 1);
+			else if (!ft_memcmp(">>", lst->content, len) && lst->next->content)
+				b = open_fd_out(env, lst->next->content, 1);
 		}
 		if (b == 0)
-			return (free_cmd_list(env->cmd_lst), exit_free(env));
+			return (0);
 		lst = lst->next;
 	}
+	return (1);
 }
 
 
