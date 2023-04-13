@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 14:24:30 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:45:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,17 @@
 
 void	builtins_router(t_cmd *cmd_node, int argc, t_minish *var)
 {
-	t_cmd	*arg_node;
 	t_env	*env_lst;
 	size_t	cmd_len;
 
 	env_lst = NULL;
-	arg_node = get_node(cmd_node, ARG, PIPE);
 	if (!cmd_node)
 		return ;
 	cmd_len = ft_strlen(cmd_node->content);
 	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
 		env_lst = export_variable_parsing(cmd_node, cmd_node->content);
 	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0 && cmd_len == 2)
-		cd_parsing(arg_node, argc, var);
+		cd_parsing(cmd_node, argc, var);
 	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0 && cmd_len == 3)
 		pwd_parsing(cmd_node, var);
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)
@@ -95,7 +93,7 @@ static	t_env	*create_tmp_lst_env(char *arg)
 	return (new);
 }
 
-t_env	*create_export_lst(t_env *env_lst, t_cmd *lst, char *cmd_name)
+static t_cmd	*create_export_lst(t_env **env_lst, t_cmd *lst, char *cmd_name)
 {
 	char	*tmp;
 	t_env	*new;
@@ -107,7 +105,7 @@ t_env	*create_export_lst(t_env *env_lst, t_cmd *lst, char *cmd_name)
 		free (lst->content);
 		lst->content = tmp;
 		new = create_tmp_lst_env(lst->content);
-		while (lst && lst->type != S_SPACES)
+		while (lst && lst->type == ARG && lst->type != S_SPACES)
 			lst = lst->next;
 	}
 	else
@@ -117,8 +115,8 @@ t_env	*create_export_lst(t_env *env_lst, t_cmd *lst, char *cmd_name)
 	if (ft_strnstr(cmd_name, "export", 6) != 0 && new->key == NULL)
 		free (new);
 	else
-		ft_lstadd_back_env(&env_lst, new);
-	return (env_lst);
+		ft_lstadd_back_env(env_lst, new);
+	return (lst);
 }
 
 t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
@@ -131,7 +129,7 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 		if (lst->type == OPT)
 			return (msg_invalid_opt(lst->content, cmd_name, 2), NULL);
 		if (lst->type == ARG)
-			env_lst = create_export_lst(env_lst, lst, cmd_name);
+			lst = create_export_lst(&env_lst, lst, cmd_name);
 		if (lst)
 			lst = lst->next;
 	}

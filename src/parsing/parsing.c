@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 14:01:08 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 16:11:49 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	return (*lst);
 }
 
-static	t_cmd	*create_lst_cmd(char *cmd, int *b)
+static	t_cmd	*create_lst_cmd(char *cmd)
 {
 	char	**split_by_pipe;
 	t_cmd	*lst;
@@ -64,8 +64,7 @@ static	t_cmd	*create_lst_cmd(char *cmd, int *b)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	if (*b == 1)
-		free (cmd);
+	free (cmd);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
@@ -104,8 +103,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 			return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
 		free_cmd_list(lst);
-		if (env->var->env_cmd)
-			free_2d_array(env->var->env_cmd);
+		// if (env->var->env_cmd)
+		// 	free_2d_array(env->var->env_cmd);
 		exit_free(env);
 	}
 }
@@ -116,11 +115,10 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	int		stdout_copy;
 	int		stderr_copy;
 
+	(void) arg;
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
-	if (!arg && !ft_memcmp(lst->content, "exit", 4))
-		return ;
-	if (lst && count_type_in_lst(arg, PIPE) == 0
+	if (lst && count_type_in_lst(lst, PIPE) == 0
 		&& check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		stdin_copy = dup(0);
@@ -142,16 +140,14 @@ int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	t_cmd	*cmd_node;
-	int		b;
 
-	b = 0;
 	if (!cmd || cmd[0] == '\0')
 		return (g_return_status = 0);
-	cmd = check_if_replace_var(cmd, env, 1, &b);
-	lst = create_lst_cmd(cmd, &b);
+	cmd = check_if_replace_var(cmd, env, 1);
+	lst = create_lst_cmd(cmd);
 	if (!lst)
 		return (-1);
-	// display_lst(lst);
+	display_lst(lst);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:57:56 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 10:47:44 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 16:14:49 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,16 +110,15 @@ static void	split_word_by_space(char *word, t_cmd **lst, int is_eol)
 
 void	get_word_with_space(char *word, t_cmd **lst, int is_eol)
 {
-
 	if (word[0] == ' ')
 		new_node_cmd(" ", -1, S_SPACES, lst);
 	if (ft_strchr(word, ' ') && is_all_char(word, ' ') == 0)
 		return (split_word_by_space(word, lst, is_eol));
-	if (is_all_char(word, ' ') == 1)
+	if (is_all_char(word, ' ') == 1 && word[0] != ' ')
 	{
 		new_node_cmd(" ", -1, S_SPACES, lst);
 		free(word);
 	}
-	else
+	else if (word[0] != ' ')
 		check_is_opt_or_arg(word, SPACES, lst);
 }

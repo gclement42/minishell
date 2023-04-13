@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 10:31:33 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:25:23 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static char	*join_content_next_var(char *content, char *var_content,
 		s++;
 	while (content[s] && (ft_isalnum(content[s]) || is_special_char(content[s]))
 		&& content[s] != '?'
-		&& (content[s] != '\'' && content[s] != '"' && content[s] != '$'))
+		&& (content[s] != '\'' && content[s] != '"' && content[s] != '$')
+		&& content[s] != '<' && content[s] != '>')
 		s++;
 	if (content[s] && content[s] == '?')
 		if (content[s - 1] && content[s - 1] == '$')
@@ -37,12 +38,11 @@ static char	*join_content_next_var(char *content, char *var_content,
 }
 
 static	char	*join_new_content(char *new_content, char *content, \
-	int size, int *b)
+	int size)
 {
 	char	*str_begin;
 	char	*str;
 
-	*b = 1;
 	str_begin = malloc((size + 1) * sizeof(char));
 	if (!str_begin)
 		return (NULL);
@@ -65,7 +65,7 @@ void	skip_quote(int *i, char *str, char del)
 		*i += 1;
 }
 
-char	*replace_variable(char *str, t_minish *env, int *i, int *b)
+char	*replace_variable(char *str, t_minish *env, int *i)
 {
 	char	*new_content;
 	int		bools;
@@ -74,7 +74,7 @@ char	*replace_variable(char *str, t_minish *env, int *i, int *b)
 	if (str[*i + 1] == '?')
 		bools = 1;
 	new_content = search_key(env->env_list, &str[*i + 1]);
-	str = join_new_content(new_content, str, *i, b);
+	str = join_new_content(new_content, str, *i);
 	if (!str)
 		return (NULL);
 	if (new_content && ft_strchr(new_content, '$'))
@@ -86,7 +86,7 @@ char	*replace_variable(char *str, t_minish *env, int *i, int *b)
 	return (str);
 }
 
-char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote, int *b)
+char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote)
 {
 	int		i;
 	int		b_dq;
@@ -110,7 +110,7 @@ char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote, int *b)
 			&& str[i + 1] != '>' && str[i + 1] != '<' && str[i + 1] != '"'\
 			&& (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1]) \
 			|| str[i + 1] == '?' || str[i + 1] == '\'')))
-			str = replace_variable(str, env, &i, b);
+			str = replace_variable(str, env, &i);
 	}
 	return (str);
 }
