@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:42:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/10 11:02:37 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 10:25:24 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,12 @@ void	display_error(t_minish *env, char **tab, char *msg)
 	exit_free(env);
 }
 
-void	free_close(t_pipex *var)
+void	free_pipe_struct(t_minish *env)
 {
-	free_2d_array(var->env_cmd);
-	close(STDIN_FILENO);
-	close(STDERR_FILENO);
-	close(STDOUT_FILENO);
-	exit(1);
+	if (env->env_tab)
+		free_2d_array(env->env_tab);
+	if (env->var->env_cmd)
+		free_2d_array(env->var->env_cmd);
+	if (env->var->pipefds)
+		free(env->var->pipefds);
 }

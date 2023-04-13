@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/04/13 11:14:00 by gclement         ###   ########.fr       */
@@ -89,5 +89,3 @@ int	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 	}
 	return (1);
 }
-
-

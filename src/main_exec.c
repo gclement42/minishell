@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char *envp[])
 		if (init_sigaction(signal_handler_newl) == -1)
 			exit_free(var);
 		termios_disable_quit();
-		var->cmd = readline(">>");
+		var->cmd = readline("\033[1;31m minishell $> \033[0m");
 		if (termios_restore(var->orig_ter) == 1)
 			run = 0;
 		if (var->cmd == NULL)

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 13:39:14 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/12 10:54:08 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/12 14:21:52 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,27 @@ size_t	check_isspace(const char *str)
 
 long long	ft_atoll(const char *str)
 {
-	size_t		i;
-	long long	nb;
+	size_t		index;
 	int			sign;
+	long long	result;
 
-	i = check_isspace(str);
-	nb = 0;
+	index = 0;
 	sign = 1;
-	if ((str[i] == '+' || str[i] == '-')
-		&& (str[i + 1] >= '0' && str[i + 1] <= '9'))
+	result = 0;
+	index = check_isspace(str);
+	if ((str[index] == '+' || str[index] == '-')
+	&& (str[index + 1] >= '0' && str[index + 1] <= '9'))
 	{
-		if (str[i] == '-')
+		if (str[index] == '-')
 			sign = -1;
-		i++;
+		index++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while (ft_isdigit(str[index]))
 	{
-		// if (nb != ((nb * 10) + (str[i] - '0')) * sign / 10)
-		// 	return (0);
-		nb = nb * 10 + ((int)str[i] - '0');
-		i++;
+		if ((result * 10 + (str[index] - '0') * sign) / 10 != result)
+			return (0);
+		result = result * 10 + (str[index] - '0') * sign;
+		index++;
 	}
-	if ((str[i] <= '0' || str[i] >= '9') && str[i] != '\0')
-		return (0);
-	return (nb * sign);
+	return (result);
 }

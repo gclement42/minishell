@@ -16,27 +16,27 @@ char	**get_path(t_minish *env, char **envp)
 {
 	char	*path;
 	char	**tab;
-	int		i;
+	t_env	*temp;
 
-	i = 0;
-	while (envp[i])
+	(void)envp;
+	tab = NULL;
+	if (check_key(&env->env_list, "PATH") == 0)
 	{
-		if (ft_strnstr(envp[i], "PATH=", 5))
-		{
-			path = ft_strdup(ft_strnstr_path(envp[i], \
-				"PATH=", ft_strlen(envp[i])));
-			if (!path)
-				return (NULL);
-			tab = ft_split(path, ':');
-			free(path);
-			if (!tab)
-				return (NULL);
-			join_slash(env, tab);
-			return (tab);
-		}
-		i++;
+		temp = get_key_node(env->env_list, "PATH");
+		path = ft_strdup(temp->content);
+		if (!path)
+			return (NULL);
+		tab = ft_split(path, ':');
+		free(path);
+		if (!tab)
+			return (NULL);
+		join_slash(env, tab);
+		return (tab);
 	}
-	return (envp);
+	tab = init_empty_tab(tab);
+	if (!tab)
+		return (NULL);
+	return (tab);
 }
 
 static void	execution(t_minish *env, char *path, char **cmd, char **envp)
@@ -53,6 +53,8 @@ static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 
 static void	check_cmd(t_minish *env, char **cmd, char **envp, char **path)
 {
+	if (path[0][0] == '\0')
+		display_error_cmd(env, cmd, "No such file or directory", cmd[0]);
 	if (cmd[0][0] == '\0')
 	{
 		free_2d_array(path);
@@ -93,9 +95,9 @@ void	exec_command(t_minish *env, char **path, char **cmd, char *envp[])
 		{
 			if (!path[i + 1])
 			{
-				free_2d_array(path);
 				free(exe);
 				free(env->var->pipefds);
+				free_2d_array(path);
 				display_error_cmd(env, cmd, "command not found", cmd[0]);
 			}
 			free(exe);

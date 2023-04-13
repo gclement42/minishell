@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/11 15:07:09 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 10:44:04 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_env	    *duplicate_node(t_env* lst);
 void		free_env_list(t_env *lst);
 void		free_cmd_list(t_cmd *lst);
 int			ft_lstlen(t_env *lst);
+t_env       *get_key_node(t_env *lst, char *key);
 
 /* ---- Signals ---- */
 void		signal_handler_newl(int sig);

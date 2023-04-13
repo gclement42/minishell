@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/13 14:24:30 by gclement         ###   ########.fr       */
@@ -47,8 +47,8 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	int	i;
 
 	i = 0;
-	if (!str[i] || ((str[i] != '$' && str[i] != ' ') && str[i] == '/' && \
-		(str[i] == '=' || is_special_char(str[i]))))
+	if (!str[i] || is_special_char(str[i]) || ((str[i] != '$' && str[i] != ' ') && str[i] == '/' && \
+		(str[i] == '=' || is_special_char(str[i]))) || str_isdigit(str) == 1)
 	{
 		printf("minishell : %s : `%s' : not a valid identifier\n", \
 			cmd, str);

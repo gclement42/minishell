@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:08:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 14:24:26 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/13 13:19:31 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,22 @@ t_env	*duplicate_node(t_env *lst)
 	new_node->content = strdup(lst->content);
 	new_node->next = lst->next;
 	return (new_node);
+}
+
+t_env	*get_key_node(t_env *lst, char *key)
+{
+	t_env	*temp;
+	int		len;
+	
+	temp = lst;
+	len = ft_strlen(key);
+	while (temp)
+	{
+		if (ft_strncmp(key, temp->key, len) == 0)
+			break ;
+		temp = temp->next;
+	}
+	if (temp && temp->key)
+		return (temp);
+	return (NULL);
 }
