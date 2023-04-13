@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 14:28:13 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:35:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,10 @@ void	export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
 {
 	t_env	*tmp;
 
-	if (argc == 0 || env->key[0] == '#')
+	if (argc == 0)
 	{
 		if (get_node(lst, OPT, PIPE))
 			return ;
-		if (lst && check_is_valid_identifier(env->key, "export") == 0
-			&& argc != 0)
-			return (free_env_list(env));
 		export_env(var, env, 0);
 		return ;
 	}

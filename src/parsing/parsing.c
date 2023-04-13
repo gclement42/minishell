@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 14:01:08 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 16:03:33 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 			return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
 		free_cmd_list(lst);
-		if (env->var->env_cmd)
-			free_2d_array(env->var->env_cmd);
+		// if (env->var->env_cmd)
+		// 	free_2d_array(env->var->env_cmd);
 		exit_free(env);
 	}
 }
@@ -117,8 +117,6 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	int		stderr_copy;
 
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
-		return ;
-	if (!arg && !ft_memcmp(lst->content, "exit", 4))
 		return ;
 	if (lst && count_type_in_lst(arg, PIPE) == 0
 		&& check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 14:24:30 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:43:46 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,17 @@
 
 void	builtins_router(t_cmd *cmd_node, int argc, t_minish *var)
 {
-	t_cmd	*arg_node;
 	t_env	*env_lst;
 	size_t	cmd_len;
 
 	env_lst = NULL;
-	arg_node = get_node(cmd_node, ARG, PIPE);
 	if (!cmd_node)
 		return ;
 	cmd_len = ft_strlen(cmd_node->content);
 	if (ft_memcmp(cmd_node->content, "export", cmd_len) == 0)
 		env_lst = export_variable_parsing(cmd_node, cmd_node->content);
 	if (ft_memcmp(cmd_node->content, "cd", cmd_len) == 0 && cmd_len == 2)
-		cd_parsing(arg_node, argc, var);
+		cd_parsing(cmd_node, argc, var);
 	if (ft_memcmp(cmd_node->content, "pwd", cmd_len) == 0 && cmd_len == 3)
 		pwd_parsing(cmd_node, var);
 	if (ft_memcmp(cmd_node->content, "env", cmd_len) == 0 && cmd_len == 3)

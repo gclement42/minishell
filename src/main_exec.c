@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 14:29:30 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 14:41:34 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ void	init_struct(t_minish *var, char **envp)
 int	main(int argc, char **argv, char *envp[])
 {
 	t_minish		*var;
-	int				run;
 
-	run = 1;
 	var = malloc(sizeof(t_minish));
 	if (!var)
 		exit(1);
@@ -53,7 +51,7 @@ int	main(int argc, char **argv, char *envp[])
 		termios_disable_quit();
 		var->cmd = readline("\033[1;31m minishell $> \033[0m");
 		if (termios_restore(var->orig_ter) == 1)
-			run = 0;
+			break ;
 		if (var->cmd == NULL)
 			exit_env(var);
 		parsing(var->cmd, var);
