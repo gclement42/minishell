@@ -42,14 +42,12 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	return (*lst);
 }
 
-static	t_cmd	*create_lst_cmd(char *cmd)
+static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 {
 	char	**split_by_pipe;
-	t_cmd	*lst;
 	int		i;
 
 	i = 0;
-	lst = NULL;
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
 		return (g_return_status = 2, ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
@@ -64,7 +62,7 @@ static	t_cmd	*create_lst_cmd(char *cmd)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	free (cmd);
+	//free (cmd);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
@@ -136,18 +134,36 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	}
 }
 
+static t_cmd *prompt_for_pipe(t_cmd *lst, char *cmd)
+{
+	t_cmd	*last;
+	char	*prompt;
+
+	last = cmd_lst_last(&lst);
+	if (last->type == CMD && ft_memcmp(last->content, "|", ft_strlen(last->content)) 
+		&& cmd[ft_strlen(cmd) - 1] == '|')
+	{
+		prompt = readline(">");
+		lst = create_lst_cmd(prompt, lst);
+	}
+	free (cmd);
+	return (lst);
+}
+
 int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	t_cmd	*cmd_node;
 
+	lst = NULL;
 	if (!cmd || cmd[0] == '\0')
 		return (g_return_status = 0);
 	cmd = check_if_replace_var(cmd, env, 1);
-	lst = create_lst_cmd(cmd);
+	lst = create_lst_cmd(cmd, lst);
 	if (!lst)
 		return (-1);
 	display_lst(lst);
+	prompt_for_pipe(lst, cmd);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

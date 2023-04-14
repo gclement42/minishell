@@ -51,6 +51,8 @@ void	remove_var_env(t_minish *var, char *unset_tab)
 	unsigned int	len;
 
 	temp = var->env_list;
+	(void) next;
+	(void) prev;
 	len = ft_strlen(unset_tab);
 	while (temp)
 	{
@@ -59,7 +61,6 @@ void	remove_var_env(t_minish *var, char *unset_tab)
 			prev = temp;
 			next = temp->next->next;
 			free_node(temp->next);
-			pr
 		}
 		temp = temp->next;
 	}
