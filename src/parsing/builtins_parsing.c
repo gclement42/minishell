@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 void	builtins_router(t_cmd *cmd_node, int argc, t_minish *var)
 {
 	t_env	*env_lst;

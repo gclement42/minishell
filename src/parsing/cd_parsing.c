@@ -28,8 +28,15 @@ int	check_is_good_arg_cd(char *str)
 void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 {
 	int	i;
+	t_cmd	*opt;
 
 	i = 0;
+	opt = get_node(lst, OPT, PIPE);
+	if (opt && !ft_memcmp(opt->content, "-", ft_strlen(opt->content)))
+	{
+		opt->type = ARG;
+		argc += 1;
+	}
 	if (get_node(lst, ARG, PIPE))
 		lst = get_node(lst, ARG, PIPE);
 	if (argc > 1 && lst->content[0] != '<')
@@ -37,7 +44,6 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 	else if (argc == 0 || lst->content[0] == '\0' || \
 		(lst && ft_strchr(lst->content, '~') != 0) || lst->content[0] == '<')
 	{
-		printf("argc = %d", argc);
 		if (argc == 0 || ft_strchr(lst->content, '~') != 0)
 		{
 			cd(var, NULL);

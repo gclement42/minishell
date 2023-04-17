@@ -72,6 +72,12 @@ int	cd(t_minish *var, char *path)
 		exit_free(var);
 	if (!path)
 		return (cd_home(var));
+	printf("path = %s\n", path);
+	if (!ft_memcmp(path, "-", ft_strlen(path)))
+	{
+		printf("mama\n");
+		path = search_key(var->env_list, "OLDPWD");
+	}
 	if (chdir(path) == -1)
 	{
 		printf("cd: no such file or directory: %s\n", path);
