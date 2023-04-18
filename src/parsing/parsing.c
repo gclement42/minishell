@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/18 14:16:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/18 15:56:14 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,18 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 	return (free_2d_array(split_by_pipe), lst);
 }
 
-void	display_lst(t_cmd *lst)
-{
-	(void) lst;
-	while (lst)
-	{
-		printf("content = %s\n", lst->content);
-		printf("type = %d\n", lst->type);
-		printf("marks = %d\n", lst->marks);
-		lst = lst->next;
-	}
-	printf("-------------------------------------------------------\n");
-}
+// void	display_lst(t_cmd *lst)
+// {
+// 	(void) lst;
+// 	while (lst)
+// 	{
+// 		printf("content = %s\n", lst->content);
+// 		printf("type = %d\n", lst->type);
+// 		printf("marks = %d\n", lst->marks);
+// 		lst = lst->next;
+// 	}
+// 	printf("-------------------------------------------------------\n");
+// }
 
 static void	fork_parsing(t_cmd *lst, t_minish *env)
 {
@@ -101,7 +101,7 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		if (!search_if_redirect(env->var, lst, env))
 			return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
-		free_cmd_list(lst);_bui
+		free_cmd_list(lst);
 		exit_free(env);
 	}
 }
@@ -162,7 +162,6 @@ int	parsing(char *cmd, t_minish *env)
 	if (!lst)
 		return (-1);
 	prompt_for_pipe(lst, cmd);
-	display_lst(lst);
 	if (cmd)
 		free (cmd);
 	env->cmd_lst = lst;
