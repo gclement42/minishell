@@ -6,23 +6,21 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/17 14:14:01 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/18 14:31:24 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-int	is_redirect(t_cmd *lst)
+int	is_redirect(t_cmd *lst, char *redirect)
 {
-	if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
-		return (0);
-	if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
-		return (0);
-	if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
-		return (0);
-	if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
-		return (0);
-	return (1);
+	while (lst && lst->type != PIPE)
+	{
+		if (ft_memcmp(redirect, lst->content, ft_strlen(lst->content)) == 0)
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
 }
 
 void	join_slash(t_minish *env, char **path)

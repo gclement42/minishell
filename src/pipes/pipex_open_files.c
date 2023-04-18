@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/13 11:14:00 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/18 14:15:27 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 	int		b;
 
 	b = 1;
-	while (lst)
+	while (lst && lst->type != PIPE)
 	{
 		len = ft_strlen(lst->content);
 		if (lst->type == REDIRECT)
