@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 14:42:03 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/18 14:46:14 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_struct(t_minish *var, char **envp)
 	var->cd_path = NULL;
 	var->var = NULL;
 	var->cmd_lst = NULL;
+	var->stdout_copy = -1;
 	var->builtins = init_bultins_arr();
 	termios_save(&var->orig_ter);
 	set_env(var, envp, &(var->env_list), &(var->exp_list));
@@ -55,7 +56,8 @@ int	main(int argc, char **argv, char *envp[])
 		if (var->cmd == NULL)
 			exit_env(var);
 		parsing(var->cmd, var);
-		add_history(var->cmd);
+		if (ft_strlen(var->cmd) > 0)
+			add_history(var->cmd);
 		free(var->cmd);
 	}
 	exit_env(var);

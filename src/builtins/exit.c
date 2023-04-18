@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/12 14:26:58 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/18 14:41:28 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exit_env(t_minish *var)
 {
-	ft_putstr_fd("exit\n", 1);
+	ft_putstr_fd("exit ICI???\n", 1);
 	exit_free(var);
 }
 

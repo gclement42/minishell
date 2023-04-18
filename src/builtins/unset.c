@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 15:16:10 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/13 16:52:48 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/18 10:53:19 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	remove_var_export(t_minish *var, char *unset_tab)
 		{
 			prev->next = temp->next;
 			free_node(temp);
+			break;
 		}
 		prev = temp;
 		temp = temp->next;
@@ -58,9 +59,9 @@ void	remove_var_env(t_minish *var, char *unset_tab)
 	{
 		if (ft_strncmp(unset_tab, temp->next->key, len + 1) == 0)
 		{
-			prev = temp;
-			next = temp->next->next;
-			free_node(temp->next);
+			prev->next = temp->next;
+			free_node(temp);
+			break ;
 		}
 		temp = temp->next;
 	}

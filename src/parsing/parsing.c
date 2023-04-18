@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/17 13:39:46 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/18 14:16:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,13 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		if (termios_disable_quit() == 1)
 			exit_free(env);
 	}
+	env->stdout_copy = dup(1);
 	if (id == 0)
 	{
 		if (!search_if_redirect(env->var, lst, env))
 			return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
-		free_cmd_list(lst);
-		// if (env->var->env_cmd)
-		// 	free_2d_array(env->var->env_cmd);
+		free_cmd_list(lst);_bui
 		exit_free(env);
 	}
 }
@@ -116,7 +115,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	(void) arg;
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
-	if (lst && count_type_in_lst(lst, PIPE) == 0
+	if (lst && count_type_in_lst(arg, PIPE) == 0
 		&& check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		stdin_copy = dup(0);

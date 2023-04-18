@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/13 13:25:47 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/18 14:17:52 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 	env->var->numpipes = count_type_in_lst(lst, PIPE);
 	env->var->pipefds = NULL;
 	env->var->env_cmd = NULL;
+	env->var->fdin = -1;
+	env->var->fdout = -1;
 	if (env->var->numpipes > 0)
 		env->var->pipefds = init_pipes(env);
 	if (envp)
@@ -91,7 +93,7 @@ void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 		{
 			if (init_sigaction(signal_fork) == -1)
 				exit_free(env);
-			duplicate_fd(fd, var, lst);
+			duplicate_fd(fd, env, lst);
 			close_pipes(var);
 			execute_child(env, var, lst, envp);
 		}

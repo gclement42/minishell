@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/11 09:35:54 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/18 13:50:29 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ void	exit_free(t_minish *var)
 		free(var->cd_path);
 	if (var->var)
 		free(var->var);
+	if (var->stdout_copy)
+		close (var->stdout_copy);
+	close_all();
 	if (var)
 		free(var);
 	exit (g_return_status);

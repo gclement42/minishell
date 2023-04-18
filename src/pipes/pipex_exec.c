@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/13 11:12:47 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:04:13 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	check_cmd(t_minish *env, char **cmd, char **envp, char **path)
 		free_2d_array(path);
 		display_error_cmd(env, cmd, "No such file or directory", cmd[0]);
 	}
-	if (cmd[0][0] == '/')
+	if (cmd[0][0] == '/' || (cmd[0][0] == '.' && cmd[0][1] == '/'))
 	{
 		free_2d_array(path);
 		if (opendir(cmd[0]))
