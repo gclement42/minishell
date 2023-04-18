@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 14:58:09 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 08:41:15 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/17 13:41:21 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,9 @@ char	**ft_ms_split(char const *s, char c)
 		return (NULL);
 	if (wordcount_split(s, c) == 1 && s[ft_strlen(s) - 1] == '|')
 	{
-		ptr[0] = (char *)s;
+		ptr[0] = (char *)ft_strdup(s);
+		if (!ptr[0])
+			return (free_2d_array(ptr), NULL);
 		return (ptr[1] = NULL, ptr);
 	}
 	ptr = put_value(ptr, s, c, row);

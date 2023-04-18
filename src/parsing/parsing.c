@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 16:11:49 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/17 13:39:46 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,9 @@ static t_cmd *prompt_for_pipe(t_cmd *lst, char *cmd)
 		&& cmd[ft_strlen(cmd) - 1] == '|')
 	{
 		prompt = readline(">");
+		new_node_cmd("|", SPACES, PIPE, &lst);
 		lst = create_lst_cmd(prompt, lst);
 	}
-	free (cmd);
 	return (lst);
 }
 
@@ -162,8 +162,10 @@ int	parsing(char *cmd, t_minish *env)
 	lst = create_lst_cmd(cmd, lst);
 	if (!lst)
 		return (-1);
-	display_lst(lst);
 	prompt_for_pipe(lst, cmd);
+	display_lst(lst);
+	if (cmd)
+		free (cmd);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

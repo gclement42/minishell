@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 18:14:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 15:53:59 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/17 14:04:40 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,32 @@ int	check_is_good_arg_cd(char *str)
 		return (0);
 }
 
-void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
+static int	check_if_opt(t_cmd *lst, int *argc)
 {
-	int	i;
 	t_cmd	*opt;
 
-	i = 0;
 	opt = get_node(lst, OPT, PIPE);
 	if (opt && !ft_memcmp(opt->content, "-", ft_strlen(opt->content)))
 	{
 		opt->type = ARG;
-		argc += 1;
+		*argc += 1;
 	}
+	else if (opt)
+	{
+		ft_putstr_fd("cd:", 2);
+		ft_putstr_fd(opt->content, 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		return (0);
+	}
+	return (1);
+}
+
+void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
+{
+	int		i;
+
+	i = 0;
+	check_if_opt(lst, &argc);
 	if (get_node(lst, ARG, PIPE))
 		lst = get_node(lst, ARG, PIPE);
 	if (argc > 1 && lst->content[0] != '<')
@@ -55,9 +69,5 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 				return (ft_putstr_fd("errr", 2)); //quasi sur que c'est pas le bon msg d'erreur
 			i++;
 		}
-		if (cd(var, NULL) == -1)
-			g_return_status = 1;
 	}
-	else if (cd(var, lst->content) == -1)
-		g_return_status = 1;
 }

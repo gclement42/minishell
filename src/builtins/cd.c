@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/10 13:12:29 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/17 13:55:55 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	update_pwd(t_minish *var)
 static void	update_pwd_home(t_minish *var, char *home_dir)
 {
 	char	*dir;
-	
+
 	dir = ft_strdup(home_dir);
 	if (!dir)
 		exit_free(var);
@@ -58,30 +58,31 @@ static int	cd_home(t_minish *var)
 		if (chdir("/nfs/homes/jlaisne") != -1)
 			update_pwd_home(var, "/nfs/homes/jlaisne");
 		else
+		{
+			g_return_status = 1;
 			return (-1);
+		}
 	}
 	else
 		update_pwd_home(var, "/nfs/homes/gclement");
 	return (0);
 }
 
-int	cd(t_minish *var, char *path)
+void	cd(t_minish *var, char *path)
 {
+	if (var->oldpwd)
+		free (var->oldpwd);
 	var->oldpwd = get_cwd();
 	if (!var->oldpwd)
 		exit_free(var);
 	if (!path)
-		return (cd_home(var));
-	printf("path = %s\n", path);
+		cd_home(var);
 	if (!ft_memcmp(path, "-", ft_strlen(path)))
-	{
-		printf("mama\n");
 		path = search_key(var->env_list, "OLDPWD");
-	}
 	if (chdir(path) == -1)
 	{
-		printf("cd: no such file or directory: %s\n", path);
-		return (-1);
+		perror("cd");
+		g_return_status = 1;
 	}
 	else
 	{
@@ -91,6 +92,5 @@ int	cd(t_minish *var, char *path)
 		if (var->cd_path == NULL)
 			exit_free(var);
 		update_pwd(var);
-		return (0);
 	}
 }
