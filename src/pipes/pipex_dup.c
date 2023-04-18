@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 12:22:01 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/18 09:57:49 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/18 11:00:20 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	duplicate_fd(int fd, t_minish *env, t_cmd *lst)
 			perror("dup2");
 			exit(EXIT_FAILURE);
 		}
-	}
+	}	
 	if (lst_next(lst) == NULL && count_type_in_lst(env->cmd_lst, PIPE) != 0)
 	{
 		if (dup2(env->stdout_copy, 1) < 0)

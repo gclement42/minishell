@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/17 14:52:10 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/18 10:33:38 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		if (termios_disable_quit() == 1)
 			exit_free(env);
 	}
-	env->stdout_copy = dup(1);
 	if (id == 0)
 	{
+		env->stdout_copy = dup(1);
 		if (!search_if_redirect(env->var, lst, env))
 			return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
