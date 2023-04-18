@@ -6,11 +6,24 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/13 10:44:20 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/17 14:14:01 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
+
+int	is_redirect(t_cmd *lst)
+{
+	if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
+		return (0);
+	if (ft_memcmp(">", lst->content, ft_strlen(lst->content)) == 0)
+		return (0);
+	if (ft_memcmp(">>", lst->content, ft_strlen(lst->content)) == 0)
+		return (0);
+	if (ft_memcmp("<", lst->content, ft_strlen(lst->content)) == 0)
+		return (0);
+	return (1);
+}
 
 void	join_slash(t_minish *env, char **path)
 {

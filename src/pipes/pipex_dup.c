@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 12:22:01 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/13 10:18:27 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/18 09:57:49 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,28 @@ void	close_pipes(t_pipex *var)
 	}
 }
 
-void	duplicate_fd(int fd, t_pipex *var, t_cmd *lst)
+void	duplicate_fd(int fd, t_minish *env, t_cmd *lst)
 {
+	search_if_redirect(env->var, lst, env);
 	if (fd != 0)
 	{
-		if (dup2(var->pipefds[fd - 2], STDIN_FILENO) < 0)
+		if (dup2(env->var->pipefds[fd - 2], STDIN_FILENO) < 0)
 		{
 			perror("dup2");
 			exit(EXIT_FAILURE);
 		}
 	}
-	if (lst_next(lst) != NULL)
+	if (lst_next(lst) != NULL && !env->var->fdout)
 	{
-		if (dup2(var->pipefds[fd + 1], STDOUT_FILENO) < 0)
+		if (dup2(env->var->pipefds[fd + 1], STDOUT_FILENO) < 0)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+	}
+	if (lst_next(lst) == NULL && count_type_in_lst(env->cmd_lst, PIPE) != 0)
+	{
+		if (dup2(env->stdout_copy, 1) < 0)
 		{
 			perror("dup2");
 			exit(EXIT_FAILURE);
