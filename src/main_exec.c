@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/18 13:52:38 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/18 14:46:14 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	main(int argc, char **argv, char *envp[])
 		if (var->cmd == NULL)
 			exit_env(var);
 		parsing(var->cmd, var);
-		add_history(var->cmd);
+		if (ft_strlen(var->cmd) > 0)
+			add_history(var->cmd);
 		free(var->cmd);
 	}
 	exit_env(var);
