@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 09:51:41 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 14:03:37 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/17 13:54:58 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 void	exit_env(t_minish *var);
 
 /* ---- cd ---- */
-int		cd(t_minish *var, char *path);
+void		cd(t_minish *var, char *path);
 
 /* ---- env ---- */
 void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp);

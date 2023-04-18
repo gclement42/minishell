@@ -42,14 +42,12 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 	return (*lst);
 }
 
-static	t_cmd	*create_lst_cmd(char *cmd, int *b)
+static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 {
 	char	**split_by_pipe;
-	t_cmd	*lst;
 	int		i;
 
 	i = 0;
-	lst = NULL;
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
 		return (g_return_status = 2, ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
@@ -64,8 +62,7 @@ static	t_cmd	*create_lst_cmd(char *cmd, int *b)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	if (*b == 1)
-		free (cmd);
+	//free (cmd);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
@@ -104,7 +101,7 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		if (!search_if_redirect(env->var, lst, env))
 			return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
-		free_cmd_list(lst);
+		free_cmd_list(lst);_bui
 		exit_free(env);
 	}
 }
@@ -115,6 +112,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	int		stdout_copy;
 	int		stderr_copy;
 
+	(void) arg;
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
 	if (lst && count_type_in_lst(arg, PIPE) == 0
@@ -135,20 +133,38 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	}
 }
 
+static t_cmd *prompt_for_pipe(t_cmd *lst, char *cmd)
+{
+	t_cmd	*last;
+	char	*prompt;
+
+	last = cmd_lst_last(&lst);
+	if (last->type == CMD && ft_memcmp(last->content, "|", ft_strlen(last->content)) 
+		&& cmd[ft_strlen(cmd) - 1] == '|')
+	{
+		prompt = readline(">");
+		new_node_cmd("|", SPACES, PIPE, &lst);
+		lst = create_lst_cmd(prompt, lst);
+	}
+	return (lst);
+}
+
 int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
 	t_cmd	*cmd_node;
-	int		b;
 
-	b = 0;
+	lst = NULL;
 	if (!cmd || cmd[0] == '\0')
 		return (g_return_status = 0);
-	cmd = check_if_replace_var(cmd, env, 1, &b);
-	lst = create_lst_cmd(cmd, &b);
+	cmd = check_if_replace_var(cmd, env, 1);
+	lst = create_lst_cmd(cmd, lst);
 	if (!lst)
 		return (-1);
-	// display_lst(lst);
+	prompt_for_pipe(lst, cmd);
+	display_lst(lst);
+	if (cmd)
+		free (cmd);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/13 15:43:46 by jlaisne          ###   ########.fr       */
@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	builtins_router(t_cmd *cmd_node, int argc, t_minish *var)
 {
@@ -93,7 +92,7 @@ static	t_env	*create_tmp_lst_env(char *arg)
 	return (new);
 }
 
-t_env	*create_export_lst(t_env *env_lst, t_cmd *lst, char *cmd_name)
+static t_cmd	*create_export_lst(t_env **env_lst, t_cmd *lst, char *cmd_name)
 {
 	char	*tmp;
 	t_env	*new;
@@ -105,7 +104,7 @@ t_env	*create_export_lst(t_env *env_lst, t_cmd *lst, char *cmd_name)
 		free (lst->content);
 		lst->content = tmp;
 		new = create_tmp_lst_env(lst->content);
-		while (lst && lst->type != S_SPACES)
+		while (lst && lst->type == ARG && lst->type != S_SPACES)
 			lst = lst->next;
 	}
 	else
@@ -115,8 +114,8 @@ t_env	*create_export_lst(t_env *env_lst, t_cmd *lst, char *cmd_name)
 	if (ft_strnstr(cmd_name, "export", 6) != 0 && new->key == NULL)
 		free (new);
 	else
-		ft_lstadd_back_env(&env_lst, new);
-	return (env_lst);
+		ft_lstadd_back_env(env_lst, new);
+	return (lst);
 }
 
 t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
@@ -129,7 +128,7 @@ t_env	*export_variable_parsing(t_cmd *lst, char *cmd_name)
 		if (lst->type == OPT)
 			return (msg_invalid_opt(lst->content, cmd_name, 2), NULL);
 		if (lst->type == ARG)
-			env_lst = create_export_lst(env_lst, lst, cmd_name);
+			lst = create_export_lst(&env_lst, lst, cmd_name);
 		if (lst)
 			lst = lst->next;
 	}

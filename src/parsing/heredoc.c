@@ -31,7 +31,7 @@ static void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 		|| ft_strlen(line) != ft_strlen(eof->content))
 	{
 		if (eof->marks != QUOTE)
-			line = check_if_replace_var(line, env, 0, 0);
+			line = check_if_replace_var(line, env, 0);
 		if (bools == 1)
 		{
 			if (write(fd, line, ft_strlen(line) + 1) < 0)

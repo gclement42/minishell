@@ -48,20 +48,21 @@ void	remove_var_env(t_minish *var, char *unset_tab)
 {
 	t_env			*temp;
 	t_env			*prev;
+	t_env			*next;
 	unsigned int	len;
 
 	temp = var->env_list;
+	(void) next;
+	(void) prev;
 	len = ft_strlen(unset_tab);
-	prev = NULL;
 	while (temp)
 	{
-		if (ft_strncmp(unset_tab, temp->key, len + 1) == 0)
+		if (ft_strncmp(unset_tab, temp->next->key, len + 1) == 0)
 		{
 			prev->next = temp->next;
 			free_node(temp);
 			break ;
 		}
-		prev = temp;
 		temp = temp->next;
 	}
 	remove_var_export(var, unset_tab);
