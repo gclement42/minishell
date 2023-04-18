@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 10:06:13 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/18 14:38:39 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,5 @@ int	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env)
 			write_in_heredoc(pipe_fd[1], lst->next, 0, env);
 		return (free_cmd_list(env->cmd_lst), exit_free(env), 1);
 	}
-	return (dup_heredoc(var, pipe_fd, lst), 1);
+	return (env->var->fdin = 0, dup_heredoc(var, pipe_fd, lst), 1);
 }
