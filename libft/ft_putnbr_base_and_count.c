@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 15:11:35 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/08 10:17:21 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 10:44:58 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	ft_putnbr_base(unsigned int nbr, char *base, int *i)
 	lnbr = nbr;
 	if (base_l != 0)
 	{
-		if (lnbr < 0)
+		if (lnbr <= 0)
 		{
 			*i += 1;
 			ft_putnbr_base(lnbr / base_l, base, i);
@@ -70,7 +70,7 @@ static int	ft_putnbr_base_long(unsigned long nbr, char *base, int *i)
 	lnbr = nbr;
 	if (base_l != 0)
 	{
-		if (lnbr < 0)
+		if (lnbr <= 0)
 		{
 			*i += 1;
 			ft_putnbr_base_long(lnbr / base_l, base, i);

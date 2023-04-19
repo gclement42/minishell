@@ -6,9 +6,10 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 15:16:10 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/18 14:55:43 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:43:38 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "exec.h"
 
@@ -55,12 +56,13 @@ void	remove_var_env(t_minish *var, char *unset_tab)
 	prev = NULL;
 	while (temp)
 	{
-		if (ft_strncmp(unset_tab, temp->next->key, len + 1) == 0)
+		if (ft_strncmp(unset_tab, temp->key, len + 1) == 0)
 		{
 			prev->next = temp->next;
 			free_node(temp);
 			break ;
 		}
+		prev = temp;
 		temp = temp->next;
 	}
 	remove_var_export(var, unset_tab);

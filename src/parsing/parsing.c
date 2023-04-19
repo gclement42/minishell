@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 10:37:33 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 10:09:47 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	(void) arg;
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
-	if (lst && count_type_in_lst(arg, PIPE) == 0
+	if (lst && count_type_in_lst(arg, PIPE, -1) == 0
 		&& check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		stdin_copy = dup(0);
@@ -125,7 +125,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		close(2);
 		if (search_if_redirect(env->var, lst, env))
 			builtins_router(
-				get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG), env);
+				get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG, PIPE), env);
 		dup2(stdin_copy, 0);
 		dup2(stdout_copy, 1);
 		dup2(stderr_copy, 2);
@@ -161,7 +161,6 @@ int	parsing(char *cmd, t_minish *env)
 	if (!lst)
 		return (-1);
 	prompt_for_pipe(lst, cmd);
-	//display_lst(lst);
 	if (cmd)
 		free (cmd);
 	env->cmd_lst = lst;

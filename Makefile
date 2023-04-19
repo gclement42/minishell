@@ -1,4 +1,4 @@
-.PHONY:					all $(NAME) clear mkbuild lib clear clean fclean re sanitize
+.PHONY:					all $(NAME) mkbuild lib clear clean fclean re sanit
 
 NAME					= minishell
 
@@ -32,11 +32,11 @@ SANITIZE				= $(CFLAGS) -g3 -fsanitize=address
 RM 						= rm -rf
 CLEAR					= clear
 
-$(BUILD_DIR)%.o:		$(DIR)%.c $(HEADER_DIR) libft
+$(BUILD_DIR)%.o:		$(DIR)%.c $(HEADER_DIR)* libft Makefile
 						@mkdir -p $(@D)
 						$(GCC) $(CFLAGS) -I$(HEADER_DIR) -I$(LIB_DIR) -I/usr/include -O3 -c $< -o $@
 
-all: 					clear mkbuild lib  $(HEADER_DIR) $(NAME) 
+all: 					clear mkbuild lib $(NAME) 
 						
 mkbuild:
 						@mkdir -p build
