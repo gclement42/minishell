@@ -20,7 +20,11 @@ void	*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst)
 		return (NULL);
 	new = malloc(sizeof(t_cmd));
 	if (!new)
-		return (free(word), NULL);
+	{
+		if (type != S_SPACES && type != PIPE)
+			free(word);
+		return (NULL);
+	}
 	new->content = ft_strdup(word);
 	if (!new->content)
 		return (NULL);
