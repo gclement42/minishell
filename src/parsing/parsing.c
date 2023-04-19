@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/18 14:16:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 10:37:33 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	//free (cmd);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
@@ -101,7 +100,7 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		if (!search_if_redirect(env->var, lst, env))
 			return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
-		free_cmd_list(lst);_bui
+		free_cmd_list(lst);
 		exit_free(env);
 	}
 }
@@ -162,7 +161,7 @@ int	parsing(char *cmd, t_minish *env)
 	if (!lst)
 		return (-1);
 	prompt_for_pipe(lst, cmd);
-	display_lst(lst);
+	//display_lst(lst);
 	if (cmd)
 		free (cmd);
 	env->cmd_lst = lst;

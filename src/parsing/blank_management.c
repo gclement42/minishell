@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:57:56 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/17 13:38:32 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 09:49:30 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,20 +87,15 @@ char	*remove_quote(char *str)
 static void	split_word_by_space(char *word, t_cmd **lst, int is_eol)
 {
 	int		x;
-	char	*tmp;
 	char	**split_word;
 
 	x = 0;
 	split_word = ft_split(word, ' ');
 	while (split_word[x])
 	{
-		if (word[ft_strlen(word) - 1] == ' ' && !split_word[x + 1] && !is_eol)
-		{
-			tmp = ft_strjoin(split_word[x], " ");
-			check_is_opt_or_arg(tmp, ' ', lst);
-			return (free(split_word[x]), free(split_word), free(word));
-		}
 		check_is_opt_or_arg(split_word[x], ' ', lst);
+		if (word[ft_strlen(word) - 1] == ' ' && !split_word[x + 1] && !is_eol)
+			new_node_cmd(" ", -1, S_SPACES, lst);
 		x++;
 		if (split_word[x])
 			new_node_cmd(" ", -1, S_SPACES, lst);

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 09:40:50 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 10:48:14 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@ static	char	**count_and_malloc(t_cmd *lst, int *len)
 
 	tmp = lst;
 	tmp = tmp->next;
-	while (tmp)
+	while (tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == S_SPACES)
 			tmp = tmp->next;
 		else
 		{
-			if (tmp->type != ARG && tmp->type != OPT)
-				break ;
-			*len += 1;
+			if (tmp->type == ARG || tmp->type == OPT)
+				*len += 1;
 			tmp = tmp->next;
 		}
 	}

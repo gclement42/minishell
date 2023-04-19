@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_dup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 12:22:01 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/18 14:38:07 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/18 15:37:20 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	close_pipes(t_pipex *var)
 
 void	duplicate_fd(int fd, t_minish *env, t_cmd *lst)
 {
-	search_if_redirect(env->var, lst, env);
+	if (search_if_redirect(env->var, lst, env) == 0)
+		return (free_cmd_list(env->cmd_lst), free_pipe_struct(env), exit_free(env));
 	if (fd != 0 && env->var->fdin == -1)
 	{
 		if (dup2(env->var->pipefds[fd - 2], STDIN_FILENO) < 0)
