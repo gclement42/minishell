@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 10:11:41 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 17:23:22 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	int	i;
 
 	i = 0;
-	if (!str[i] || is_special_char(str[i]) || ((str[i] != '$' && str[i] != ' ') && str[i] == '/' && \
+	if (!str[i] || is_special_char(str[i]) || \
+		((str[i] != '$' && str[i] != ' ') && str[i] == '/' && \
 		(str[i] == '=' || is_special_char(str[i]))) || str_isdigit(str) == 1)
 	{
 		printf("minishell : %s : `%s' : not a valid identifier\n", \

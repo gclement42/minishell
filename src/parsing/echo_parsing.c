@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/05 15:28:38 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 17:23:13 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*join_all_arg(t_cmd *lst, int bools)
 {
-    char    *arg_join;
-    char    *tmp;
+	char	*arg_join;
+	char	*tmp;
 
 	lst = get_node(lst, ARG, PIPE);
 	tmp = ft_strdup(lst->content);
@@ -75,7 +75,7 @@ void	echo_parsing(t_cmd *lst, t_minish *var)
 	{
 		arg_join = join_all_arg(lst, 0);
 		if (!arg_join)
-			exit_free(var); // FREE
+			exit_free(var);
 	}
 	if (get_node(lst, OPT, PIPE))
 		print_echo(1, arg_join);

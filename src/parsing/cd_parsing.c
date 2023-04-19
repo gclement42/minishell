@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 18:14:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 15:42:35 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 17:21:51 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,6 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 		{
 			cd(var, NULL);
 			return ;
-		}
-		while (argc != 0 && lst->content[i])
-		{
-			if (lst->content[i] != '~')
-				return (ft_putstr_fd("errr", 2)); //quasi sur que c'est pas le bon msg d'erreur
-			i++;
 		}
 	}
 }
