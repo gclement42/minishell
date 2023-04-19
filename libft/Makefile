@@ -10,7 +10,7 @@ CC = cc
 
 HEAD = libft.h
 
-FLAGS = -Wall
+FLAGS = -Wall -Werror -Wextra
 
 NAME = libft.a
 
