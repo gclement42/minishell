@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 15:24:18 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 10:09:00 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			check_is_builtins(t_cmd *node, t_minish *env);
 size_t		count_len(char *cmd, char c);
 t_marks		get_marks(char c);
 char		*search_key(t_env *lst_env, char *key);
-int			count_type_in_lst(t_cmd *lst, t_type type);
+int	count_type_in_lst(t_cmd *lst, t_type type, t_type delimiter);
 int			check_is_valid_identifier(char *str, char *cmd);
 int			is_all_char(char *word, char c);
 int			check_if_unexpected_token(t_cmd *node, t_minish *env);

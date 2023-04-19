@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/18 15:56:14 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 10:09:47 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,22 +62,21 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	//free (cmd);
 	return (free_2d_array(split_by_pipe), lst);
 }
 
-// void	display_lst(t_cmd *lst)
-// {
-// 	(void) lst;
-// 	while (lst)
-// 	{
-// 		printf("content = %s\n", lst->content);
-// 		printf("type = %d\n", lst->type);
-// 		printf("marks = %d\n", lst->marks);
-// 		lst = lst->next;
-// 	}
-// 	printf("-------------------------------------------------------\n");
-// }
+void	display_lst(t_cmd *lst)
+{
+	(void) lst;
+	while (lst)
+	{
+		printf("content = %s\n", lst->content);
+		printf("type = %d\n", lst->type);
+		printf("marks = %d\n", lst->marks);
+		lst = lst->next;
+	}
+	printf("-------------------------------------------------------\n");
+}
 
 static void	fork_parsing(t_cmd *lst, t_minish *env)
 {
@@ -115,7 +114,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	(void) arg;
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
-	if (lst && count_type_in_lst(arg, PIPE) == 0
+	if (lst && count_type_in_lst(arg, PIPE, -1) == 0
 		&& check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		stdin_copy = dup(0);
@@ -126,7 +125,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		close(2);
 		if (search_if_redirect(env->var, lst, env))
 			builtins_router(
-				get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG), env);
+				get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG, PIPE), env);
 		dup2(stdin_copy, 0);
 		dup2(stdout_copy, 1);
 		dup2(stderr_copy, 2);
@@ -168,6 +167,7 @@ int	parsing(char *cmd, t_minish *env)
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
+	display_lst(lst);
 	fork_parsing(lst, env);
 	wait(&env->var->status);
 	if (WEXITSTATUS(env->var->status))

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/18 14:15:27 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 10:10:15 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	open_fd_in(t_minish *env, char *filename, t_cmd *lst)
 
 	if (filename[0] == '<' || filename[0] == '>' || filename[0] == '|')
 		return (msg_unexpected_token(filename[0]), 0);
-	count = count_type_in_lst(lst, PIPE);
+	count = count_type_in_lst(lst, PIPE, -1);
 	env->var->fdin = open(filename, O_RDONLY, 0777);
 	if (env->var->fdin == -1)
 	{

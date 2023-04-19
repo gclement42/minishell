@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:56:40 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 14:24:18 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 10:08:39 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,14 @@ t_cmd	*get_node(t_cmd *lst, t_type type, t_type end)
 		return (NULL);
 }
 
-int	count_type_in_lst(t_cmd *lst, t_type type)
+int	count_type_in_lst(t_cmd *lst, t_type type, t_type delimiter)
 {
 	int	count;
 
 	count = 0;
 	if (!lst)
 		return (0);
-	while (lst)
+	while (lst && lst->type != delimiter)
 	{
 		if (lst->type == type)
 			count++;
