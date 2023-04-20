@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:19:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/12 09:15:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	get_pwd(t_minish *var)
 		exit_free(var);
 	printf("%s\n", str);
 	free(str);
-	g_return_status = 0;
+	g_env->return_status = 0;
 }
 
 void	pwd_parsing(t_cmd *lst, t_minish *var)

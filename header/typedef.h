@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 10:14:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 13:57:21 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:26:55 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_minish
 	char			**arg_exec;
 	t_env			*env_list;
 	t_env			*exp_list;
-	t_pipex			*var;
+	t_pipex			*pipex;
 	char			*path;
 	char			*cd_path;
 	char			*cmd_line;
@@ -76,7 +76,7 @@ typedef struct s_minish
 	int				stdout_copy;
 	int				lvl;
 	int				status_parent;
-	// unsigned char	return_status;
+	unsigned char	return_status;
 	t_cmd			*cmd_lst;
 }	t_minish;
 

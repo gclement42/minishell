@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 13:24:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:23:13 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ char	**get_path(t_minish *env, char **envp)
 
 static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 {
-	free(env->var->pipefds);
+	free(env->pipex->pipefds);
 	if (execve(path, cmd, envp) == -1)
 	{
 		perror("exec");
 		free(path);
-		free_2d_array(env->var->env_cmd);
+		free_2d_array(env->pipex->env_cmd);
 		exit_free(env);
 	}
 }
@@ -97,7 +97,7 @@ void	exec_command(t_minish *env, char **path, char **cmd, char *envp[])
 			if (!path[i + 1])
 			{
 				free(exe);
-				free(env->var->pipefds);
+				free(env->pipex->pipefds);
 				free_2d_array(path);
 				display_error_cmd(env, cmd, "command not found", cmd[0]);
 			}

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 12:49:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,18 @@ char	**init_empty_tab(char **tab)
 	return (tab);
 }
 
-void	wait_id(t_pipex *var)
+void	wait_id(t_pipex *pipex)
 {
 	int	i;
 
 	i = 0;
-	while (i <= var->numpipes)
+	while (i <= pipex->numpipes)
 	{
-		wait(&var->status);
-		if (WEXITSTATUS(var->status))
-			g_return_status = WEXITSTATUS(var->status);
+		wait(&pipex->status);
+		if (WEXITSTATUS(pipex->status))
+			g_env->return_status = WEXITSTATUS(pipex->status);
 		else
-			g_return_status = 0;
+			g_env->return_status = 0;
 		i++;
 	}
 }

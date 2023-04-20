@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 15:16:10 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/19 17:16:13 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	remove_var_export(t_minish *var, char *unset_tab)
 		prev = temp;
 		temp = temp->next;
 	}
-	g_return_status = 0;
+	g_env->return_status = 0;
 }
 
 void	remove_var_env(t_minish *var, char *unset_tab)
@@ -65,5 +65,5 @@ void	remove_var_env(t_minish *var, char *unset_tab)
 		temp = temp->next;
 	}
 	remove_var_export(var, unset_tab);
-	g_return_status = 0;
+	g_env->return_status = 0;
 }

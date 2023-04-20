@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 13:57:29 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:34:05 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 # include "pipes.h"
 # include "parsing.h"
 
-extern unsigned char	g_return_status;
-// extern t_minish	*env;
+// extern unsigned char	g_env->return_status;
+extern t_minish	*g_env;
 
 /* ---- Utils ---- */
 char		*ft_strnstr_path(char *haystack, char *needle, size_t len);
@@ -68,7 +68,6 @@ int			termios_disable_quit(void);
 
 void		get_cmd_line(t_minish *var, t_env **lst);
 void		builtin_cmp(t_minish *var);
-void		init_struct(t_minish *var, char **envp);
 
 void		*free_2d_array(char **ptr);
 

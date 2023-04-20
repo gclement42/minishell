@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 09:10:28 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	{
 		printf("minishell : %s : `%s' : not a valid identifier\n", \
 			cmd, str);
-		return (g_return_status = 1, 0);
+		return (g_env->return_status = 1, 0);
 	}
 	i++;
 	while (str[i])
@@ -61,7 +61,7 @@ int	check_is_valid_identifier(char *str, char *cmd)
 		{
 			printf("minishell : %s : `%s' : not a valid identifier\n", \
 			cmd, str);
-			return (g_return_status = 1, 0);
+			return (g_env->return_status = 1, 0);
 		}
 		i++;
 	}

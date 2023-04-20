@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 13:27:02 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 
 	i = 0;
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
-		return (g_return_status = 2, \
+		return (g_env->return_status = 2, \
 			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
 	if (!split_by_pipe)
@@ -85,7 +85,7 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	env->stdout_copy = dup(1);
 	if (id == 0)
 	{
-		if (!search_if_redirect(env->var, lst, env))
+		if (!search_if_redirect(env->pipex, lst, env))
 			return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
 		free_cmd_list(lst);
@@ -111,7 +111,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		close(0);
 		close(1);
 		close(2);
-		if (search_if_redirect(env->var, lst, env))
+		if (search_if_redirect(env->pipex, lst, env))
 			builtins_router(
 				get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG, PIPE), env);
 		dup2(stdin_copy, 0);
@@ -145,7 +145,7 @@ int	parsing(char *cmd, t_minish *env)
 
 	lst = NULL;
 	if (!cmd || cmd[0] == '\0')
-		return (g_return_status = 0);
+		return (g_env->return_status = 0);
 	cmd = check_if_replace_var(cmd, env, 1);
 	lst = create_lst_cmd(cmd, lst);
 	if (!lst)
@@ -160,7 +160,7 @@ int	parsing(char *cmd, t_minish *env)
 	fork_parsing(lst, env);
 	wait(&env->status_parent);
 	if (WEXITSTATUS(env->status_parent) || !WEXITSTATUS(env->status_parent))
-		g_return_status = WEXITSTATUS(env->status_parent);
+		g_env->return_status = WEXITSTATUS(env->status_parent);
 	copystd_and_exec_builtins(get_node(lst, ARG, PIPE), lst, env);
 	return (free_cmd_list(lst), 1);
 }

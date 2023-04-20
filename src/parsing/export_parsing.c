@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 09:13:01 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	unset_arg_parsing(t_minish *var, t_cmd *lst)
 		{
 			printf("minishell : unset : `%s' : not a valid identifier\n", \
 				lst->content);
-			g_return_status = 1;
+			g_env->return_status = 1;
 			return ;
 		}
 		if (check_is_valid_identifier(lst->content, "unset") == 0)

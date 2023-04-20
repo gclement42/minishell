@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_err.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 19:29:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 13:45:06 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	msg_invalid_opt(char *str, char *cmd, int ret_v)
 		ft_putchar_fd(str[i], 2);
 	ft_putstr_fd(": invalid option ", 2);
 	ft_putstr_fd("\n", 2);
-	g_return_status = ret_v;
+	g_env->return_status = ret_v;
 }
 
 void	msg_unexpected_token(char token)
@@ -37,5 +37,5 @@ void	msg_unexpected_token(char token)
 	}
 	else
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
-	g_return_status = 2;
+	g_env->return_status = 2;
 }

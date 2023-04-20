@@ -6,61 +6,61 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 13:57:36 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:46:22 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-unsigned char	g_return_status = 0;
-// t_minish		*var = NULL;
+// unsigned char	g_env->return_status = 0;
+t_minish		*g_env = NULL;
 
-void	init_struct(t_minish *var, char **envp)
+static void	init_struct(char **envp)
 {
-	var->env_list = NULL;
-	var->exp_list = NULL;
-	var->oldpwd = NULL;
-	var->env_tab = NULL;
-	var->builtins = NULL;
-	var->cd_path = NULL;
-	var->var = NULL;
-	var->cmd_lst = NULL;
-	var->cmd = NULL;
-	var->stdout_copy = -1;
-	var->builtins = init_bultins_arr();
-	termios_save(&var->orig_ter);
-	set_env(var, envp, &(var->env_list), &(var->exp_list));
-	modify_var(var, &(var->env_list), "_", "/usr/bin/env");
-	set_shlvl(var, &(var->env_list), &(var->exp_list));
-	var->var = malloc(sizeof(t_pipex));
-	if (!var->var)
-		exit_env(var);
+	g_env->env_list = NULL;
+	g_env->exp_list = NULL;
+	g_env->oldpwd = NULL;
+	g_env->env_tab = NULL;
+	g_env->builtins = NULL;
+	g_env->cd_path = NULL;
+	g_env->pipex = NULL;
+	g_env->cmd_lst = NULL;
+	g_env->cmd = NULL;
+	g_env->stdout_copy = -1;
+	g_env->builtins = init_bultins_arr();
+	termios_save(&g_env->orig_ter);
+	set_env(g_env, envp, &(g_env->env_list), &(g_env->exp_list));
+	modify_var(g_env, &(g_env->env_list), "_", "/usr/bin/env");
+	set_shlvl(g_env, &(g_env->env_list), &(g_env->exp_list));
+	g_env->pipex = malloc(sizeof(t_pipex));
+	if (!g_env->pipex)
+		exit_env(g_env);
 }
 
 int	main(int argc, char **argv, char *envp[])
 {
 	// t_minish		*var;
-
-	var = malloc(sizeof(t_minish));
-	if (!var)
+	g_env = NULL;
+	g_env = malloc(sizeof(t_minish));
+	if (!g_env)
 		exit(1);
 	(void)argv;
 	(void)argc;
-	init_struct(var, envp);
+	init_struct(envp);
 	while (1)
 	{
 		if (init_sigaction(signal_handler_newl) == -1)
-			exit_free(var);
+			exit_free(g_env);
 		if (termios_disable_quit() == 1)
 			break ;
-		var->cmd = readline("\033[1;31m minishell $> \033[0m");
-		if (termios_restore(var->orig_ter) == 1)
+		g_env->cmd = readline("\033[1;31m minishell $> \033[0m");
+		if (termios_restore(g_env->orig_ter) == 1)
 			break ;
-		if (var->cmd == NULL)
-			exit_env(var);
-		parsing(var->cmd, var);
-		if (ft_strlen(var->cmd) > 0)
-			add_history(var->cmd);
+		if (g_env->cmd == NULL)
+			exit_env(g_env);
+		parsing(g_env->cmd, g_env);
+		if (ft_strlen(g_env->cmd) > 0)
+			add_history(g_env->cmd);
 	}
-	exit_env(var);
+	exit_env(g_env);
 }
