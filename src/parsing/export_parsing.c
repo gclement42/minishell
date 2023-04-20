@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 10:11:23 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 09:13:01 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
 	}
 	while (env)
 	{
+		printf("env->key = %s\n", env->key);
 		if (check_is_valid_identifier(env->key, "export") == 0)
 			return (free_env_list(env));
 		tmp = env->next;
