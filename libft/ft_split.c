@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:57:20 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/27 14:21:07 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 09:57:15 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	wordcount(char const *str, char c)
 		{
 			count++;
 			while (str[i] != c && str[i])
-			i++;
+				i++;
 		}
 		i++;
 	}

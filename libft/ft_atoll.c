@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 13:39:14 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/12 14:21:52 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 09:55:52 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ long long	ft_atoll(const char *str)
 	result = 0;
 	index = check_isspace(str);
 	if ((str[index] == '+' || str[index] == '-')
-	&& (str[index + 1] >= '0' && str[index + 1] <= '9'))
+		&& (str[index + 1] >= '0' && str[index + 1] <= '9'))
 	{
 		if (str[index] == '-')
 			sign = -1;

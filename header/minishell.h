@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/13 10:44:04 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 10:04:51 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ size_t		check_isspace(const char *str);
 /* ---- Utils list---- */
 void		ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env		*ft_lstnew_env(char *key, char *content);
-t_env	    *duplicate_node(t_env* lst);
+t_env		*duplicate_node(t_env *lst);
 void		free_env_list(t_env *lst);
 void		free_cmd_list(t_cmd *lst);
 int			ft_lstlen(t_env *lst);
-t_env       *get_key_node(t_env *lst, char *key);
+t_env		*get_key_node(t_env *lst, char *key);
 
 /* ---- Signals ---- */
 void		signal_handler_newl(int sig);
@@ -60,10 +60,10 @@ void		signal_here_doc(int sig);
 void		new_signal_here_doc(int sig);
 void		signal_fork(int sig);
 void		signal_parsing(int sig);
-int 		init_sigaction(void (*signal_handler)(int));
+int			init_sigaction(void (*signal_handler)(int));
 int			termios_save(struct termios *termios_save);
 int			termios_restore(const struct termios termios_save);
-int			termios_disable_quit();
+int			termios_disable_quit(void);
 
 void		get_cmd_line(t_minish *var, t_env **lst);
 void		builtin_cmp(t_minish *var);
