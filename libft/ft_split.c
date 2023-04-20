@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:57:20 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 10:15:55 by gclement         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:21:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,24 @@ static void	*free_array(char **ptr)
 	return (NULL);
 }
 
-static char	**put_value(char const *s, char c, char **ptr)
+static void	put_value(unsigned int *i, int *row)
+{
+	*i = 0;
+	*row = 0;
+}
+
+char	**ft_split(char const *s, char c)
 {
 	unsigned int	i;
 	size_t			l;
-	char			*str;
 	int				row;
+	char			**ptr;
+	char			*str;
 
-	i = 0;
-	row = 0;
+	put_value(&i, &row);
+	ptr = create_2d_array(wordcount(s, c));
+	if (!ptr)
+		return (NULL);
 	while (s[i])
 	{
 		while (s[i] == c)
@@ -90,15 +99,4 @@ static char	**put_value(char const *s, char c, char **ptr)
 		i = l;
 	}
 	return (ptr[row] = NULL, ptr);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char			**ptr;
-
-	ptr = create_2d_array(wordcount(s, c));
-	if (!ptr)
-		return (NULL);
-	ptr = put_value(s, c, ptr);
-	return (ptr);
 }

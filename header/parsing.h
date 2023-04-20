@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 10:10:20 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 10:09:00 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
+#ifndef	PARSING_H
 # define PARSING_H
 
 # include "minishell.h"
@@ -32,7 +32,7 @@ void		parse_router(char *cmd, int *i, size_t *start, t_cmd **lst);
 /* parse cmd */
 char		*replace_variable(char *str, t_minish *env, int *i);
 char		*prompt_for_quote_termination(char *cmd, char c);
-char		**create_arr_exec(t_cmd *cmd);
+char	    **create_arr_exec(t_cmd *cmd);
 int			is_here_doc(t_cmd *lst);
 char		*check_if_replace_var(char *str, t_minish *env, int bskip_quote);
 
@@ -47,7 +47,7 @@ int			check_is_builtins(t_cmd *node, t_minish *env);
 size_t		count_len(char *cmd, char c);
 t_marks		get_marks(char c);
 char		*search_key(t_env *lst_env, char *key);
-int			count_type_in_lst(t_cmd *lst, t_type type, t_type delimiter);
+int	count_type_in_lst(t_cmd *lst, t_type type, t_type delimiter);
 int			check_is_valid_identifier(char *str, char *cmd);
 int			is_all_char(char *word, char c);
 int			check_if_unexpected_token(t_cmd *node, t_minish *env);
@@ -70,10 +70,8 @@ void		unset_parsing(t_minish *var, t_cmd *lst);
 void		exit_parsing(t_cmd *lst, t_minish *var);
 void		export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst);
 void		pwd_parsing(t_cmd *lst, t_minish *var);
-char		*exit_num_parsing(t_cmd *lst, t_minish *var);
+char	    *exit_num_parsing(t_cmd *lst, t_minish *var);
 void		parsing_env(t_minish *var, t_cmd *arg);
-t_cmd		*prompt_for_pipe(t_cmd *lst, char *cmd);
-t_cmd		*create_lst_cmd(char *cmd, t_cmd *lst);
 
 /* TMP */
 void		display_lst(t_cmd *lst);

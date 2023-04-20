@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 10:06:03 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:23:35 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,21 +100,4 @@ int	is_all_char(char *word, char c)
 		x++;
 	}
 	return (1);
-}
-
-t_cmd	*prompt_for_pipe(t_cmd *lst, char *cmd)
-{
-	t_cmd	*last;
-	char	*prompt;
-
-	last = cmd_lst_last(&lst);
-	if (last->type == CMD && ft_memcmp(last->content, \
-		"|", ft_strlen(last->content)) \
-		&& cmd[ft_strlen(cmd) - 1] == '|')
-	{
-		prompt = readline(">");
-		new_node_cmd("|", SPACES, PIPE, &lst);
-		lst = create_lst_cmd(prompt, lst);
-	}
-	return (lst);
 }

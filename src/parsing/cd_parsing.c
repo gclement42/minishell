@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 18:14:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 09:55:53 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:21:51 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ static int	check_if_opt(t_cmd *lst, int *argc)
 
 void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 {
+	int		i;
+
+	i = 0;
 	check_if_opt(lst, &argc);
 	if (get_node(lst, ARG, PIPE))
 		lst = get_node(lst, ARG, PIPE);
