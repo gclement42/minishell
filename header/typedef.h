@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 10:14:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 09:59:27 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 13:57:21 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_minish
 	char			*oldpwd;
 	int				stdout_copy;
 	int				lvl;
+	int				status_parent;
+	// unsigned char	return_status;
 	t_cmd			*cmd_lst;
 }	t_minish;
 

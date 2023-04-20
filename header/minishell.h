@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 10:04:51 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 13:57:29 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # include "parsing.h"
 
 extern unsigned char	g_return_status;
+// extern t_minish	*env;
 
 /* ---- Utils ---- */
 char		*ft_strnstr_path(char *haystack, char *needle, size_t len);
@@ -56,7 +57,7 @@ t_env		*get_key_node(t_env *lst, char *key);
 
 /* ---- Signals ---- */
 void		signal_handler_newl(int sig);
-void		signal_here_doc(int sig);
+void    	signal_here_doc(int sig);
 void		new_signal_here_doc(int sig);
 void		signal_fork(int sig);
 void		signal_parsing(int sig);

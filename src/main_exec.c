@@ -6,13 +6,14 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 10:24:26 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 13:57:36 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 unsigned char	g_return_status = 0;
+// t_minish		*var = NULL;
 
 void	init_struct(t_minish *var, char **envp)
 {
@@ -33,15 +34,12 @@ void	init_struct(t_minish *var, char **envp)
 	set_shlvl(var, &(var->env_list), &(var->exp_list));
 	var->var = malloc(sizeof(t_pipex));
 	if (!var->var)
-	{
-		ft_putstr_fd("init struct\n", 2);
 		exit_env(var);
-	}
 }
 
 int	main(int argc, char **argv, char *envp[])
 {
-	t_minish		*var;
+	// t_minish		*var;
 
 	var = malloc(sizeof(t_minish));
 	if (!var)
@@ -64,6 +62,5 @@ int	main(int argc, char **argv, char *envp[])
 		if (ft_strlen(var->cmd) > 0)
 			add_history(var->cmd);
 	}
-	ft_putstr_fd("caught error in disable", 2);
 	exit_env(var);
 }

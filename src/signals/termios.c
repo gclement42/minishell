@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 13:34:17 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 10:27:58 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 13:45:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	termios_save(struct termios *termios_save)
 
 int	termios_restore(const struct termios termios_save)
 {
-	// close (2);
 	if (isatty(STDERR_FILENO) == 0 && errno == ENOTTY)
 		errno = 0;
 	else if (errno)

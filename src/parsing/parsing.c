@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 17:32:50 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 13:27:02 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		dup2(stdout_copy, 1);
 		dup2(stderr_copy, 2);
 	}
+	errno = 0;
 }
 
 static t_cmd *prompt_for_pipe(t_cmd *lst, char *cmd)
@@ -157,9 +158,9 @@ int	parsing(char *cmd, t_minish *env)
 	if (cmd_node)
 		cmd_node->content = remove_quote(cmd_node->content);
 	fork_parsing(lst, env);
-	wait(&env->var->status);
-	if (WEXITSTATUS(env->var->status))
-		g_return_status = WEXITSTATUS(env->var->status);
+	wait(&env->status_parent);
+	if (WEXITSTATUS(env->status_parent) || !WEXITSTATUS(env->status_parent))
+		g_return_status = WEXITSTATUS(env->status_parent);
 	copystd_and_exec_builtins(get_node(lst, ARG, PIPE), lst, env);
 	return (free_cmd_list(lst), 1);
 }

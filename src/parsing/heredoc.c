@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/18 14:38:39 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 13:17:09 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ int	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env)
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
-		init_sigaction(signal_here_doc);
+		if (init_sigaction(signal_here_doc) == -1)
+			exit_free(env);
 		if (!lst->next->next || ft_memcmp(lst->content,
 				lst->next->next->content, ft_strlen(lst->content)) != 0)
 			write_in_heredoc(pipe_fd[1], lst->next, 1, env);
