@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:42:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 11:32:28 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	display_error_cmd(t_minish *env, char **tab, char *msg, char *cmd)
 		free_2d_array(tab);
 	if (env->env_tab)
 		free_2d_array(env->env_tab);
+	if (env->var->pipefds)
+		free (env->var->pipefds);
 	g_env->return_status = 127;
 	exit_free(env);
 }

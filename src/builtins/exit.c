@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 12:30:00 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static void	exit_arg(t_minish *var, char **exit_args, long long code)
 		printf("minishell: exit: %s: numeric argument required\n", exit_args[0]);
 		g_env->return_status = 2;
 		free_2d_array(exit_args);
-		ft_putstr_fd("exit_arg\n", 2);
 		exit_env(var);
 	}
 	if (exit_args[1])
@@ -55,14 +54,13 @@ char	*exit_num_parsing(t_cmd *lst, t_minish *var)
 	{
 		while (temp)
 		{
-			holder = arg;
-			arg = ft_strjoin(holder, temp->content);
+			holder = ft_strjoin(arg, temp->content);
 			if (!arg)
 				exit_free(var);
 			temp = temp->next;
 			i++;
 		}
-		return (arg);
+		return (free(arg), holder);
 	}
 	return (free(arg), temp->content);
 }
@@ -90,7 +88,8 @@ void	exit_parsing(t_cmd *lst, t_minish *var)
 		if (lst)
 			free_cmd_list(lst);
 		free_2d_array(exit_args);
-		exit_env(var);
 	}
+	if (var->cmd_lst)
+		free_cmd_list(var->cmd_lst);
 	exit_env(var);
 }
