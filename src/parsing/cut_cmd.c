@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cut_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 10:53:17 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:22:43 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	char	*word;
 
 	len = count_len(&cmd[*i], cmd[*i]);
-	// if (!cmd[*i + len])
-	// 	*i -= 1;
 	word = ft_substr(cmd, *i + 1, (len - 1));
 	if (!word)
 		return (NULL);
@@ -148,4 +146,3 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 		return ;
 	*i += (len - *i);
 }
-

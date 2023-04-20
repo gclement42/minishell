@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:13:28 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 14:19:46 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 17:31:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,12 @@ char	**lst_to_tab(t_env **lst)
 {
 	t_env	*temp;
 	char	*hold;
-	int		len;
 	int		i;
 	char	**tab;
 
 	temp = *lst;
-	len = ft_lstlen(*lst);
 	i = 0;
-	tab = malloc(sizeof(char *) * (len + 1));
+	tab = malloc(sizeof(char *) * (ft_lstlen(*lst) + 1));
 	if (!tab)
 		return (NULL);
 	while (temp)

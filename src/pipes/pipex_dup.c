@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_dup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 12:22:01 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/19 10:09:56 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 17:20:19 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,16 @@ void	close_pipes(t_pipex *var)
 void	duplicate_fd(int fd, t_minish *env, t_cmd *lst)
 {
 	if (search_if_redirect(env->var, lst, env) == 0)
-		return (free_cmd_list(env->cmd_lst), free_pipe_struct(env), exit_free(env));
+		return (free_cmd_list(env->cmd_lst), free_pipe_struct(env), \
+			exit_free(env));
 	if (fd != 0 && env->var->fdin == -1)
-	{
 		if (dup2(env->var->pipefds[fd - 2], STDIN_FILENO) < 0)
-		{
-			perror("dup2");
-			exit(EXIT_FAILURE);
-		}
-	}
+			return (perror("dup2"), exit_free(env));
 	if (lst_next(lst) != NULL && env->var->fdout == -1)
-	{
 		if (dup2(env->var->pipefds[fd + 1], STDOUT_FILENO) < 0)
-		{
-			perror("dup2");
-			exit(EXIT_FAILURE);
-		}
-	}
+			return (perror("dup2"), exit_free(env));
 	if (lst_next(lst) == NULL && count_type_in_lst(env->cmd_lst, PIPE, -1) != 0
-		 && (is_redirect(lst, ">") == 0 || is_redirect(lst, ">>") == 0))
-	{
+		&& (is_redirect(lst, ">") == 0 || is_redirect(lst, ">>") == 0))
 		if (dup2(env->stdout_copy, 1) < 0)
-		{
-			perror("dup2");
-			exit(EXIT_FAILURE);
-		}
-	}
+			return (perror("dup2"), exit_free(env));
 }

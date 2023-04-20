@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/19 10:10:07 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 17:20:50 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 	close_pipes(var);
 	if (check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
-		builtins_router(get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG, PIPE), \
-			env);
+		builtins_router(get_node(lst, CMD, PIPE), \
+			count_type_in_lst(lst, ARG, PIPE), env);
 		if (lst)
 			free_cmd_list(lst);
 		free_pipe_struct(env);

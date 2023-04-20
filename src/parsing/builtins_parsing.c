@@ -44,7 +44,8 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	int	i;
 
 	i = 0;
-	if (!str[i] || is_special_char(str[i]) || ((str[i] != '$' && str[i] != ' ') && str[i] == '/' && \
+	if (!str[i] || is_special_char(str[i]) || \
+		((str[i] != '$' && str[i] != ' ') && str[i] == '/' && \
 		(str[i] == '=' || is_special_char(str[i]))) || str_isdigit(str) == 1)
 	{
 		printf("minishell : %s : `%s' : not a valid identifier\n", \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 10:09:47 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/19 17:32:50 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 
 	i = 0;
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
-		return (g_return_status = 2, ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2), NULL);
+		return (g_return_status = 2, \
+			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);
@@ -63,19 +64,6 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
 	return (free_2d_array(split_by_pipe), lst);
-}
-
-void	display_lst(t_cmd *lst)
-{
-	(void) lst;
-	while (lst)
-	{
-		printf("content = %s\n", lst->content);
-		printf("type = %d\n", lst->type);
-		printf("marks = %d\n", lst->marks);
-		lst = lst->next;
-	}
-	printf("-------------------------------------------------------\n");
 }
 
 static void	fork_parsing(t_cmd *lst, t_minish *env)
@@ -138,7 +126,8 @@ static t_cmd *prompt_for_pipe(t_cmd *lst, char *cmd)
 	char	*prompt;
 
 	last = cmd_lst_last(&lst);
-	if (last->type == CMD && ft_memcmp(last->content, "|", ft_strlen(last->content)) 
+	if (last->type == CMD && ft_memcmp(last->content, \
+		"|", ft_strlen(last->content)) \
 		&& cmd[ft_strlen(cmd) - 1] == '|')
 	{
 		prompt = readline(">");

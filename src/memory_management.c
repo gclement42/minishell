@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 10:33:27 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:28:34 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	exit_free(t_minish *var)
 		free_env_list(var->env_list);
 	if (var->exp_list)
 		free_env_list(var->exp_list);
-	// if (var->cmd)
-	// 	free (var->cmd);
 	if (var->oldpwd)
 		free(var->oldpwd);
 	if (var->builtins)
@@ -42,8 +40,6 @@ void	exit_free(t_minish *var)
 		free(var->cd_path);
 	if (var->var)
 		free(var->var);
-	// if (var->stdout_copy)
-	// 	close (var->stdout_copy);
 	close_all();
 	if (var)
 		free(var);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/18 15:08:12 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:16:54 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,7 @@ void	exit_parsing(t_cmd *lst, t_minish *var)
 		if (lst)
 			free_cmd_list(lst);
 		free_2d_array(exit_args);
-		ft_putstr_fd("exit_parsing\n", 2);
 		exit_env(var);
 	}
-	ft_putstr_fd("fin exit_parsing\n", 2);
 	exit_env(var);
 }

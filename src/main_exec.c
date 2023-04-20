@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 10:36:01 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:28:02 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,16 @@ int	main(int argc, char **argv, char *envp[])
 	while (1)
 	{
 		if (init_sigaction(signal_handler_newl) == -1)
-		{
-			ft_putstr_fd("ici\n", 2);
 			exit_free(var);
-		}
 		termios_disable_quit();
 		var->cmd = readline("\033[1;31m minishell $> \033[0m");
 		if (termios_restore(var->orig_ter) == 1)
 			break ;
 		if (var->cmd == NULL)
-		{
-			ft_putstr_fd("main", 2);
 			exit_env(var);
-		}
 		parsing(var->cmd, var);
 		if (ft_strlen(var->cmd) > 0)
 			add_history(var->cmd);
 	}
-	ft_putstr_fd("fin\n", 2);
 	exit_env(var);
 }
