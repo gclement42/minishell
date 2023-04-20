@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 17:32:50 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:12:46 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,17 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 			break ;
 		i++;
 	}
-	if (start < (size_t)i && cmd[start])
+	if (start < (size_t)i && cmd[start] && !is_all_char(&cmd[start], ' '))
 	{
 		word = ft_substr(cmd, start, ft_strlen(cmd) - start);
 		if (!word)
 			return (NULL);
-		if (is_all_char(word, ' ') == 0)
-			get_word_with_space(word, lst, 1);
-		else
-			free (word);
+		get_word_with_space(word, lst, 1);
 	}
 	return (*lst);
 }
 
-static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
+t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 {
 	char	**split_by_pipe;
 	int		i;
@@ -50,7 +47,8 @@ static	t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 	i = 0;
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
 		return (g_return_status = 2, \
-			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2), NULL);
+			ft_putstr_fd(\
+				"minishell: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
 	if (!split_by_pipe)
 		return (NULL);
@@ -85,8 +83,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	env->stdout_copy = dup(1);
 	if (id == 0)
 	{
-		if (!search_if_redirect(env->var, lst, env))
-			return (free_cmd_list(lst), exit_free(env));
+		// if (!search_if_redirect(env->var, lst, env))
+		// 	return (free_cmd_list(lst), exit_free(env));
 		pipex(env, lst);
 		free_cmd_list(lst);
 		exit_free(env);
@@ -111,30 +109,25 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		close(0);
 		close(1);
 		close(2);
-		if (search_if_redirect(env->var, lst, env))
-			builtins_router(
-				get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG, PIPE), env);
+		builtins_router(get_node(lst, CMD, PIPE), \
+			count_type_in_lst(lst, ARG, PIPE), env);
 		dup2(stdin_copy, 0);
 		dup2(stdout_copy, 1);
 		dup2(stderr_copy, 2);
 	}
 }
 
-static t_cmd *prompt_for_pipe(t_cmd *lst, char *cmd)
+void	display_lst(t_cmd *lst)
 {
-	t_cmd	*last;
-	char	*prompt;
-
-	last = cmd_lst_last(&lst);
-	if (last->type == CMD && ft_memcmp(last->content, \
-		"|", ft_strlen(last->content)) \
-		&& cmd[ft_strlen(cmd) - 1] == '|')
+	(void) lst;
+	while (lst)
 	{
-		prompt = readline(">");
-		new_node_cmd("|", SPACES, PIPE, &lst);
-		lst = create_lst_cmd(prompt, lst);
+		printf("content = %s\n", lst->content);
+		printf("type = %d\n", lst->type);
+		printf("marks = %d\n", lst->marks);
+		lst = lst->next;
 	}
-	return (lst);
+	printf("-------------------------------------------------------\n");
 }
 
 int	parsing(char *cmd, t_minish *env)
@@ -152,6 +145,7 @@ int	parsing(char *cmd, t_minish *env)
 	prompt_for_pipe(lst, cmd);
 	if (cmd)
 		free (cmd);
+	display_lst(lst);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

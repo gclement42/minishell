@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 10:09:00 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 11:30:22 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ void		export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst);
 void		pwd_parsing(t_cmd *lst, t_minish *var);
 char	    *exit_num_parsing(t_cmd *lst, t_minish *var);
 void		parsing_env(t_minish *var, t_cmd *arg);
+t_cmd		*prompt_for_pipe(t_cmd *lst, char *cmd);
+t_cmd		*create_lst_cmd(char *cmd, t_cmd *lst);
+
 
 /* TMP */
 void		display_lst(t_cmd *lst);
