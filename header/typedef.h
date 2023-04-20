@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 10:14:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/18 14:29:04 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:26:55 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,24 @@ typedef struct s_cmd
 typedef struct s_minish
 {
 	struct termios	orig_ter;
-	char		**env_tab;
-	const char	**builtins;
-	char		**arg_exec;
-	t_env		*env_list;
-	t_env		*exp_list;
-	t_pipex		*var;
-	char		*path;
-	char		*cd_path;
-	char		*cmd_line;
-	char		*cmd;
-	char		*pwd;
-	char		*dir;
-	char		*oldpwd;
-	int			stdout_copy;
-	int			lvl;
-	t_cmd		*cmd_lst;
+	char			**env_tab;
+	const char		**builtins;
+	char			**arg_exec;
+	t_env			*env_list;
+	t_env			*exp_list;
+	t_pipex			*pipex;
+	char			*path;
+	char			*cd_path;
+	char			*cmd_line;
+	char			*cmd;
+	char			*pwd;
+	char			*dir;
+	char			*oldpwd;
+	int				stdout_copy;
+	int				lvl;
+	int				status_parent;
+	unsigned char	return_status;
+	t_cmd			*cmd_lst;
 }	t_minish;
-
 
 #endif

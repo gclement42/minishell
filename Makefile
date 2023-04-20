@@ -1,4 +1,4 @@
-.PHONY:					all $(NAME) mkbuild lib clear clean fclean re sanit
+.PHONY:					all $(NAME) clear mkbuild lib clear clean fclean re sanitize
 
 NAME					= minishell
 
@@ -19,7 +19,7 @@ SRC						=	parsing/parsing.c parsing/builtins_parsing.c parsing/list_utils.c par
 							builtins/cd.c	builtins/pwd.c	builtins/builtins_utils.c	builtins/echo.c builtins/env.c	builtins/unset.c builtins/export.c	builtins/exit.c	builtins/builtins_shlvl.c	builtins/builtins_print.c \
 							pipes/pipex_error.c	pipes/pipex_exec.c	pipes/pipex_main.c	pipes/pipex_utils.c	pipes/pipex_open_files.c	pipes/pipex_dup.c
 							
-OBJECTS			    	= $(SRC:%.c=$(BUILD_DIR)%.o)
+OBJECTS					= $(SRC:%.c=$(BUILD_DIR)%.o)
 	
 LIBFT					= libft.a
 LIB_DIR					= libft/
@@ -36,7 +36,7 @@ $(BUILD_DIR)%.o:		$(DIR)%.c $(HEADER_DIR)* libft Makefile
 						@mkdir -p $(@D)
 						$(GCC) $(CFLAGS) -I$(HEADER_DIR) -I$(LIB_DIR) -I/usr/include -O3 -c $< -o $@
 
-all: 					clear mkbuild lib $(NAME) 
+all: 					clear mkbuild lib  $(HEADER_DIR) $(NAME) 
 						
 mkbuild:
 						@mkdir -p build
@@ -44,7 +44,7 @@ mkbuild:
 clear:
 						$(CLEAR)
 						
-$(NAME): 				$(OBJECTS) $(LIB_DIR)$(LIBFT) Makefile
+$(NAME): 				$(OBJECTS) $(LIB_DIR)$(LIBFT)
 						$(GCC) $(OBJECTS) -o $(NAME) $(LIB_DIR)$(LIBFT) -lreadline
 
 sanit :					$(OBJECTS) $(LIB_DIR)$(LIBFT)

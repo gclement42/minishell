@@ -10,7 +10,7 @@ CC = cc
 
 HEAD = libft.h
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Wextra -Werror
 
 NAME = libft.a
 
@@ -37,4 +37,4 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY: all clean fclean re bonus ${NAME}
+.PHONY: all clean fclean re

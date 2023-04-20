@@ -19,16 +19,16 @@ int	open_fd_in(t_minish *env, char *filename, t_cmd *lst)
 	if (filename[0] == '<' || filename[0] == '>' || filename[0] == '|')
 		return (msg_unexpected_token(filename[0]), 0);
 	count = count_type_in_lst(lst, PIPE, -1);
-	env->var->fdin = open(filename, O_RDONLY, 0777);
-	if (env->var->fdin == -1)
+	env->pipex->fdin = open(filename, O_RDONLY, 0777);
+	if (env->pipex->fdin == -1)
 	{
 		perror(filename);
 		if (count == 0)
 			return (0);
 	}
-	if (env->var->fdin > -1)
+	if (env->pipex->fdin > -1)
 	{
-		if (dup2(env->var->fdin, STDIN_FILENO) < 0)
+		if (dup2(env->pipex->fdin, STDIN_FILENO) < 0)
 		{
 			perror("dup2");
 			return (0);
@@ -42,17 +42,17 @@ int	open_fd_out(t_minish *env, char *filename, int redirect)
 	if (filename[0] == '<' || filename[0] == '>' || filename[0] == '|')
 		return (msg_unexpected_token(filename[0]), 0);
 	if (redirect == 0)
-		env->var->fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		env->pipex->fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else
-		env->var->fdout = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (env->var->fdout == -1)
+		env->pipex->fdout = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (env->pipex->fdout == -1)
 	{
 		perror("outfile");
 		return (0);
 	}
 	else
 	{
-		if (dup2(env->var->fdout, STDOUT_FILENO) < 0)
+		if (dup2(env->pipex->fdout, STDOUT_FILENO) < 0)
 		{
 			perror("dup2");
 			return (0);
@@ -61,7 +61,7 @@ int	open_fd_out(t_minish *env, char *filename, int redirect)
 	return (1);
 }
 
-int	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
+int	search_if_redirect(t_pipex *pipex, t_cmd *lst, t_minish *env)
 {
 	size_t	len;
 	int		b;
@@ -77,14 +77,14 @@ int	search_if_redirect(t_pipex *var, t_cmd *lst, t_minish *env)
 			if (!ft_memcmp("<", lst->content, len) && lst->next->content)
 				b = open_fd_in(env, lst->next->content, lst);
 			else if (!ft_memcmp("<<", lst->content, len) && lst->next->content)
-				b = create_heredoc(lst, var, env);
+				b = create_heredoc(lst, pipex, env);
 			if (!ft_memcmp(">", lst->content, len) && lst->next->content)
 				b = open_fd_out(env, lst->next->content, 0);
 			else if (!ft_memcmp(">>", lst->content, len) && lst->next->content)
 				b = open_fd_out(env, lst->next->content, 1);
 		}
 		if (b == 0)
-			return (0);
+			return (g_env->return_status = 1, 0);
 		lst = lst->next;
 	}
 	return (1);

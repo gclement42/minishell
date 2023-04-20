@@ -12,11 +12,11 @@
 
 #include "pipes.h"
 
-void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
+void	execute_child(t_minish *env, t_pipex *pipex, t_cmd *lst, char **envp)
 {
 	char	**cmd;
 
-	close_pipes(var);
+	close_pipes(pipex);
 	if (check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		free_pipe_struct(env);
@@ -30,10 +30,10 @@ void	execute_child(t_minish *env, t_pipex *var, t_cmd *lst, char **envp)
 	{
 		cmd = create_arr_exec(lst);
 		if (!cmd)
-			display_error(env, var->env_cmd, \
+			display_error(env, pipex->env_cmd, \
 						"Command tab not properly allocated");
 		free_cmd_list(env->cmd_lst);
-		exec_command(env, var->env_cmd, cmd, envp);
+		exec_command(env, pipex->env_cmd, cmd, envp);
 	}
 }
 
@@ -43,10 +43,10 @@ int	*init_pipes(t_minish *env)
 	int	*pipefds;
 
 	i = 0;
-	pipefds = malloc(sizeof(int) * (2 * env->var->numpipes));
+	pipefds = malloc(sizeof(int) * (2 * env->pipex->numpipes));
 	if (!pipefds)
 		exit_free(env);
-	while (i < env->var->numpipes)
+	while (i < env->pipex->numpipes)
 	{
 		if (pipe(pipefds + i * 2) < 0)
 		{
@@ -60,23 +60,23 @@ int	*init_pipes(t_minish *env)
 
 void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 {
-	env->var->numpipes = count_type_in_lst(lst, PIPE, -1);
-	env->var->pipefds = NULL;
-	env->var->env_cmd = NULL;
-	env->var->fdin = -1;
-	env->var->fdout = -1;
-	if (env->var->numpipes > 0)
-		env->var->pipefds = init_pipes(env);
+	env->pipex->numpipes = count_type_in_lst(lst, PIPE, -1);
+	env->pipex->pipefds = NULL;
+	env->pipex->env_cmd = NULL;
+	env->pipex->fdin = -1;
+	env->pipex->fdout = -1;
+	if (env->pipex->numpipes > 0)
+		env->pipex->pipefds = init_pipes(env);
 	if (envp)
 	{
-		env->var->env_cmd = get_path(env, envp);
-		if (!env->var->env_cmd)
-			display_error(env, env->var->env_cmd, \
+		env->pipex->env_cmd = get_path(env, envp);
+		if (!env->pipex->env_cmd)
+			display_error(env, env->pipex->env_cmd, \
 						"Env tab not properly allocated");
 	}
 }
 
-void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
+void	child_proc(t_minish *env, t_pipex *pipex, char **envp, t_cmd *lst)
 {
 	int		id;
 	int		fd;
@@ -94,15 +94,15 @@ void	child_proc(t_minish *env, t_pipex *var, char **envp, t_cmd *lst)
 			if (init_sigaction(signal_fork) == -1)
 				exit_free(env);
 			duplicate_fd(fd, env, lst);
-			close_pipes(var);
-			execute_child(env, var, lst, envp);
+			close_pipes(pipex);
+			execute_child(env, pipex, lst, envp);
 		}
 		fd += 2;
 		lst = lst_next(lst);
 	}
-	close_pipes(var);
+	close_pipes(pipex);
 	close_all();
-	wait_id(var);
+	wait_id(pipex);
 }
 
 void	pipex(t_minish *env, t_cmd *lst)
@@ -117,7 +117,7 @@ void	pipex(t_minish *env, t_cmd *lst)
 		if (init_sigaction(signal_fork) == -1)
 			exit_free(env);
 		init_struct_pipex(env, env->env_tab, lst);
-		child_proc(env, env->var, env->env_tab, lst);
+		child_proc(env, env->pipex, env->env_tab, lst);
 	}
 	free_pipe_struct(env);
 }

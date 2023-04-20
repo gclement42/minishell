@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/04/20 11:31:08 by gclement         ###   ########.fr       */
@@ -41,20 +41,21 @@ char	**get_path(t_minish *env, char **envp)
 
 static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 {
-	free(env->var->pipefds);
+	free(env->pipex->pipefds);
 	if (execve(path, cmd, envp) == -1)
 	{
 		perror("exec");
 		free(path);
-		free_2d_array(env->var->env_cmd);
+		free_2d_array(env->pipex->env_cmd);
 		exit_free(env);
 	}
 }
 
 static void	check_cmd(t_minish *env, char **cmd, char **envp, char **path)
 {
-	if (path[0][0] == '\0')
-		return (free_2d_array(path), display_error_cmd(env, cmd, "No such file or directory", cmd[0]));
+	if (path[0][0] == '\0' && access(cmd[0], X_OK) == -1)
+		return (free_2d_array(path), \
+			display_error_cmd(env, cmd, "No such file or directory", cmd[0]));
 	if (cmd[0][0] == '\0')
 	{
 		free_2d_array(path);
@@ -96,7 +97,7 @@ void	exec_command(t_minish *env, char **path, char **cmd, char *envp[])
 			if (!path[i + 1])
 			{
 				free(exe);
-				free(env->var->pipefds);
+				free(env->pipex->pipefds);
 				free_2d_array(path);
 				display_error_cmd(env, cmd, "command not found", cmd[0]);
 			}

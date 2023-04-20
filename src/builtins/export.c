@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 09:21:47 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,5 @@ void	export_env(t_minish *var, t_env *new_var, int argc)
 	}
 	else
 		print_export_list(&(var->exp_list));
-	g_return_status = 0;
+	g_env->return_status = 0;
 }

@@ -55,18 +55,18 @@ char	**init_empty_tab(char **tab)
 	return (tab);
 }
 
-void	wait_id(t_pipex *var)
+void	wait_id(t_pipex *pipex)
 {
 	int	i;
 
 	i = 0;
-	while (i <= var->numpipes)
+	while (i <= pipex->numpipes)
 	{
-		wait(&var->status);
-		if (WEXITSTATUS(var->status))
-			g_return_status = WEXITSTATUS(var->status);
+		wait(&pipex->status);
+		if (WEXITSTATUS(pipex->status))
+			g_env->return_status = WEXITSTATUS(pipex->status);
 		else
-			g_return_status = 0;
+			g_env->return_status = 0;
 		i++;
 	}
 }

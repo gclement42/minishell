@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/17 13:55:55 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	cd_home(t_minish *var)
 			update_pwd_home(var, "/nfs/homes/jlaisne");
 		else
 		{
-			g_return_status = 1;
+			g_env->return_status = 1;
 			return (-1);
 		}
 	}
@@ -82,7 +82,7 @@ void	cd(t_minish *var, char *path)
 	if (chdir(path) == -1)
 	{
 		perror("cd");
-		g_return_status = 1;
+		g_env->return_status = 1;
 	}
 	else
 	{

@@ -24,7 +24,7 @@ void	display_error_cmd(t_minish *env, char **tab, char *msg, char *cmd)
 		free_2d_array(env->env_tab);
 	if (env->var->pipefds)
 		free (env->var->pipefds);
-	g_return_status = 127;
+	g_env->return_status = 127;
 	exit_free(env);
 }
 
@@ -38,7 +38,7 @@ void	display_error_dir(t_minish *env, char **tab, char *msg, char *cmd)
 		free_2d_array(tab);
 	if (env->env_tab)
 		free_2d_array(env->env_tab);
-	g_return_status = 126;
+	g_env->return_status = 126;
 	exit_free(env);
 }
 
@@ -50,7 +50,7 @@ void	display_error(t_minish *env, char **tab, char *msg)
 		free_2d_array(tab);
 	if (env->env_tab)
 		free_2d_array(env->env_tab);
-	g_return_status = 1;
+	g_env->return_status = 1;
 	exit_free(env);
 }
 
@@ -58,8 +58,8 @@ void	free_pipe_struct(t_minish *env)
 {
 	if (env->env_tab)
 		free_2d_array(env->env_tab);
-	if (env->var->env_cmd)
-		free_2d_array(env->var->env_cmd);
-	if (env->var->pipefds)
-		free(env->var->pipefds);
+	if (env->pipex->env_cmd)
+		free_2d_array(env->pipex->env_cmd);
+	if (env->pipex->pipefds)
+		free(env->pipex->pipefds);
 }

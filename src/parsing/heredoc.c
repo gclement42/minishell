@@ -47,14 +47,14 @@ static void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 	}
 }
 
-static void	dup_heredoc(t_pipex *var, int pipe_fd[2], t_cmd *lst)
+static void	dup_heredoc(t_pipex *pipex, int pipe_fd[2], t_cmd *lst)
 {
-	wait (&var->status);
-	if (WEXITSTATUS(var->status))
-		g_return_status = WEXITSTATUS(var->status);
+	wait (&pipex->status);
+	if (WEXITSTATUS(pipex->status))
+		g_env->return_status = WEXITSTATUS(pipex->status);
 	close(pipe_fd[1]);
-	if (g_return_status == 130)
-		exit(g_return_status);
+	if (g_env->return_status == 130)
+		exit(g_env->return_status);
 	if (!lst->next->next || ft_memcmp(lst->content, \
 		lst->next->next->content, ft_strlen(lst->content)) != 0)
 	{
@@ -66,7 +66,7 @@ static void	dup_heredoc(t_pipex *var, int pipe_fd[2], t_cmd *lst)
 	}
 }
 
-int	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env)
+int	create_heredoc(t_cmd *lst, t_pipex *pipex, t_minish *env)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
@@ -76,14 +76,15 @@ int	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env)
 		|| lst->next->content[0] == '|')
 		return (msg_unexpected_token(lst->next->content[0]), 0);
 	if (pipe(pipe_fd) < 0)
-		return (perror("pipe"), exit (g_return_status), 0);
+		return (perror("pipe"), exit (g_env->return_status), 0);
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork"), exit(g_return_status), 0);
+		return (perror("fork"), exit(g_env->return_status), 0);
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
-		init_sigaction(signal_here_doc);
+		if (init_sigaction(signal_here_doc) == -1)
+			exit_free(env);
 		if (!lst->next->next || ft_memcmp(lst->content,
 				lst->next->next->content, ft_strlen(lst->content)) != 0)
 			write_in_heredoc(pipe_fd[1], lst->next, 1, env);
@@ -91,5 +92,5 @@ int	create_heredoc(t_cmd *lst, t_pipex *var, t_minish *env)
 			write_in_heredoc(pipe_fd[1], lst->next, 0, env);
 		return (free_cmd_list(env->cmd_lst), free_pipe_struct(env), exit_free(env), 1);
 	}
-	return (env->var->fdin = 0, dup_heredoc(var, pipe_fd, lst), 1);
+	return (env->pipex->fdin = 0, dup_heredoc(pipex, pipe_fd, lst), 1);
 }

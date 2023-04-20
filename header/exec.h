@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 09:51:41 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/17 13:54:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/20 10:03:25 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,15 @@
 void	exit_env(t_minish *var);
 
 /* ---- cd ---- */
-void		cd(t_minish *var, char *path);
+void	cd(t_minish *var, char *path);
 
 /* ---- env ---- */
 void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp);
 void	get_env(t_minish *var);
 char	**split_env_var(char *env_line);
 void	set_shlvl(t_minish *var, t_env **env_l, t_env **exp_l);
-void	modify_shlvl(t_env **exp_l, t_env **env_l, t_env *new_var, t_minish *var);
+void	modify_shlvl(t_env **exp_l, t_env **env_l, \
+			t_env *new_var, t_minish *var);
 
 /* ---- echo ---- */
 void	print_echo(int option, char *echo_line);
@@ -51,5 +52,6 @@ void	modify_var(t_minish *var, t_env **list, char *key, char *str);
 char	*get_cwd(void);
 char	**copy_reverse_envp(t_minish *var, char **envp);
 void	print_list(t_env **list);
-void    print_export_list(t_env **list);
+void	print_export_list(t_env **list);
+
 #endif

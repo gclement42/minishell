@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/18 14:29:28 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 10:00:11 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 void	pipex(t_minish *env, t_cmd *lst);
 
 /* ----- Utils -----*/
-void		join_slash(t_minish *env, char **path);
-char		**init_empty_tab(char **tab);
-t_cmd		*lst_next(t_cmd *lst);
-void		wait_id(t_pipex *var);
-void		close_pipes(t_pipex *var);
+void	join_slash(t_minish *env, char **path);
+char	**init_empty_tab(char **tab);
+t_cmd	*lst_next(t_cmd *lst);
+void	wait_id(t_pipex *var);
+void	close_pipes(t_pipex *var);
 void	close_all(void);
 int		is_redirect(t_cmd *lst, char *redirect);
 
