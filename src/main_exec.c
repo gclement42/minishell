@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 17:28:02 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 10:24:26 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int	main(int argc, char **argv, char *envp[])
 	{
 		if (init_sigaction(signal_handler_newl) == -1)
 			exit_free(var);
-		termios_disable_quit();
+		if (termios_disable_quit() == 1)
+			break ;
 		var->cmd = readline("\033[1;31m minishell $> \033[0m");
 		if (termios_restore(var->orig_ter) == 1)
 			break ;
@@ -63,5 +64,6 @@ int	main(int argc, char **argv, char *envp[])
 		if (ft_strlen(var->cmd) > 0)
 			add_history(var->cmd);
 	}
+	ft_putstr_fd("caught error in disable", 2);
 	exit_env(var);
 }
