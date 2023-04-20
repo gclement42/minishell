@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 10:39:02 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 09:23:06 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,11 @@ void	add_var_env(t_env **lst, char *key, char *content)
 int	check_key(t_env **lst, char *key)
 {
 	t_env			*temp;
-	unsigned int	len;
 
 	temp = *lst;
-	len = ft_strlen(key);
 	while (temp)
 	{
-		if (ft_strncmp(key, temp->key, len) == 0)
+		if (ft_strncmp(key, temp->key, ft_strlen(temp->key)) == 0)
 			return (0);
 		temp = temp->next;
 	}

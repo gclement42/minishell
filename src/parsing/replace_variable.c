@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/13 15:25:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/20 09:28:50 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote)
 		if (!str[i])
 			break ;
 		if (str[i] == '$' && (str[i + 1] \
-			&& str[i + 1] != '>' && str[i + 1] != '<' && str[i + 1] != '"'\
+			&& str[i + 1] != '>' && str[i + 1] != '<' \
 			&& (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1]) \
 			|| str[i + 1] == '?' || str[i + 1] == '\'')))
 			str = replace_variable(str, env, &i);
