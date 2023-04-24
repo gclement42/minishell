@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:19:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 10:04:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void	print_echo(int option, char *echo_line)
 		echo_backslash(echo_line);
 	else
 		echo_no_backslash(echo_line);
-	g_env->return_status = 0;
+	g_return_status = 0;
 }

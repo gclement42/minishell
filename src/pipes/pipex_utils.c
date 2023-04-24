@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:43:19 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 10:04:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	wait_id(t_pipex *pipex)
 	{
 		wait(&pipex->status);
 		if (WEXITSTATUS(pipex->status))
-			g_env->return_status = WEXITSTATUS(pipex->status);
+			g_return_status = WEXITSTATUS(pipex->status);
 		else
-			g_env->return_status = 0;
+			g_return_status = 0;
 		i++;
 	}
 }

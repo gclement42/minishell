@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 14:46:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 10:04:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	exit_free(t_minish *var)
 {
 	int	return_v;
 	
-	return_v = g_env->return_status;
+	return_v = g_return_status;
 	if (var->env_list)
 		free_env_list(var->env_list);
 	if (var->exp_list)

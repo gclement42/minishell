@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 14:33:25 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 10:04:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	search_if_redirect(t_pipex *pipex, t_cmd *lst, t_minish *env)
 				b = open_fd_out(env, lst->next->content, 1);
 		}
 		if (b == 0)
-			return (g_env->return_status = 1, 0);
+			return (g_return_status = 1, 0);
 		lst = lst->next;
 	}
 	return (1);
