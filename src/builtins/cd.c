@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 10:08:16 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 11:02:50 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,17 @@ static void	update_pwd(t_minish *var)
 
 static void	update_pwd_home(t_minish *var, char *home_dir)
 {
-	char	*dir;
-
-	dir = ft_strdup(home_dir);
-	if (!dir)
-		exit_free(var);
 	if ((check_key(&var->exp_list, "PWD") == 0))
-		modify_var(var, &var->exp_list, "PWD", dir);
+		modify_var(var, &var->exp_list, "PWD", home_dir);
 	if ((check_key(&var->exp_list, "OLDPWD") == 0))
 		modify_var(var, &var->exp_list, "OLDPWD", var->oldpwd);
 	if ((check_key(&var->env_list, "PWD") == 0))
-		modify_var(var, &var->exp_list, "PWD", dir);
+		modify_var(var, &var->exp_list, "PWD", home_dir);
 	if ((check_key(&var->env_list, "OLDPWD") == 0))
 		modify_var(var, &var->env_list, "OLDPWD", var->oldpwd);
 }
 
-static int	cd_home(t_minish *var)
+static void	cd_home(t_minish *var)
 {
 	if (ft_strncmp(var->oldpwd, "/nfs/homes/gclement", 20) == 0 \
 		|| ft_strncmp(var->oldpwd, "/nfs/homes/jlaisne", 20) == 0)
@@ -50,7 +45,6 @@ static int	cd_home(t_minish *var)
 		{
 			modify_var(var, &var->env_list, "OLDPWD", var->oldpwd);
 			modify_var(var, &var->exp_list, "OLDPWD", var->oldpwd);
-			return (0);
 		}
 	}
 	if (chdir("/nfs/homes/gclement") == -1)
@@ -58,14 +52,10 @@ static int	cd_home(t_minish *var)
 		if (chdir("/nfs/homes/jlaisne") != -1)
 			update_pwd_home(var, "/nfs/homes/jlaisne");
 		else
-		{
 			g_return_status = 1;
-			return (-1);
-		}
 	}
 	else
 		update_pwd_home(var, "/nfs/homes/gclement");
-	return (0);
 }
 
 void	cd(t_minish *var, char *path)
@@ -76,8 +66,8 @@ void	cd(t_minish *var, char *path)
 	if (!var->oldpwd)
 		exit_free(var);
 	if (!path)
-		cd_home(var);
-	if (!ft_memcmp(path, "-", ft_strlen(path)))
+		return (cd_home(var));
+	if (path && !ft_memcmp(path, "-", ft_strlen(path)))
 		path = search_key(var->env_list, "OLDPWD");
 	if (chdir(path) == -1)
 	{

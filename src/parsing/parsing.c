@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 10:23:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:26:36 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,11 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 	i = 0;
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
 		return (g_return_status = 2, \
-			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2), NULL);
+			ft_putstr_fd(
+				"minishell: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
 	if (!split_by_pipe)
-		return (NULL);
+		return (free(cmd), NULL);
 	while (split_by_pipe[i])
 	{
 		lst = parse_cmd(split_by_pipe[i], &lst);
@@ -82,6 +83,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	env->stdout_copy = dup(1);
 	if (id == 0)
 	{
+		if (!get_node(lst, CMD, PIPE))
+			search_if_redirect(env->pipex, lst, env);
 		pipex(env, lst);
 		free_cmd_list(lst);
 		exit_free(env);
@@ -107,7 +110,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		close(1);
 		close(2);
 		builtins_router(
-				get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG, PIPE), env);
+			get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG, PIPE), env);
 		dup2(stdin_copy, 0);
 		dup2(stdout_copy, 1);
 		dup2(stderr_copy, 2);
@@ -143,7 +146,7 @@ int	parsing(char *cmd, t_minish *env)
 	prompt_for_pipe(lst, cmd);
 	if (cmd)
 		free (cmd);
-	display_lst(lst);
+	//display_lst(lst);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

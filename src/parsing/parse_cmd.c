@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 10:22:48 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:40:27 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	**create_arr_exec(t_cmd *cmd)
 	len = 1;
 	x = 0;
 	arr_exec = count_and_malloc(cmd, &len);
+	if (!arr_exec)
+		return (NULL);
 	while (x < len)
 	{
 		if (cmd->type != S_SPACES && \
@@ -108,12 +110,14 @@ t_cmd	*prompt_for_pipe(t_cmd *lst, char *cmd)
 	char	*prompt;
 
 	last = cmd_lst_last(&lst);
-	if (last->type == CMD && ft_memcmp(last->content, \
-		"|", ft_strlen(last->content)) \
-		&& cmd[ft_strlen(cmd) - 1] == '|')
+	if (!ft_memcmp(last->content, "|", 1) \
+		|| cmd[ft_strlen(cmd) - 1] == '|')
 	{
 		prompt = readline(">");
-		new_node_cmd("|", SPACES, PIPE, &lst);
+		if (last->type != ARG)
+			new_node_cmd("|", SPACES, PIPE, &lst);
+		else
+			last->type = PIPE;
 		lst = create_lst_cmd(prompt, lst);
 	}
 	return (lst);

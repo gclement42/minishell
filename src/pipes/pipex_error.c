@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:42:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 10:23:04 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:40:00 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	display_error(t_minish *env, char **tab, char *msg)
 		free_2d_array(tab);
 	if (env->env_tab)
 		free_2d_array(env->env_tab);
+	if (env->pipex->pipefds)
+		free(env->pipex->pipefds);
 	g_return_status = 1;
 	exit_free(env);
 }
@@ -56,8 +58,11 @@ void	free_pipe_struct(t_minish *env)
 {
 	if (env->env_tab)
 		free_2d_array(env->env_tab);
-	if (env->pipex->env_cmd)
-		free_2d_array(env->pipex->env_cmd);
-	if (env->pipex->pipefds)
-		free(env->pipex->pipefds);
+	if (env->pipex)
+	{
+		if (env->pipex->env_cmd)
+			free_2d_array(env->pipex->env_cmd);
+		if (env->pipex->pipefds)
+			free(env->pipex->pipefds);
+	}
 }

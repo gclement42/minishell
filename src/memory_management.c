@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 10:22:05 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 13:19:21 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*free_2d_array(char **ptr)
 void	exit_free(t_minish *var)
 {
 	int	return_v;
-	
+
 	return_v = g_return_status;
 	if (var->env_list)
 		free_env_list(var->env_list);

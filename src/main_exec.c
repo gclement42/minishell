@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 10:05:08 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:28:59 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void	init_struct(t_minish *env, char **envp)
 	env->cmd = NULL;
 	env->stdout_copy = -1;
 	env->builtins = init_bultins_arr();
+	if (!env->builtins)
+		return (free(env), exit(EXIT_FAILURE));
 	termios_save(&env->orig_ter);
 	set_env(env, envp, &(env->env_list), &(env->exp_list));
 	modify_var(env, &(env->env_list), "_", "/usr/bin/env");
@@ -34,6 +36,9 @@ static void	init_struct(t_minish *env, char **envp)
 	env->pipex = malloc(sizeof(t_pipex));
 	if (!env->pipex)
 		exit_env(env);
+	env->pipex->cmd = NULL;
+	env->pipex->env_cmd = NULL;
+	env->pipex->pipefds = NULL;
 }
 
 int	main(int argc, char **argv, char *envp[])
@@ -42,7 +47,7 @@ int	main(int argc, char **argv, char *envp[])
 
 	env = malloc(sizeof(t_minish));
 	if (!env)
-		exit(1);
+		exit(EXIT_FAILURE);
 	(void)argv;
 	(void)argc;
 	init_struct(env, envp);

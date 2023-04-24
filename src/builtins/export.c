@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 10:04:08 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:08:34 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ static void	replace_content(t_minish *var, t_env *new_var)
 
 static void	add_new_var(t_minish *var, t_env *new_var)
 {
-	printf("la\n");
 	if (new_var->content[0] == '\0')
 		add_var_env(&var->exp_list, new_var->key, new_var->content);
 	else if (!new_var->content)

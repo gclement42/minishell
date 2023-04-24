@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 12:22:01 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 14:40:15 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:39:07 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ void	duplicate_fd(int fd, t_minish *env, t_cmd *lst)
 			return (perror("dup2"), exit_free(env));
 	if (lst_next(lst) == NULL && count_type_in_lst(env->cmd_lst, PIPE, -1) != 0
 		&& (!is_redirect(lst, ">>")))
-	{
 		if (dup2(env->stdout_copy, 1) < 0)
 			return (perror("dup2"), \
 			free_cmd_list(env->cmd_lst), exit_free(env));
-	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 10:04:35 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 13:38:51 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_env		*get_key_node(t_env *lst, char *key);
 
 /* ---- Signals ---- */
 void		signal_handler_newl(int sig);
-void    	signal_here_doc(int sig);
+void		signal_here_doc(int sig);
 void		new_signal_here_doc(int sig);
 void		signal_fork(int sig);
 void		signal_parsing(int sig);

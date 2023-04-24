@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 10:22:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:07:43 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ void	exit_parsing(t_cmd *lst, t_minish *var)
 		if (g_return_status == 1)
 			return ;
 		g_return_status = (unsigned char)code;
-		if (lst)
-			free_cmd_list(lst);
 		free_2d_array(exit_args);
 	}
 	if (var->cmd_lst)
