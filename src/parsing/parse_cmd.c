@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 11:29:10 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/24 10:22:48 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	check_if_unexpected_token(t_cmd *node, t_minish *env)
 		i++;
 	if (node->content[i] || node->type == PIPE)
 	{
-		g_env->return_status = 2;
+		g_return_status = 2;
 		msg_unexpected_token(node->content[i]);
 		free_cmd_list(env->cmd_lst);
 		if (env->env_tab)
