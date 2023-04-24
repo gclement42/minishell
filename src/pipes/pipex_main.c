@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 14:35:15 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:39:55 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	execute_child(t_minish *env, t_pipex *pipex, t_cmd *lst, char **envp)
 	close_pipes(pipex);
 	if (check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
+		free_pipe_struct(env);
 		builtins_router(get_node(lst, CMD, PIPE), \
 			count_type_in_lst(lst, ARG, PIPE), env);
-		if (lst)
-			free_cmd_list(lst);
-		free_pipe_struct(env);
+		if (env->cmd_lst)
+			free_cmd_list(env->cmd_lst);
 		exit_free(env);
 	}
 	else
@@ -117,7 +117,7 @@ void	pipex(t_minish *env, t_cmd *lst)
 		if (init_sigaction(signal_fork) == -1)
 			exit_free(env);
 		init_struct_pipex(env, env->env_tab, lst);
-		child_proc(env, env->pipex, env->env_tab, get_node(lst, CMD, -1));
+		child_proc(env, env->pipex, env->env_tab, lst);
 	}
 	free_pipe_struct(env);
 }

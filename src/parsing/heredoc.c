@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 10:04:08 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 10:22:37 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	create_heredoc(t_cmd *lst, t_pipex *pipex, t_minish *env)
 			write_in_heredoc(pipe_fd[1], lst->next, 1, env);
 		else
 			write_in_heredoc(pipe_fd[1], lst->next, 0, env);
-		return (free_cmd_list(env->cmd_lst), exit_free(env), 1);
+		return (free_cmd_list(env->cmd_lst), free_pipe_struct(env), exit_free(env), 1);
 	}
 	return (env->pipex->fdin = 0, dup_heredoc(pipex, pipe_fd, lst), 1);
 }
