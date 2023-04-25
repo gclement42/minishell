@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 15:14:39 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 15:02:21 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	init_struct(t_minish *env, char **envp)
 	env->builtins = init_bultins_arr();
 	if (!env->builtins)
 		return (free(env), exit(EXIT_FAILURE));
-	termios_save(&env->orig_ter);
 	set_env(env, envp, &(env->env_list), &(env->exp_list));
 	modify_var(env, &(env->env_list), "_", "/usr/bin/env");
 	set_shlvl(env, &(env->env_list), &(env->exp_list));
@@ -55,11 +54,9 @@ int	main(int argc, char **argv, char *envp[])
 	{
 		if (init_sigaction(signal_handler_newl) == -1)
 			exit_free(env);
-		if (termios_disable_quit() == 1)
-			break ;
+		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+			exit_free(env);
 		env->cmd = readline("\033[1;31m minishell $> \033[0m");
-		if (termios_restore(env->orig_ter) == 1)
-			break ;
 		if (env->cmd == NULL)
 			exit_env(env);
 		parsing(env->cmd, env);

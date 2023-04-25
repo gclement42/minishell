@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 16:22:05 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:32:41 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,6 @@ void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
 	ptr_env = *env;
 	if (!ptr_env)
 		init_env(var, env, exp);
-	else
-		return ;
 }
 
 void	get_env(t_minish *var)

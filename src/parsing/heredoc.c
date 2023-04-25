@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 14:25:32 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 14:44:59 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ int	create_heredoc(t_cmd *lst, t_minish *env)
 	pid_t	pid;
 	int		pipe_fd[2];
 
-	if (termios_disable_quit() == 1)
-		exit_free(env);
 	if (lst->next->content[0] == '<'
 		|| lst->next->content[0] == '>' || lst->next->content[0] == '|')
 		return (msg_unexpected_token(lst->next->content[0]), 0);
@@ -98,5 +96,5 @@ int	create_heredoc(t_cmd *lst, t_minish *env)
 		return (free_cmd_list(env->cmd_lst), \
 		free_pipe_struct(env), exit_free(env), 1);
 	}
-	return (termios_restore(env->orig_ter), env->pipex->fdin = 0, dup_heredoc(env, pipe_fd, lst), 1);
+	return (env->pipex->fdin = 0, dup_heredoc(env, pipe_fd, lst), 1);
 }

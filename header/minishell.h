@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 09:22:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 14:54:24 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 14:59:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ void		new_signal_here_doc(int sig);
 void		signal_fork(int sig);
 void		signal_parsing(int sig);
 int			init_sigaction(void (*signal_handler)(int));
-int			termios_save(struct termios *termios_save);
-int			termios_restore(const struct termios termios_save);
-int			termios_disable_quit(void);
 
 void		get_cmd_line(t_minish *var, t_env **lst);
 void		builtin_cmp(t_minish *var);
