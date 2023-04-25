@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 15:51:05 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 10:13:02 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	pipex(t_minish *env, t_cmd *lst)
 		return ;
 	if (get_node(lst, CMD, -1) != NULL)
 	{
-		if (init_sigaction(signal_fork) == -1)
+		if (init_sigaction(new_signal_here_doc) == -1)
 			exit_free(env);
 		init_struct_pipex(env, env->env_tab, lst);
 		child_proc(env, env->pipex, env->env_tab, lst);
