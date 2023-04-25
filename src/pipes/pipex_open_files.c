@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 10:23:26 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 12:51:26 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	open_fd_out(t_minish *env, char *filename, int redirect)
 	return (1);
 }
 
-int	search_if_redirect(t_pipex *pipex, t_cmd *lst, t_minish *env)
+int	search_if_redirect(t_cmd *lst, t_minish *env)
 {
 	size_t	len;
 	int		b;
@@ -77,7 +77,7 @@ int	search_if_redirect(t_pipex *pipex, t_cmd *lst, t_minish *env)
 			if (!ft_memcmp("<", lst->content, len) && lst->next->content)
 				b = open_fd_in(env, lst->next->content, lst);
 			else if (!ft_memcmp("<<", lst->content, len) && lst->next->content)
-				b = create_heredoc(lst, pipex, env);
+				b = create_heredoc(lst, env);
 			if (!ft_memcmp(">", lst->content, len) && lst->next->content)
 				b = open_fd_out(env, lst->next->content, 0);
 			else if (!ft_memcmp(">>", lst->content, len) && lst->next->content)

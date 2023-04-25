@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 10:06:48 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 14:26:32 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,16 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		exit_free(env);
 	if (init_sigaction(signal_parsing) == -1)
 		exit_free(env);
-	if (is_here_doc(lst) == 0)
+	else if (is_here_doc(lst) == 0)
 	{
 		if (init_sigaction(new_signal_here_doc) == -1)
-			exit_free(env);
-		if (termios_disable_quit() == 1)
 			exit_free(env);
 	}
 	env->stdout_copy = dup(1);
 	if (id == 0)
 	{
 		if (!get_node(lst, CMD, PIPE))
-			search_if_redirect(env->pipex, lst, env);
+			search_if_redirect(lst, env);
 		pipex(env, lst);
 		free_cmd_list(lst);
 		exit_free(env);
@@ -100,7 +98,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	(void) arg;
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
-	if (lst && count_type_in_lst(arg, PIPE, -1) == 0
+	if (lst && count_type_in_lst(lst, PIPE, -1) == 0
 		&& check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		stdin_copy = dup(0);
@@ -118,19 +116,6 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	errno = 0;
 }
 
-void	display_lst(t_cmd *lst)
-{
-	(void) lst;
-	while (lst)
-	{
-		printf("content = %s\n", lst->content);
-		printf("type = %d\n", lst->type);
-		printf("marks = %d\n", lst->marks);
-		lst = lst->next;
-	}
-	printf("-------------------------------------------------------\n");
-}
-
 int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
@@ -146,7 +131,6 @@ int	parsing(char *cmd, t_minish *env)
 	prompt_for_pipe(lst, cmd);
 	if (cmd)
 		free (cmd);
-	//display_lst(lst);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/25 10:13:02 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 14:24:55 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	execute_child(t_minish *env, t_pipex *pipex, t_cmd *lst, char **envp)
 	{
 		cmd = create_arr_exec(lst);
 		if (!cmd)
-			return (free_cmd_list(env->cmd_lst), display_error(env, pipex->env_cmd, \
-						"Command tab not properly allocated"));
+			return (free_cmd_list(env->cmd_lst), \
+				display_error(env, pipex->env_cmd, \
+					"Command tab not properly allocated"));
 		free_cmd_list(env->cmd_lst);
 		exec_command(env, pipex->env_cmd, cmd, envp);
 	}
@@ -97,8 +98,6 @@ void	child_proc(t_minish *env, t_pipex *pipex, char **envp, t_cmd *lst)
 			close_pipes(pipex);
 			execute_child(env, pipex, lst, envp);
 		}
-		if (is_here_doc(lst) == 0)
-			wait(NULL);
 		fd += 2;
 		lst = lst_next(lst);
 	}

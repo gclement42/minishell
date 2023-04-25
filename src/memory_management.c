@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 15:44:56 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 13:10:02 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	exit_free(t_minish *var)
 	if (var->pipex)
 		free(var->pipex);
 	close_all();
+	termios_restore(var->orig_ter);
 	if (var)
 		free(var);
 	exit (g_return_status);
