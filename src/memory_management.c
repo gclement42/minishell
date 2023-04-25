@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:55:16 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 13:19:21 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:44:56 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ void	*free_2d_array(char **ptr)
 
 void	exit_free(t_minish *var)
 {
-	int	return_v;
-
-	return_v = g_return_status;
 	if (var->env_list)
 		free_env_list(var->env_list);
 	if (var->exp_list)
@@ -46,7 +43,7 @@ void	exit_free(t_minish *var)
 	close_all();
 	if (var)
 		free(var);
-	exit (return_v);
+	exit (g_return_status);
 }
 
 void	free_env_list(t_env *lst)
