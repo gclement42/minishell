@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 10:00:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 13:05:21 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	close_pipes(t_pipex *var);
 /* ----- Exec functions ----- */
 void	exec_command(t_minish *env, char **path, char **cmd, char *envp[]);
 char	**get_path(t_minish *env, char **envp);
+void	execute_child(t_minish *env, t_pipex *pipex, t_cmd *lst, char **envp);
 /* ----- Dup ----- */
 
 void	duplicate_fd(int fd, t_minish *env, t_cmd *lst);

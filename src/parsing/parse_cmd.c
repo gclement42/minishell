@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 16:40:27 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/25 12:57:09 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ char	**create_arr_exec(t_cmd *cmd)
 	int		len;
 	int		x;
 
+	if (!get_node(cmd, CMD, PIPE))
+		return (NULL);
 	len = 1;
 	x = 0;
 	arr_exec = count_and_malloc(cmd, &len);

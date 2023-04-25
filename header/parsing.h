@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 13:39:03 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:06:42 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,4 @@ char		*exit_num_parsing(t_cmd *lst, t_minish *var);
 void		parsing_env(t_minish *var, t_cmd *arg);
 t_cmd		*prompt_for_pipe(t_cmd *lst, char *cmd);
 t_cmd		*create_lst_cmd(char *cmd, t_cmd *lst);
-
-/* TMP */
-void		display_lst(t_cmd *lst);
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 10:06:48 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 13:06:12 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 
 	i = 0;
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
-		return (g_return_status = 2, \
+		return (g_return_status = 2, free(cmd), \
 			ft_putstr_fd(
 				"minishell: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
@@ -74,12 +74,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	if (init_sigaction(signal_parsing) == -1)
 		exit_free(env);
 	if (is_here_doc(lst) == 0)
-	{
 		if (init_sigaction(new_signal_here_doc) == -1)
 			exit_free(env);
-		if (termios_disable_quit() == 1)
-			exit_free(env);
-	}
 	env->stdout_copy = dup(1);
 	if (id == 0)
 	{
@@ -118,19 +114,6 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	errno = 0;
 }
 
-void	display_lst(t_cmd *lst)
-{
-	(void) lst;
-	while (lst)
-	{
-		printf("content = %s\n", lst->content);
-		printf("type = %d\n", lst->type);
-		printf("marks = %d\n", lst->marks);
-		lst = lst->next;
-	}
-	printf("-------------------------------------------------------\n");
-}
-
 int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
@@ -146,7 +129,6 @@ int	parsing(char *cmd, t_minish *env)
 	prompt_for_pipe(lst, cmd);
 	if (cmd)
 		free (cmd);
-	//display_lst(lst);
 	env->cmd_lst = lst;
 	cmd_node = get_node(lst, CMD, PIPE);
 	if (cmd_node)
