@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/20 09:28:50 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/24 16:48:02 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static	char	*join_new_content(char *new_content, char *content, \
 
 	str_begin = malloc((size + 1) * sizeof(char));
 	if (!str_begin)
-		return (NULL);
+		return (free(content), NULL);
 	str_begin = ft_memcpy(str_begin, content, size);
 	str_begin[size] = '\0';
 	if (new_content)
@@ -76,7 +76,7 @@ char	*replace_variable(char *str, t_minish *env, int *i)
 	new_content = search_key(env->env_list, &str[*i + 1]);
 	str = join_new_content(new_content, str, *i);
 	if (!str)
-		return (NULL);
+		return (free(str), exit_env(env), NULL);
 	if (new_content && ft_strchr(new_content, '$'))
 		*i += ft_strlen(new_content);
 	if (str[*i] != '$' || !new_content)

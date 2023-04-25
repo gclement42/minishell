@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 15:00:58 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/25 15:01:39 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/24 16:29:33 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ const char	**init_bultins_arr(void)
 
 	builtins = malloc(8 * sizeof(char *));
 	if (!builtins)
-		exit (EXIT_FAILURE);
+		return (NULL);
 	builtins[0] = "echo";
 	builtins[1] = "cd";
 	builtins[2] = "pwd";

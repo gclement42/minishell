@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cut_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 17:22:43 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 13:26:38 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,10 @@ void	get_frst_word(char *cmd, int *i, t_cmd **lst)
 	char	*word;
 	char	del;
 
-	while (cmd[*i] == ' ')
+	while (cmd[*i] && cmd[*i] == ' ')
 		*i += 1;
+	if (!cmd[*i])
+		return ;
 	len = *i;
 	while (cmd[len] && cmd[len] != ' ' && cmd[len] != '>')
 	{

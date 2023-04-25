@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:57:56 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/19 09:49:30 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/24 13:32:10 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 void	parse_router(char *cmd, int *i, size_t *start, t_cmd **lst)
 {
 	char	*word;
+	size_t	tmp;
 
+	tmp = *i;
 	if (cmd[*i] == '\'' || cmd[*i] == '"' \
 	|| cmd[*i] == '>' || cmd[*i] == '<')
 	{
-		if (*start < ((size_t)*i) && \
+		if (*start < tmp && \
 			cmd[*start] != '"' && cmd[*start] != '\'')
 		{
 			word = ft_substr(cmd, *start, *i - *start);

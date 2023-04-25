@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 11:34:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/04 13:43:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:22:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,15 @@ char	**get_var_env(char **env, char *env_line)
 char	**split_env_var(char *env_line)
 {
 	char	**env;
+	char	**env_tmp;
 
 	env = malloc(sizeof(char *) * 3);
 	if (!env)
 		return (NULL);
-	env = get_var_env(env, env_line);
-	if (!env)
-		return (NULL);
-	return (env);
+	env_tmp = get_var_env(env, env_line);
+	if (!env_tmp)
+		return (free_2d_array(env), NULL);
+	return (env_tmp);
 }
 
 void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
@@ -89,6 +90,8 @@ void	set_env(t_minish *var, char **envp, t_env **env, t_env **exp)
 		if (!tab)
 			exit_free(var);
 		ptr_env = ft_lstnew_env(tab[0], tab[1]);
+		if (!ptr_env)
+			return (free_2d_array(tab), exit_free(var));
 		ft_lstadd_back_env(env, ptr_env);
 		free_2d_array(tab);
 		ptr_exp = duplicate_node(ptr_env);

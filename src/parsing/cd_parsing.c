@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 18:14:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 10:22:28 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/24 10:48:10 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,5 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 			return ;
 		}
 	}
+	cd(var, lst->content);
 }

@@ -30,8 +30,8 @@ void	execute_child(t_minish *env, t_pipex *pipex, t_cmd *lst, char **envp)
 	{
 		cmd = create_arr_exec(lst);
 		if (!cmd)
-			display_error(env, pipex->env_cmd, \
-						"Command tab not properly allocated");
+			return (free_cmd_list(env->cmd_lst), display_error(env, pipex->env_cmd, \
+						"Command tab not properly allocated"));
 		free_cmd_list(env->cmd_lst);
 		exec_command(env, pipex->env_cmd, cmd, envp);
 	}
@@ -71,8 +71,8 @@ void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 	{
 		env->pipex->env_cmd = get_path(env, envp);
 		if (!env->pipex->env_cmd)
-			display_error(env, env->pipex->env_cmd, \
-						"Env tab not properly allocated");
+			return (free_cmd_list(lst), display_error(env, env->pipex->env_cmd, \
+						"Env tab not properly allocated"));
 	}
 }
 
@@ -97,6 +97,8 @@ void	child_proc(t_minish *env, t_pipex *pipex, char **envp, t_cmd *lst)
 			close_pipes(pipex);
 			execute_child(env, pipex, lst, envp);
 		}
+		if (is_here_doc(lst) == 0)
+			wait(NULL);
 		fd += 2;
 		lst = lst_next(lst);
 	}
@@ -109,9 +111,11 @@ void	pipex(t_minish *env, t_cmd *lst)
 {
 	env->env_tab = lst_to_tab(&env->env_list);
 	if (!env->env_tab)
-		exit_free(env);
+		return (free_cmd_list(lst), exit_free(env));
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
+	if (init_sigaction(signal_fork) == -1)
+		exit_free(env);
 	if (get_node(lst, CMD, -1) != NULL)
 	{
 		if (init_sigaction(new_signal_here_doc) == -1)
