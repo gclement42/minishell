@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 11:31:08 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/25 13:05:46 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
+
+void	execute_child(t_minish *env, t_pipex *pipex, t_cmd *lst, char **envp)
+{
+	char	**cmd;
+
+	close_pipes(pipex);
+	if (check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
+	{
+		free_pipe_struct(env);
+		builtins_router(get_node(lst, CMD, PIPE), \
+			count_type_in_lst(lst, ARG, PIPE), env);
+		if (env->cmd_lst)
+			free_cmd_list(env->cmd_lst);
+		exit_free(env);
+	}
+	else
+	{
+		cmd = create_arr_exec(lst);
+		if (!cmd)
+			return (free_cmd_list(env->cmd_lst),
+				display_error(env, pipex->env_cmd, \
+						"Command tab not properly allocated"));
+		free_cmd_list(env->cmd_lst);
+		exec_command(env, pipex->env_cmd, cmd, envp);
+	}
+}
 
 char	**get_path(t_minish *env, char **envp)
 {
@@ -53,26 +79,26 @@ static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 
 static void	check_cmd(t_minish *env, char **cmd, char **envp, char **path)
 {
+	DIR	*dir;
+
 	if (path[0][0] == '\0' && access(cmd[0], X_OK) == -1)
 		return (free_2d_array(path), \
 			display_error_cmd(env, cmd, "No such file or directory", cmd[0]));
 	if (cmd[0][0] == '\0')
-	{
-		free_2d_array(path);
-		display_error_cmd(env, cmd, "command not found", "''");
-	}
+		return (free_2d_array(path), \
+			display_error_cmd(env, cmd, "command not found", "''"));
 	if (cmd[0][0] == '.' && cmd[0][1] == '/' && access(cmd[0], X_OK) == -1)
-	{
-		free_2d_array(path);
-		display_error_cmd(env, cmd, "No such file or directory", cmd[0]);
-	}
+		return (free_2d_array(path), \
+			display_error_cmd(env, cmd, "No such file or directory", cmd[0]));
 	if (cmd[0][0] == '/' || (cmd[0][0] == '.' && cmd[0][1] == '/'))
 	{
 		free_2d_array(path);
-		if (opendir(cmd[0]))
-			display_error_dir(env, cmd, "Is a directory", cmd[0]);
+		dir = opendir(cmd[0]);
+		if (dir)
+			return (free(dir), \
+			display_error_dir(env, cmd, "Is a directory", cmd[0]));
 		else if (access(cmd[0], X_OK) != -1)
-			execution(env, cmd[0], cmd, envp);
+			return (free(dir), execution(env, cmd[0], cmd, envp));
 		else
 			display_error_cmd(env, cmd, "No such file or directory", cmd[0]);
 	}

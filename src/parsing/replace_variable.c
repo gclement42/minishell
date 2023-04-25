@@ -6,11 +6,38 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 16:48:02 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:23:35 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// static char	*join_content_next_var(char *content, char *var_content,
+// 	char *n_c, int s)
+// {
+// 	char	*eow;
+// 	char	*join_content;
+
+// 	if (n_c)
+// 		s++;
+// 	if (content[s] == '$' || !is_special_char(content[s]))
+// 		s++;
+// 	else
+// 	{
+// 		while (content[s] && 
+// 		(ft_isalnum(content[s]) || !is_special_char(content[s])) 
+// 		&& content[s] != '?' && (content[s] != '\'' && content[s] != '"' 
+// 		&& content[s] != '$') && content[s] != '<' && content[s] != '>')
+// 			s++;
+// 	}
+// 	printf("apres s = %c && s = %d\n", content[s], s);
+// 	eow = ft_substr(content, s, (ft_strlen(content) - s));
+// 	if (!eow)
+// 		return (NULL);
+// 	join_content = ft_strjoin(var_content, eow);
+// 	printf("content = %s\neow = %s\njoin = %s\n\n", content, eow, join_content);
+// 	return (free(var_content), free(eow), join_content);
+// }
 
 static char	*join_content_next_var(char *content, char *var_content,
 	char *n_c, int s)
@@ -18,15 +45,13 @@ static char	*join_content_next_var(char *content, char *var_content,
 	char	*eow;
 	char	*join_content;
 
-	if (n_c)
+	(void) n_c;
+	s++;
+	if (content[s] && (ft_isdigit(content[s])))
 		s++;
-	if (content[s] && (ft_isdigit(content[s]) || is_special_char(content[s])))
-		s++;
-	while (content[s] && (ft_isalnum(content[s]) || is_special_char(content[s]))
-		&& content[s] != '?'
-		&& (content[s] != '\'' && content[s] != '"' && content[s] != '$')
-		&& content[s] != '<' && content[s] != '>')
-		s++;
+	else
+		while (content[s] && ft_isalnum(content[s]))
+			s++;
 	if (content[s] && content[s] == '?')
 		if (content[s - 1] && content[s - 1] == '$')
 			s++;
@@ -53,7 +78,7 @@ static	char	*join_new_content(char *new_content, char *content, \
 	else
 		str = ft_strdup(str_begin);
 	if (!str)
-		return (NULL);
+		return (free(content), free(str_begin), NULL);
 	str = join_content_next_var(content, str, new_content, size);
 	return (free(str_begin), free(content), str);
 }

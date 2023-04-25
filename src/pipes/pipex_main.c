@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
 /*   Updated: 2023/04/25 14:24:55 by jlaisne          ###   ########.fr       */
@@ -11,32 +11,6 @@
 /* ************************************************************************** */
 
 #include "pipes.h"
-
-void	execute_child(t_minish *env, t_pipex *pipex, t_cmd *lst, char **envp)
-{
-	char	**cmd;
-
-	close_pipes(pipex);
-	if (check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
-	{
-		free_pipe_struct(env);
-		builtins_router(get_node(lst, CMD, PIPE), \
-			count_type_in_lst(lst, ARG, PIPE), env);
-		if (env->cmd_lst)
-			free_cmd_list(env->cmd_lst);
-		exit_free(env);
-	}
-	else
-	{
-		cmd = create_arr_exec(lst);
-		if (!cmd)
-			return (free_cmd_list(env->cmd_lst), \
-				display_error(env, pipex->env_cmd, \
-					"Command tab not properly allocated"));
-		free_cmd_list(env->cmd_lst);
-		exec_command(env, pipex->env_cmd, cmd, envp);
-	}
-}
 
 int	*init_pipes(t_minish *env)
 {
@@ -77,33 +51,50 @@ void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 	}
 }
 
-void	child_proc(t_minish *env, t_pipex *pipex, char **envp, t_cmd *lst)
+void	fork_proc(t_minish *env, int fd, t_cmd *lst)
 {
 	int		id;
+
+	id = fork();
+	if (id == -1)
+		perror("fork: ");
+	else if (id == 0)
+	{
+		if (init_sigaction(signal_fork) == -1)
+			exit_free(env);
+		duplicate_fd(fd, env, lst);
+		close_pipes(env->pipex);
+		execute_child(env, env->pipex, lst, env->env_tab);
+	}
+}
+
+void	child_proc(t_minish *env, t_pipex *pipex, char **envp, t_cmd *lst)
+{
 	int		fd;
+	int		b;
 
 	fd = 0;
+	b = 0;
+	(void) envp;
 	while (lst)
 	{
-		if (check_if_unexpected_token(lst, env) == 0)
-			return ;
-		id = fork();
-		if (id == -1)
-			perror("fork: ");
-		else if (id == 0)
+		if (get_node(lst, CMD, PIPE))
+			if (check_if_unexpected_token(get_node(lst, CMD, PIPE), env) == 0)
+				return (free_cmd_list(lst), free_pipe_struct(env), \
+				exit_free(env));
+		fork_proc(env, fd, lst);
+		if (!is_here_doc(lst))
 		{
-			if (init_sigaction(signal_fork) == -1)
-				exit_free(env);
-			duplicate_fd(fd, env, lst);
-			close_pipes(pipex);
-			execute_child(env, pipex, lst, envp);
+			wait_id(pipex);
+			b = 1;
 		}
 		fd += 2;
 		lst = lst_next(lst);
 	}
 	close_pipes(pipex);
 	close_all();
-	wait_id(pipex);
+	if (b == 0)
+		wait_id(pipex);
 }
 
 void	pipex(t_minish *env, t_cmd *lst)
@@ -122,5 +113,7 @@ void	pipex(t_minish *env, t_cmd *lst)
 		init_struct_pipex(env, env->env_tab, lst);
 		child_proc(env, env->pipex, env->env_tab, lst);
 	}
+	else
+		return (free_cmd_list(lst), free_pipe_struct(env), exit_free(env));
 	free_pipe_struct(env);
 }

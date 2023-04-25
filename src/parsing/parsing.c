@@ -46,7 +46,7 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 
 	i = 0;
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
-		return (g_return_status = 2, \
+		return (g_return_status = 2, free(cmd), \
 			ft_putstr_fd(
 				"minishell: syntax error near unexpected token `|'\n", 2), NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
@@ -73,11 +73,9 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		exit_free(env);
 	if (init_sigaction(signal_parsing) == -1)
 		exit_free(env);
-	else if (is_here_doc(lst) == 0)
-	{
+	if (is_here_doc(lst) == 0)
 		if (init_sigaction(new_signal_here_doc) == -1)
 			exit_free(env);
-	}
 	env->stdout_copy = dup(1);
 	if (id == 0)
 	{
