@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 13:06:12 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:26:32 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	if (id == 0)
 	{
 		if (!get_node(lst, CMD, PIPE))
-			search_if_redirect(env->pipex, lst, env);
+			search_if_redirect(lst, env);
 		pipex(env, lst);
 		free_cmd_list(lst);
 		exit_free(env);
@@ -96,7 +96,7 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 	(void) arg;
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
-	if (lst && count_type_in_lst(arg, PIPE, -1) == 0
+	if (lst && count_type_in_lst(lst, PIPE, -1) == 0
 		&& check_is_builtins(get_node(lst, CMD, PIPE), env) == 1)
 	{
 		stdin_copy = dup(0);

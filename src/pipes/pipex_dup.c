@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 12:22:01 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 15:51:44 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 12:51:59 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	close_pipes(t_pipex *pipex)
 
 void	duplicate_fd(int fd, t_minish *env, t_cmd *lst)
 {
-	if (search_if_redirect(env->pipex, lst, env) == 0)
+	if (search_if_redirect(lst, env) == 0)
 		return (free_cmd_list(env->cmd_lst), free_pipe_struct(env), \
 			exit_free(env));
 	if (fd != 0 && env->pipex->fdin == -1)

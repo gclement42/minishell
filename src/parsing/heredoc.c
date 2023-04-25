@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 15:35:17 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:25:32 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,18 @@ static void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 	}
 }
 
-static void	dup_heredoc(t_pipex *pipex, int pipe_fd[2], t_cmd *lst)
+static void	dup_heredoc(t_minish *env, int pipe_fd[2], t_cmd *lst)
 {
-	wait (&pipex->status);
-	if (WEXITSTATUS(pipex->status))
-		g_return_status = WEXITSTATUS(pipex->status);
+	wait (&env->pipex->status);
+	if (WIFSIGNALED(env->pipex->status) \
+		&& WTERMSIG(env->pipex->status) == SIGINT)
+	{
+		if (WTERMSIG(env->pipex->status) == SIGINT)
+			g_return_status = 130;
+	}
+	if (WEXITSTATUS(env->pipex->status))
+		g_return_status = WEXITSTATUS(env->pipex->status);
 	close(pipe_fd[1]);
-	if (g_return_status == 130)
-		exit(g_return_status);
 	if (!lst->next->next || ft_memcmp(lst->content, \
 		lst->next->next->content, ft_strlen(lst->content)) != 0)
 	{
@@ -66,11 +70,13 @@ static void	dup_heredoc(t_pipex *pipex, int pipe_fd[2], t_cmd *lst)
 	}
 }
 
-int	create_heredoc(t_cmd *lst, t_pipex *pipex, t_minish *env)
+int	create_heredoc(t_cmd *lst, t_minish *env)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
 
+	if (termios_disable_quit() == 1)
+		exit_free(env);
 	if (lst->next->content[0] == '<'
 		|| lst->next->content[0] == '>' || lst->next->content[0] == '|')
 		return (msg_unexpected_token(lst->next->content[0]), 0);
@@ -92,5 +98,5 @@ int	create_heredoc(t_cmd *lst, t_pipex *pipex, t_minish *env)
 		return (free_cmd_list(env->cmd_lst), \
 		free_pipe_struct(env), exit_free(env), 1);
 	}
-	return (env->pipex->fdin = 0, dup_heredoc(pipex, pipe_fd, lst), 1);
+	return (termios_restore(env->orig_ter), env->pipex->fdin = 0, dup_heredoc(env, pipe_fd, lst), 1);
 }

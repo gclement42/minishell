@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 13:34:17 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 14:53:31 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 13:44:44 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,6 @@ int	init_sigaction(void (*signal_handler)(int))
 		return (-1);
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 		return (-1);
-	return (0);
+	errno = 0;
+	return (errno);
 }
