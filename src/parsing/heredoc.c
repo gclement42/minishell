@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 12:37:39 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 13:16:42 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 void	dup_heredoc(t_minish *env, int pipe_fd[2], t_cmd *lst)
 {
 	wait (&env->pipex->status);
-	if (WIFSIGNALED(env->pipex->status) \
+	if (WIFSIGNALED(env->pipex->status)
 		&& WTERMSIG(env->pipex->status) == SIGINT)
 	{
 		if (WTERMSIG(env->pipex->status) == SIGINT)

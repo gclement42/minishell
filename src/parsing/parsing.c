@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 12:29:22 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 13:30:40 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	parsing(char *cmd, t_minish *env)
 	lst = create_lst_cmd(cmd, lst);
 	if (!lst)
 		return (-1);
-	prompt_for_pipe(lst, cmd);
+	prompt_for_pipe(env, lst, cmd);
 	if (cmd)
 		free (cmd);
 	remove_cmd_quote(lst);

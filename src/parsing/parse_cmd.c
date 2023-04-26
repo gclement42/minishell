@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 10:50:50 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/26 13:32:33 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	is_all_char(char *word, char c)
 	return (1);
 }
 
-t_cmd	*prompt_for_pipe(t_cmd *lst, char *cmd)
+t_cmd	*prompt_for_pipe(t_minish *env, t_cmd *lst, char *cmd)
 {
 	t_cmd	*last;
 	char	*prompt;
@@ -114,6 +114,10 @@ t_cmd	*prompt_for_pipe(t_cmd *lst, char *cmd)
 		|| cmd[ft_strlen(cmd) - 1] == '|')
 	{
 		prompt = readline(">");
+		if (!prompt)
+			return (ft_putstr_fd("minishell: syntax error: \
+				unexpected end of file\n", 2), g_return_status = 2, \
+					free(cmd), free_cmd_list(lst), exit_env(env), NULL);
 		if (last->type != ARG)
 			new_node_cmd("|", SPACES, PIPE, &lst);
 		else

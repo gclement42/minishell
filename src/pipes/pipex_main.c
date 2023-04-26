@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/25 14:24:55 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 13:33:04 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-int	*init_pipes(t_minish *env)
+static int	*init_pipes(t_minish *env)
 {
 	int	i;
 	int	*pipefds;
@@ -33,7 +33,7 @@ int	*init_pipes(t_minish *env)
 	return (pipefds);
 }
 
-void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
+static void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 {
 	env->pipex->numpipes = count_type_in_lst(lst, PIPE, -1);
 	env->pipex->pipefds = NULL;
@@ -51,7 +51,7 @@ void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 	}
 }
 
-void	fork_proc(t_minish *env, int fd, t_cmd *lst)
+static void	fork_proc(t_minish *env, int fd, t_cmd *lst)
 {
 	int		id;
 
@@ -68,14 +68,13 @@ void	fork_proc(t_minish *env, int fd, t_cmd *lst)
 	}
 }
 
-void	child_proc(t_minish *env, t_pipex *pipex, char **envp, t_cmd *lst)
+static void	child_proc(t_minish *env, t_pipex *pipex, t_cmd *lst)
 {
 	int		fd;
 	int		b;
 
 	fd = 0;
 	b = 0;
-	(void) envp;
 	while (lst)
 	{
 		if (get_node(lst, CMD, PIPE))
@@ -111,7 +110,7 @@ void	pipex(t_minish *env, t_cmd *lst)
 		if (init_sigaction(new_signal_here_doc) == -1)
 			exit_free(env);
 		init_struct_pipex(env, env->env_tab, lst);
-		child_proc(env, env->pipex, env->env_tab, lst);
+		child_proc(env, env->pipex, lst);
 	}
 	else
 		return (free_cmd_list(lst), free_pipe_struct(env), exit_free(env));
