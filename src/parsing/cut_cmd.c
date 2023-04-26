@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 15:07:37 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/26 12:25:55 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,35 +81,6 @@ void	*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 			*i += 1;
 	}
 	return (*i = tmp, lst);
-}
-
-void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
-{
-	int		x;
-	int		beg;
-	t_cmd	*last;
-
-	x = 0;
-	last = cmd_lst_last(lst);
-	while (word[x] && (word[x] == '\'' || word[x] == '"'))
-		x++;
-	beg = x;
-	while (word[x] && word[x] != ' ')
-		x++;
-	if (last && last->type == OPT && !ft_strchr(last->content, ' '))
-	{
-		last->content = ft_strjoin(last->content, word);
-		if (!last->content)
-			return ;
-		if (ft_strchr(last->content, ' '))
-			last->type = ARG;
-	}
-	else if (word[beg] && word[beg] == '-' && !get_node(*lst, ARG, PIPE))
-		new_node_cmd(word, get_marks(marks), OPT, lst);
-	else
-		if (is_all_char(word, ' ') == 0 || get_marks(marks) != SPACE)
-			if (!new_node_cmd(word, get_marks(marks), ARG, lst))
-				return ;
 }
 
 void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)

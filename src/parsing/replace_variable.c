@@ -6,38 +6,11 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 14:23:35 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/26 11:21:47 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static char	*join_content_next_var(char *content, char *var_content,
-// 	char *n_c, int s)
-// {
-// 	char	*eow;
-// 	char	*join_content;
-
-// 	if (n_c)
-// 		s++;
-// 	if (content[s] == '$' || !is_special_char(content[s]))
-// 		s++;
-// 	else
-// 	{
-// 		while (content[s] && 
-// 		(ft_isalnum(content[s]) || !is_special_char(content[s])) 
-// 		&& content[s] != '?' && (content[s] != '\'' && content[s] != '"' 
-// 		&& content[s] != '$') && content[s] != '<' && content[s] != '>')
-// 			s++;
-// 	}
-// 	printf("apres s = %c && s = %d\n", content[s], s);
-// 	eow = ft_substr(content, s, (ft_strlen(content) - s));
-// 	if (!eow)
-// 		return (NULL);
-// 	join_content = ft_strjoin(var_content, eow);
-// 	printf("content = %s\neow = %s\njoin = %s\n\n", content, eow, join_content);
-// 	return (free(var_content), free(eow), join_content);
-// }
 
 static char	*join_content_next_var(char *content, char *var_content,
 	char *n_c, int s)

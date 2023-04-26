@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 14:59:32 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/26 12:26:33 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_cmd		*get_node(t_cmd *lst, t_type type, t_type end);
 
 /* utils */
 int			check_is_builtins(t_cmd *node, t_minish *env);
+void		remove_cmd_quote(t_cmd *lst);
 size_t		count_len(char *cmd, char c);
 t_marks		get_marks(char c);
 char		*search_key(t_env *lst_env, char *key);

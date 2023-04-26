@@ -6,13 +6,13 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 14:58:09 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 16:27:01 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/26 12:22:43 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	wordcount_split(char const *str, char c)
+int	wordcount_split(char const *str, char c)
 {
 	size_t	i;
 	int		count;
@@ -38,7 +38,7 @@ static int	wordcount_split(char const *str, char c)
 	return (count);
 }
 
-static char	**create_2d_array(int row)
+char	**create_2d_array(int row)
 {
 	char	**ptr;
 
@@ -50,7 +50,7 @@ static char	**create_2d_array(int row)
 	return (ptr);
 }
 
-static	int	count_len_split(int *bools, const char *s, char c, int i)
+int	count_len_split(int *bools, const char *s, char c, int i)
 {
 	int	l;
 
@@ -72,7 +72,7 @@ static	int	count_len_split(int *bools, const char *s, char c, int i)
 	return (l);
 }
 
-static char	**put_value(char **ptr, const char *s, char c, int row)
+char	**put_value(char **ptr, const char *s, char c, int row)
 {
 	int				l;
 	unsigned int	i;
@@ -90,10 +90,13 @@ static char	**put_value(char **ptr, const char *s, char c, int row)
 		{
 			bools = 0;
 			ptr[row] = ft_substr(s, i, (l - i));
-			if (!ptr[row++])
+			if (!ptr[row])
 				return (free_2d_array(&*ptr));
+			row++;
 		}
 		i = l;
+		if (ft_strlen(s) < i)
+			break ;
 	}
 	return (ptr[row] = NULL, ptr);
 }
