@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 14:44:59 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 10:55:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,15 @@ int	create_heredoc(t_cmd *lst, t_minish *env)
 		return (msg_unexpected_token(lst->next->content[0]), 0);
 	if (pipe(pipe_fd) < 0)
 		return (perror("pipe"), exit (g_return_status), 0);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork"), exit(g_return_status), 0);
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
-		if (init_sigaction(signal_here_doc) == -1)
+		if (init_sigaction(new_signal_here_doc) == -1)
 			exit_free(env);
 		if (!lst->next->next || ft_memcmp(lst->content,
 				lst->next->next->content, ft_strlen(lst->content)) != 0)
