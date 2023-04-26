@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 13:32:33 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 13:38:10 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,9 @@ t_cmd	*prompt_for_pipe(t_minish *env, t_cmd *lst, char *cmd)
 	{
 		prompt = readline(">");
 		if (!prompt)
-			return (ft_putstr_fd("minishell: syntax error: \
-				unexpected end of file\n", 2), g_return_status = 2, \
+			return (ft_putstr_fd(\
+				"minishell: syntax error: unexpected end of file\n", 2), \
+				g_return_status = 2, \
 					free(cmd), free_cmd_list(lst), exit_env(env), NULL);
 		if (last->type != ARG)
 			new_node_cmd("|", SPACES, PIPE, &lst);
