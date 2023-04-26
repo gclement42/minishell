@@ -6,13 +6,31 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 13:26:38 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:07:37 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*get_file(char *cmd, int *i)
+static	int	count_len_file(int *i, char *cmd)
+{
+	size_t	len;
+
+	if (cmd[*i] == '"' || cmd[*i] == '\'')
+	{
+		len = count_len(&cmd[*i], cmd[*i]);
+		*i += 1;
+	}
+	else
+		len = count_len(&cmd[*i], ' ');
+	if (count_len(&cmd[*i], '>') < len)
+		len = count_len(&cmd[*i], '>');
+	if (count_len(&cmd[*i], '<') < len)
+		len = count_len(&cmd[*i], '<');
+	return (len);
+}
+
+void	*get_file(char *cmd, int *i, t_cmd **lst)
 {
 	size_t	len;
 	char	*word;
@@ -21,20 +39,15 @@ void	*get_file(char *cmd, int *i)
 	{
 		if (cmd[*i] && (cmd[*i] == '"' || cmd[*i] == '\'' || cmd[*i] != ' '))
 		{
-			if (cmd[*i] == '"' || cmd[*i] == '\'')
-			{
-				len = count_len(&cmd[*i], cmd[*i]) - 1;
-				*i += 1;
-			}
-			else
-				len = count_len(&cmd[*i], ' ');
-			if (count_len(&cmd[*i], '>') < len)
-				len = count_len(&cmd[*i], '>');
-			if (count_len(&cmd[*i], '<') < len)
-				len = count_len(&cmd[*i], '<');
+			len = count_len_file(i, cmd);
 			word = ft_substr(cmd, *i, len);
+			if (!word)
+				return (NULL);
 			word = remove_quote(word);
-			return (*i += len, word);
+			if (!word)
+				return (NULL);
+			*i += len;
+			return (new_node_cmd(word, get_marks(cmd[*i - 1]), FILES, lst));
 		}
 		*i += 1;
 	}
@@ -59,7 +72,7 @@ void	*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 			if (!word || !new_node_cmd(word, SPACES, REDIRECT, lst))
 				return (NULL);
 			*i += len;
-			if (!new_node_cmd(get_file(cmd, i), get_marks(cmd[*i]), FILES, lst))
+			if (!get_file(cmd, i, lst))
 				return (*start = *i + 1, NULL);
 			*start = *i + 1;
 			tmp = *i;

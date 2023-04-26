@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/26 10:51:45 by jlaisne          ###   ########.fr       */
@@ -45,6 +45,8 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 	int		i;
 
 	i = 0;
+	if (cmd[0] == '\0' || is_all_char(cmd, ' '))
+		return (g_return_status = 2, free(cmd), NULL);
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
 		return (g_return_status = 2, free(cmd), \
 			ft_putstr_fd(
@@ -84,6 +86,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 			exit_free(env);
 	}
 	env->stdout_copy = dup(1);
+	if (env->stdout_copy == -1)
+		return (perror("dup"), free_cmd_list(lst), exit_free(env));
 	if (id == 0)
 	{
 		if (!get_node(lst, CMD, PIPE))
@@ -94,13 +98,12 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	}
 }
 
-static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
+static void	copystd_and_exec_builtins(t_cmd *lst, t_minish *env)
 {
 	int		stdin_copy;
 	int		stdout_copy;
 	int		stderr_copy;
 
-	(void) arg;
 	if (!lst && check_if_unexpected_token(lst, env) == 0)
 		return ;
 	if (lst && count_type_in_lst(lst, PIPE, -1) == 0
@@ -109,14 +112,17 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		stdin_copy = dup(0);
 		stdout_copy = dup(1);
 		stderr_copy = dup(2);
+		if (stderr_copy < 0 || stdin_copy < 0 || stdout_copy < 0)
+			return (perror("dup"), free_cmd_list(lst), exit_free(env));
 		close(0);
 		close(1);
 		close(2);
 		builtins_router(
 			get_node(lst, CMD, PIPE), count_type_in_lst(lst, ARG, PIPE), env);
-		dup2(stdin_copy, 0);
-		dup2(stdout_copy, 1);
-		dup2(stderr_copy, 2);
+		if (dup2(stdin_copy, 0) < 0
+			|| dup2(stdout_copy, 1) < 0
+			|| dup2(stderr_copy, 2) < 0)
+			return (perror("dup2"), free_cmd_list(lst), exit_free(env));
 	}
 }
 
@@ -143,6 +149,6 @@ int	parsing(char *cmd, t_minish *env)
 	wait(&env->status_parent);
 	if (WEXITSTATUS(env->status_parent) || !WEXITSTATUS(env->status_parent))
 		g_return_status = WEXITSTATUS(env->status_parent);
-	copystd_and_exec_builtins(get_node(lst, ARG, PIPE), lst, env);
+	copystd_and_exec_builtins(lst, env);
 	return (free_cmd_list(lst), 1);
 }

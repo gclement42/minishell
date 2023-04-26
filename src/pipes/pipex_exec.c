@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/25 13:05:46 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/26 10:51:54 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	execute_child(t_minish *env, t_pipex *pipex, t_cmd *lst, char **envp)
 	}
 	else
 	{
+		if (!get_node(lst, CMD, PIPE))
+			return (free_cmd_list(env->cmd_lst), free_pipe_struct(env),
+				exit_free(env));
 		cmd = create_arr_exec(lst);
 		if (!cmd)
 			return (free_cmd_list(env->cmd_lst),
