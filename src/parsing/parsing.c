@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 14:44:50 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 10:25:02 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ static void	copystd_and_exec_builtins(t_cmd *arg, t_cmd *lst, t_minish *env)
 		dup2(stdout_copy, 1);
 		dup2(stderr_copy, 2);
 	}
-	errno = 0;
 }
 
 int	parsing(char *cmd, t_minish *env)
