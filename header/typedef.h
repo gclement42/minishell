@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 10:14:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 15:52:33 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/25 14:59:49 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_cmd
 
 typedef struct s_minish
 {
-	struct termios	orig_ter;
 	char			**env_tab;
 	const char		**builtins;
 	char			**arg_exec;

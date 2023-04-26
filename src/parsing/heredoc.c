@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 14:25:32 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 10:55:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,20 @@ int	create_heredoc(t_cmd *lst, t_minish *env)
 	pid_t	pid;
 	int		pipe_fd[2];
 
-	if (termios_disable_quit() == 1)
-		exit_free(env);
 	if (lst->next->content[0] == '<'
 		|| lst->next->content[0] == '>' || lst->next->content[0] == '|')
 		return (msg_unexpected_token(lst->next->content[0]), 0);
 	if (pipe(pipe_fd) < 0)
 		return (perror("pipe"), exit (g_return_status), 0);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork"), exit(g_return_status), 0);
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
-		if (init_sigaction(signal_here_doc) == -1)
+		if (init_sigaction(new_signal_here_doc) == -1)
 			exit_free(env);
 		if (!lst->next->next || ft_memcmp(lst->content,
 				lst->next->next->content, ft_strlen(lst->content)) != 0)
@@ -98,5 +98,5 @@ int	create_heredoc(t_cmd *lst, t_minish *env)
 		return (free_cmd_list(env->cmd_lst), \
 		free_pipe_struct(env), exit_free(env), 1);
 	}
-	return (termios_restore(env->orig_ter), env->pipex->fdin = 0, dup_heredoc(env, pipe_fd, lst), 1);
+	return (env->pipex->fdin = 0, dup_heredoc(env, pipe_fd, lst), 1);
 }
