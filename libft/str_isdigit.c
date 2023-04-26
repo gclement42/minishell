@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   str_isdigit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/08 10:11:14 by jlaisne          ###   ########.fr       */
+/*   Created: 2023/04/12 09:50:50 by jlaisne           #+#    #+#             */
+/*   Updated: 2023/04/20 09:56:35 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header/minishell.h"
+#include "libft.h"
 
-int main(int argc, char **argv, char *envp[])
+int	str_isdigit(char *arg)
 {
-    char    *cmd;
-    
-    (void)argc;
-    (void)argv;
-    (void)envp;
-    while (1)
-    {
-        cmd = readline("$> ");
-        if (ft_strncmp(cmd, "exit", 5))
-            break ;
-    }
-    return (0);
+	int	index;
+
+	index = 0;
+	while (arg[index])
+	{
+		if (ft_isdigit(arg[index]) == 0)
+			return (0);
+		index++;
+	}
+	return (1);
 }

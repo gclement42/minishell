@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   termios.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/09 17:16:10 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/27 13:45:30 by jlaisne          ###   ########.fr       */
+/*   Created: 2023/03/14 13:34:17 by jlaisne           #+#    #+#             */
+/*   Updated: 2023/04/26 10:25:12 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strdup( const char *source )
+int	init_sigaction(void (*signal_handler)(int))
 {
-	char	*ptr;
-	int		i;
-	size_t	len;
+	struct sigaction	sa;
 
-	i = 0;
-	len = (size_t)ft_strlen(source);
-	ptr = ft_calloc((len + 1), sizeof(char));
-	if (!ptr)
-		return (NULL);
-	while (0 < len)
-	{
-		ptr[i] = source[i];
-		len--;
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	if (sigemptyset(&sa.sa_mask) == -1)
+		return (0);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = signal_handler;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		return (-1);
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		return (-1);
+	return (0);
 }

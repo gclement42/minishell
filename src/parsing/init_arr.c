@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   init_arr.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 12:50:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/03/10 11:26:39 by gclement         ###   ########.fr       */
+/*   Created: 2023/02/25 15:00:58 by gclement          #+#    #+#             */
+/*   Updated: 2023/04/24 16:29:33 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	*ft_memcpy(void *dest, const void *src, size_t size)
+const char	**init_bultins_arr(void)
 {
-	size_t	i;
+	const char	**builtins;
 
-	i = 0;
-	if (!dest && !src)
+	builtins = malloc(8 * sizeof(char *));
+	if (!builtins)
 		return (NULL);
-	while (i < size)
-	{
-		((char *)dest)[i] = ((char *)src)[i];
-		i++;
-	}
-	return (dest);
+	builtins[0] = "echo";
+	builtins[1] = "cd";
+	builtins[2] = "pwd";
+	builtins[3] = "export";
+	builtins[4] = "unset";
+	builtins[5] = "env";
+	builtins[6] = "exit";
+	builtins[7] = NULL;
+	return (builtins);
 }

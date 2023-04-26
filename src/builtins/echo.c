@@ -1,34 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/09 17:16:10 by gclement          #+#    #+#             */
-/*   Updated: 2023/02/27 13:45:30 by jlaisne          ###   ########.fr       */
+/*   Created: 2023/02/14 14:19:51 by jlaisne           #+#    #+#             */
+/*   Updated: 2023/04/25 15:00:19 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "exec.h"
 
-char	*ft_strdup( const char *source )
+void	echo_no_backslash(char *echo_line)
 {
-	char	*ptr;
-	int		i;
-	size_t	len;
+	int	i;
 
 	i = 0;
-	len = (size_t)ft_strlen(source);
-	ptr = ft_calloc((len + 1), sizeof(char));
-	if (!ptr)
-		return (NULL);
-	while (0 < len)
+	if (!echo_line)
+		return ;
+	while (echo_line[i])
 	{
-		ptr[i] = source[i];
-		len--;
+		ft_putchar_fd(echo_line[i], 1);
 		i++;
 	}
-	ptr[i] = '\0';
-	return (ptr);
+}
+
+void	echo_backslash(char *echo_line)
+{
+	ft_putstr_fd(echo_line, 1);
+	ft_putchar_fd('\n', 1);
+}
+
+void	print_echo(int option, char *echo_line)
+{
+	if (option == 0)
+		echo_backslash(echo_line);
+	else
+		echo_no_backslash(echo_line);
+	g_return_status = 0;
 }

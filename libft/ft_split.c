@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:57:20 by gclement          #+#    #+#             */
-/*   Updated: 2023/01/07 14:30:43 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/24 13:37:22 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	wordcount(char const *str, char c)
 		{
 			count++;
 			while (str[i] != c && str[i])
-			i++;
+				i++;
 		}
 		i++;
 	}
@@ -64,23 +64,15 @@ static void	*free_array(char **ptr)
 	return (NULL);
 }
 
-static void	put_value(unsigned int *i, int *row)
-{
-	*i = 0;
-	*row = 0;
-}
-
-char	**ft_split(char const *s, char c)
+static char	**put_value(char const *s, char c, char **ptr)
 {
 	unsigned int	i;
 	size_t			l;
 	int				row;
-	char			**ptr;
+	char			*str;
 
-	put_value(&i, &row);
-	ptr = create_2d_array(wordcount(s, c));
-	if (!ptr)
-		return (NULL);
+	i = 0;
+	row = 0;
 	while (s[i])
 	{
 		while (s[i] == c)
@@ -90,11 +82,23 @@ char	**ft_split(char const *s, char c)
 			l++;
 		if ((l - i) > 0)
 		{
-			ptr[row] = ft_substr(s, i, (l - i));
+			str = ft_substr(s, i, (l - i));
+			ptr[row] = str;
 			if (!ptr[row++])
 				return (free_array(&*ptr));
 		}
 		i = l;
 	}
 	return (ptr[row] = NULL, ptr);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char			**ptr;
+
+	ptr = create_2d_array(wordcount(s, c));
+	if (!ptr)
+		return (NULL);
+	ptr = put_value(s, c, ptr);
+	return (ptr);
 }
