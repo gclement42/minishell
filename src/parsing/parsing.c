@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 14:26:32 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 10:25:26 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 	int		i;
 
 	i = 0;
+	if (cmd[0] == '\0' || is_all_char(cmd, ' '))
+		return (g_return_status = 2, free(cmd), NULL);
 	if (is_all_char(cmd, '|') || cmd[0] == '|')
 		return (g_return_status = 2, free(cmd), \
 			ft_putstr_fd(

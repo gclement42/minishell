@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:19:51 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/25 12:43:09 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/26 10:25:15 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ void	echo_backslash(char *echo_line)
 
 void	print_echo(int option, char *echo_line)
 {
-	ft_putstr_fd("errno = ", 2);
-	ft_putnbr_fd(errno, 2);
-	ft_putstr_fd("\n", 2);
 	if (option == 0)
 		echo_backslash(echo_line);
 	else
