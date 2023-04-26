@@ -6,11 +6,20 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:13:14 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/26 10:56:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 11:19:19 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	signal_ignore(void)
+{
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+		return (1);
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		return (1);
+	return (0);
+}
 
 void	new_signal_here_doc(int sig)
 {
