@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 11:48:15 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 12:37:39 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 {
 	char	*line;
 
-	line = readline("heredoc>");
+	line = readline(">");
 	if (!line)
 		return (printf("minishell: warning: here-document delimited by end-of-file \
 		(wanted %s)\n", eof->content), free_cmd_list(env->cmd_lst), \
@@ -41,7 +41,7 @@ void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 				perror("write");
 		}
 		free (line);
-		line = readline("heredoc>");
+		line = readline(">");
 		if (!line)
 			return (printf("minishell: warning: here-document delimited by end-of-file \
 			(wanted %s)\n", eof->content), free_cmd_list(env->cmd_lst), \

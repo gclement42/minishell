@@ -18,7 +18,7 @@ LIB = ar rc
 
 RM = rm -f
 
-%.o: %.c  ${HEAD} Makefile
+%.o: %.c  ${HEAD} Makefile get_next_line_bonus.h
 	${CC} ${FLAGS} -c $< -o $@
 
 all:	${NAME}
