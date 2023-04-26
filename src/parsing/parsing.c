@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
 /*   Updated: 2023/04/26 12:29:22 by jlaisne          ###   ########.fr       */
@@ -76,9 +76,9 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 		exit_free(env);
 	if (init_sigaction(signal_parsing) == -1)
 		exit_free(env);
-	temp = get_node(lst, REDIRECT, -1);
+	temp = lst;
 	while (temp && is_here_doc(temp) != 0)
-		temp = get_node(temp, REDIRECT, -1);
+		temp = temp->next;
 	if (temp && is_here_doc(temp) == 0)
 		if (init_sigaction(new_signal_here_doc) == -1)
 			exit_free(env);
