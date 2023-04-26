@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 10:55:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 11:48:15 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ int	is_here_doc(t_cmd *lst)
 	return (1);
 }
 
-static void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
+void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 {
 	char	*line;
 
-	line = readline(">");
+	line = readline("heredoc>");
 	if (!line)
-		printf("minishell: warning: here-document delimited by end-of-file \
-		(wanted %s)\n", eof->content);
+		return (printf("minishell: warning: here-document delimited by end-of-file \
+		(wanted %s)\n", eof->content), free_cmd_list(env->cmd_lst), \
+			exit_free(env));
 	while (!ft_strlen(line) || ft_strncmp(eof->content, line, ft_strlen(line))
 		|| ft_strlen(line) != ft_strlen(eof->content))
 	{
@@ -40,14 +41,15 @@ static void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 				perror("write");
 		}
 		free (line);
-		line = readline(">");
+		line = readline("heredoc>");
 		if (!line)
-			printf("minishell: warning: here-document delimited by end-of-file \
-			(wanted %s)\n", eof->content);
+			return (printf("minishell: warning: here-document delimited by end-of-file \
+			(wanted %s)\n", eof->content), free_cmd_list(env->cmd_lst), \
+				exit_free(env));
 	}
 }
 
-static void	dup_heredoc(t_minish *env, int pipe_fd[2], t_cmd *lst)
+void	dup_heredoc(t_minish *env, int pipe_fd[2], t_cmd *lst)
 {
 	wait (&env->pipex->status);
 	if (WIFSIGNALED(env->pipex->status) \
@@ -70,6 +72,23 @@ static void	dup_heredoc(t_minish *env, int pipe_fd[2], t_cmd *lst)
 	}
 }
 
+void	exec_here_doc(int pipe_fd[2], t_minish *env, t_cmd *lst)
+{
+	int	len;
+
+	len = 0;
+	if (lst->content)
+		len = ft_strlen(lst->content);
+	close(pipe_fd[0]);
+	if (init_sigaction(new_signal_here_doc) == -1)
+		exit_free(env);
+	if (!lst->next->next || ft_memcmp(lst->content,
+			lst->next->next->content, len) != 0)
+		write_in_heredoc(pipe_fd[1], lst->next, 1, env);
+	else
+		write_in_heredoc(pipe_fd[1], lst->next, 0, env);
+}
+
 int	create_heredoc(t_cmd *lst, t_minish *env)
 {
 	pid_t	pid;
@@ -79,24 +98,18 @@ int	create_heredoc(t_cmd *lst, t_minish *env)
 		|| lst->next->content[0] == '>' || lst->next->content[0] == '|')
 		return (msg_unexpected_token(lst->next->content[0]), 0);
 	if (pipe(pipe_fd) < 0)
-		return (perror("pipe"), exit (g_return_status), 0);
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+		return (perror("pipe"), exit(g_return_status), 0);
+	if (signal_ignore() != 0)
+		return (free_cmd_list(env->cmd_lst), \
+			free_pipe_struct(env), exit_free(env), 1);
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork"), exit(g_return_status), 0);
 	if (pid == 0)
 	{
-		close(pipe_fd[0]);
-		if (init_sigaction(new_signal_here_doc) == -1)
-			exit_free(env);
-		if (!lst->next->next || ft_memcmp(lst->content,
-				lst->next->next->content, ft_strlen(lst->content)) != 0)
-			write_in_heredoc(pipe_fd[1], lst->next, 1, env);
-		else
-			write_in_heredoc(pipe_fd[1], lst->next, 0, env);
+		exec_here_doc(pipe_fd, env, lst);
 		return (free_cmd_list(env->cmd_lst), \
-		free_pipe_struct(env), exit_free(env), 1);
+			free_pipe_struct(env), exit_free(env), 1);
 	}
 	return (env->pipex->fdin = 0, dup_heredoc(env, pipe_fd, lst), 1);
 }

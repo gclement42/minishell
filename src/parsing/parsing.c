@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 10:51:45 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/26 11:05:35 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 static void	fork_parsing(t_cmd *lst, t_minish *env)
 {
 	pid_t	id;
-	t_cmd *temp;
+	t_cmd	*temp;
 
 	id = fork();
 	if (id < 0)
@@ -80,11 +80,8 @@ static void	fork_parsing(t_cmd *lst, t_minish *env)
 	while (temp && is_here_doc(temp) != 0)
 		temp = get_node(temp, REDIRECT, -1);
 	if (temp && is_here_doc(temp) == 0)
-	{
-		printf("HERE %s\n", temp->content);
 		if (init_sigaction(new_signal_here_doc) == -1)
 			exit_free(env);
-	}
 	env->stdout_copy = dup(1);
 	if (env->stdout_copy == -1)
 		return (perror("dup"), free_cmd_list(lst), exit_free(env));
