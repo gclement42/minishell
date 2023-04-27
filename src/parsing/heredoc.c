@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 13:16:42 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/27 13:06:57 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_here_doc(t_cmd *lst)
 {
-	if (ft_memcmp("<<", lst->content, ft_strlen(lst->content)) == 0)
+	if (!ft_memcmp("<<", lst->content, 2) && ft_strlen(lst->content) == 2)
 		return (0);
 	return (1);
 }

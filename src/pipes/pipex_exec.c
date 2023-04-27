@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/26 10:51:54 by gclement         ###   ########.fr       */
+/*   Updated: 2023/04/27 13:17:43 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	**get_path(t_minish *env, char **envp)
 static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 {
 	free(env->pipex->pipefds);
+	close_all();
 	if (execve(path, cmd, envp) == -1)
 	{
 		perror("exec");
