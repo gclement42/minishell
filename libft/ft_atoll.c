@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 13:39:14 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 09:55:52 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/04/29 13:30:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,7 @@ long long	ft_atoll(const char *str)
 		result = result * 10 + (str[index] - '0') * sign;
 		index++;
 	}
+	if (str[index] != '\0')
+		return (0);
 	return (result);
 }
