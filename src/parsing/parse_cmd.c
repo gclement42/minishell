@@ -110,7 +110,7 @@ t_cmd	*prompt_for_pipe(t_minish *env, t_cmd *lst, char *cmd)
 	char	*prompt;
 
 	last = cmd_lst_last(&lst);
-	if (!ft_memcmp(last->content, "|", 1) \
+	if ((!ft_memcmp(last->content, "|", 1) && last->marks == SPACES) \
 		|| cmd[ft_strlen(cmd) - 1] == '|')
 	{
 		prompt = readline(">");
@@ -123,7 +123,7 @@ t_cmd	*prompt_for_pipe(t_minish *env, t_cmd *lst, char *cmd)
 			new_node_cmd("|", SPACES, PIPE, &lst);
 		else
 			last->type = PIPE;
-		lst = create_lst_cmd(prompt, lst);
+		lst = create_lst_cmd(prompt, lst, env);
 	}
 	return (lst);
 }
