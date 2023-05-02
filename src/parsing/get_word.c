@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cut_cmd.c                                          :+:      :+:    :+:   */
+/*   get_word.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 12:25:55 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/02 10:18:22 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
 	return (lst);
 }
 
-static	int count_len_frst_word(char *cmd, int len)
+static	int	count_len_frst_word(char *cmd, int len)
 {
 	char	del;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 13:30:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/02 10:19:49 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst, t_minish *env)
 	char	*word;
 
 	i = 0;
+	cmd = check_if_replace_var_in_str(cmd, ' ', env);
 	get_redirect(cmd, &i, lst, &start);
-	cmd = get_frst_word(cmd, &i, lst, env);
-	if (!cmd)
+	if (!get_frst_word(cmd, &i, lst, env))
 		return (NULL);
 	start = i;
 	while (cmd[i])

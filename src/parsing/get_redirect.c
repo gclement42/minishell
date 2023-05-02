@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_redirect.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/02 10:03:57 by gclement          #+#    #+#             */
+/*   Updated: 2023/05/02 10:20:36 by gclement         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static	int	count_len_file(int *i, char *cmd)
@@ -35,11 +47,14 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 			if (!word)
 				return (NULL);
 			*i += len;
-			return (new_node_cmd(word, get_marks(cmd[*i - 1]), FILES, lst));
+			if (word)
+				new_node_cmd(word, get_marks(cmd[*i - 1]), FILES, lst);
+			else
+				return (msg_unexpected_token(0), NULL);
 		}
 		*i += 1;
 	}
-	return (NULL);
+	return (msg_unexpected_token(0), NULL);
 }
 
 void	*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)

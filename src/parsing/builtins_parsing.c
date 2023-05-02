@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:37:47 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 14:13:11 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/02 10:21:22 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,35 +37,6 @@ void	builtins_router(t_cmd *cmd_node, int argc, t_minish *var)
 		echo_parsing(cmd_node, var);
 	if (ft_memcmp(cmd_node->content, "exit", cmd_len) == 0 && cmd_len == 4)
 		exit_parsing(cmd_node, var);
-}
-
-int	check_is_valid_identifier(char *str, char *cmd)
-{
-	int	i;
-
-	i = 0;
-	if (!str[i] || is_special_char(str[i]) || \
-		((str[i] != '$' && str[i] != ' ') && str[i] == '/' && \
-		(str[i] == '=' || is_special_char(str[i]))) || str_isdigit(str) == 1)
-	{
-		printf("minishell : %s : `%s' : not a valid identifier\n", \
-			cmd, str);
-		return (g_return_status = 1, 0);
-	}
-	i++;
-	while (str[i])
-	{
-		if ((ft_isalnum(str[i]) == 0 && is_special_char(str[i]))
-			&& str[i] != '/' && \
-		str[i] != '=' && str[i] != ' ' && str[i] != '$')
-		{
-			printf("minishell : %s : `%s' : not a valid identifier\n", \
-			cmd, str);
-			return (g_return_status = 1, 0);
-		}
-		i++;
-	}
-	return (1);
 }
 
 static	t_env	*create_tmp_lst_env(char *arg)
