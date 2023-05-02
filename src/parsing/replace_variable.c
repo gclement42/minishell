@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_variable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 11:21:47 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/02 10:55:06 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,10 @@ char	*check_if_replace_var_in_str(char *str, char del, t_minish *env)
 	i = 0;
 	while (str[i] && str[i] != del)
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && (str[i + 1] \
+			&& str[i + 1] != '>' && str[i + 1] != '<' \
+			&& (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1]) \
+			|| str[i + 1] == '?' || str[i + 1] == '\'')))
 			str = replace_variable(str, env, &i);
 		i++;
 	}
