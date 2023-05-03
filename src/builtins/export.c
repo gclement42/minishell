@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:21:07 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/24 16:08:34 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 16:52:55 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	sort_export(t_env **list)
 	}
 }
 
-static void	replace_content(t_minish *var, t_env *new_var)
+static void	replace_content(t_minish *var, t_env *new_var, int b)
 {
 	if (!new_var->content)
 	{
@@ -50,7 +50,8 @@ static void	replace_content(t_minish *var, t_env *new_var)
 		&& check_key(&var->env_list, new_var->key))
 	{
 		modify_var(var, &var->exp_list, new_var->key, new_var->content);
-		add_var_env(&var->env_list, new_var->key, new_var->content);
+		if (b == 1)
+			add_var_env(&var->env_list, new_var->key, new_var->content);
 	}
 	else
 	{
@@ -59,10 +60,14 @@ static void	replace_content(t_minish *var, t_env *new_var)
 	}
 }
 
-static void	add_new_var(t_minish *var, t_env *new_var)
+static void	add_new_var(t_minish *var, t_env *new_var, int b)
 {
 	if (new_var->content[0] == '\0')
+	{
 		add_var_env(&var->exp_list, new_var->key, new_var->content);
+		if (b == 1)
+			add_var_env(&var->env_list, new_var->key, new_var->content);
+	}
 	else if (!new_var->content)
 	{
 		new_var->content = ft_strdup("''");
@@ -77,7 +82,7 @@ static void	add_new_var(t_minish *var, t_env *new_var)
 	}
 }
 
-static void	add_export(t_minish *var, t_env *new_var)
+static void	add_export(t_minish *var, t_env *new_var, int b)
 {
 	while (new_var)
 	{
@@ -87,18 +92,18 @@ static void	add_export(t_minish *var, t_env *new_var)
 			return ;
 		}
 		if (check_key(&var->exp_list, new_var->key) == 1)
-			add_new_var(var, new_var);
+			add_new_var(var, new_var, b);
 		else
-			replace_content(var, new_var);
+			replace_content(var, new_var, b);
 		new_var = new_var->next;
 	}
 }
 
-void	export_env(t_minish *var, t_env *new_var, int argc)
+void	export_env(t_minish *var, t_env *new_var, int argc, int b)
 {
 	if (argc != 0)
 	{
-		add_export(var, new_var);
+		add_export(var, new_var, b);
 		free_env_list(new_var);
 	}
 	else

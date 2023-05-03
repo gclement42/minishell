@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 09:51:41 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 10:03:25 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 16:44:34 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void	print_echo(int option, char *echo_line);
 /* ---- pwd ---- */
 void	get_pwd(t_minish *var);
 
-/* ---- export ---- */
-void	export_env(t_minish *var, t_env *new_var, int argc);
+void	export_env(t_minish *var, t_env *new_var, int argc, int b);
 void	sort_export(t_env **list);
 void	print_export_list(t_env **list);
 

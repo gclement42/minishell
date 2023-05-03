@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 18:35:39 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 10:46:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 16:49:38 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,28 @@ void	parsing_env(t_minish *var, t_cmd *lst)
 void	export_parsing(t_minish *var, int argc, t_env *env, t_cmd *lst)
 {
 	t_env	*tmp;
+	int		b;
 
 	if (argc == 0)
 	{
 		if (get_node(lst, OPT, PIPE))
 			return ;
-		export_env(var, env, 0);
+		export_env(var, env, 0, 0);
 		return ;
 	}
-	while (env)
+	while (lst && env)
 	{
+		lst = get_node(lst, ARG, PIPE);
+		b = 0;
 		if (check_is_valid_identifier(env->key, "export") == 0)
 			return (free_env_list(env));
+		if (ft_strchr(lst->content, '='))
+			b = 1;
 		tmp = env->next;
 		env->next = NULL;
-		export_env(var, env, argc);
+		export_env(var, env, argc, b);
 		env = tmp;
+		lst = lst->next;
 	}
 }
 
