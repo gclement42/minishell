@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_open_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:52:13 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/25 12:51:26 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 13:32:45 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipes.h"
 
-int	open_fd_in(t_minish *env, char *filename, t_cmd *lst)
+int	open_fd_in(t_minish *env, char *filename, t_marks mark, t_cmd *lst)
 {
 	int	count;
 
-	if (filename[0] == '<' || filename[0] == '>' || filename[0] == '|')
+	if (mark == SPACES
+		&& (filename[0] == '<' || filename[0] == '>' || filename[0] == '|'))
 		return (msg_unexpected_token(filename[0]), 0);
 	count = count_type_in_lst(lst, PIPE, -1);
 	env->pipex->fdin = open(filename, O_RDONLY, 0777);
@@ -37,9 +38,10 @@ int	open_fd_in(t_minish *env, char *filename, t_cmd *lst)
 	return (1);
 }
 
-int	open_fd_out(t_minish *env, char *filename, int redirect)
+int	open_fd_out(t_minish *env, char *filename, t_marks mark, int redirect)
 {
-	if (filename[0] == '<' || filename[0] == '>' || filename[0] == '|')
+	if (mark == SPACES
+		&& (filename[0] == '<' || filename[0] == '>' || filename[0] == '|'))
 		return (msg_unexpected_token(filename[0]), 0);
 	if (redirect == 0)
 		env->pipex->fdout = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -75,13 +77,13 @@ int	search_if_redirect(t_cmd *lst, t_minish *env)
 			if (!lst->next)
 				return (msg_unexpected_token(0), 0);
 			if (!ft_memcmp("<", lst->content, len) && lst->next->content)
-				b = open_fd_in(env, lst->next->content, lst);
+				b = open_fd_in(env, lst->next->content, lst->next->marks, lst);
 			else if (!ft_memcmp("<<", lst->content, len) && lst->next->content)
 				b = create_heredoc(lst, env);
 			if (!ft_memcmp(">", lst->content, len) && lst->next->content)
-				b = open_fd_out(env, lst->next->content, 0);
+				b = open_fd_out(env, lst->next->content, lst->next->marks, 0);
 			else if (!ft_memcmp(">>", lst->content, len) && lst->next->content)
-				b = open_fd_out(env, lst->next->content, 1);
+				b = open_fd_out(env, lst->next->content, lst->next->marks, 1);
 		}
 		if (b == 0)
 			return (g_return_status = 1, 0);

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
 /*   Updated: 2023/05/03 13:56:22 by jlaisne          ###   ########.fr       */
@@ -62,34 +62,6 @@ char	**create_arr_exec(t_cmd *cmd)
 	return (arr_exec[x] = NULL, arr_exec);
 }
 
-int	check_if_unexpected_token(t_cmd *node, t_minish *env)
-{
-	int	i;
-
-	i = 0;
-	while (node && node->type != CMD)
-		node = node->next;
-	while (node->content && (ft_isalnum(node->content[i]) || \
-		(node->content[i] >= 33 && node->content[i] <= 47) \
-		|| node->content[i] == ' ' || node->content[i] == ')' \
-		|| node->content[i] == '}'))
-		i++;
-	if (node->content[i] || node->type == PIPE)
-	{
-		g_return_status = 2;
-		msg_unexpected_token(node->content[i]);
-		free_cmd_list(env->cmd_lst);
-		if (env->env_tab)
-			free_2d_array(env->env_tab);
-		if (env->pipex->env_cmd)
-			free_2d_array(env->pipex->env_cmd);
-		if (env->pipex->pipefds)
-			free(env->pipex->pipefds);
-		exit_free(env);
-	}
-	return (1);
-}
-
 int	is_all_char(char *word, char c)
 {
 	int	x;
@@ -110,8 +82,9 @@ t_cmd	*prompt_for_pipe(t_minish *env, t_cmd *lst, char *cmd)
 	char	*prompt;
 
 	last = cmd_lst_last(&lst);
-	if (!ft_memcmp(last->content, "|", 1) \
-		|| cmd[ft_strlen(cmd) - 1] == '|')
+	if (((!ft_memcmp(last->content, "|", 1) \
+		&& last->marks == SPACES) \
+		|| cmd[ft_strlen(cmd) - 1] == '|') && last->type != CMD)
 	{
 		prompt = readline(">");
 		if (!prompt || str_isascii(prompt) == 0)
@@ -123,7 +96,7 @@ t_cmd	*prompt_for_pipe(t_minish *env, t_cmd *lst, char *cmd)
 			new_node_cmd("|", SPACES, PIPE, &lst);
 		else
 			last->type = PIPE;
-		lst = create_lst_cmd(prompt, lst);
+		lst = create_lst_cmd(prompt, lst, env);
 	}
 	return (lst);
 }

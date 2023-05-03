@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_variable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 11:21:47 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:16:58 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,6 @@ static	char	*join_new_content(char *new_content, char *content, \
 	return (free(str_begin), free(content), str);
 }
 
-void	skip_quote(int *i, char *str, char del)
-{	
-	*i += 1;
-	while (str[*i] && str[*i] != del)
-		*i += 1;
-}
-
 char	*replace_variable(char *str, t_minish *env, int *i)
 {
 	char	*new_content;
@@ -84,31 +77,48 @@ char	*replace_variable(char *str, t_minish *env, int *i)
 	return (str);
 }
 
-char	*check_if_replace_var(char *str, t_minish *env, int bskip_quote)
+char	*check_if_replace_var_in_str(char *str, char del, t_minish *env)
 {
 	int		i;
-	int		b_dq;
 
-	i = -1;
-	b_dq = 0;
-	str = ft_strdup(str);
-	if (!str)
-		return (NULL);
-	while (str[++i])
+	i = 0;
+	while (str[i] && str[i] != del)
 	{
-		if (str[i] == '"' && bskip_quote == 1 && b_dq == 0)
-			b_dq = 1;
-		else if (str[i] == '"' && b_dq == 1)
-			b_dq = 0;
-		if (str[i] == '\'' && bskip_quote == 1 && b_dq == 0)
-			skip_quote(&i, str, '\'');
-		if (!str[i])
-			break ;
 		if (str[i] == '$' && (str[i + 1] \
 			&& str[i + 1] != '>' && str[i + 1] != '<' \
-			&& (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1]) \
+			&& (ft_isalnum(str[i + 1]) \
 			|| str[i + 1] == '?' || str[i + 1] == '\'')))
 			str = replace_variable(str, env, &i);
+		i++;
 	}
 	return (str);
 }
+
+void	browse_lst(t_cmd *lst, t_minish *env)
+{
+	while (lst)
+	{
+		if (lst->type == REDIRECT && !is_here_doc(lst))
+			lst = lst->next;
+		else
+		{
+			if (!ft_memcmp(lst->content, "$", ft_strlen(lst->content))
+				&& ft_strlen(lst->content) == 1 && lst->marks == SPACES
+				&& lst->next && lst->next->marks != SPACES)
+				lst->type = S_SPACES;
+			else
+			{
+				if (!(!ft_memcmp(lst->content, "$", ft_strlen(lst->content)) \
+					&& ft_strlen(lst->content) == 1 && lst->marks != SPACES) 
+					&& lst->marks != QUOTE)
+					lst->content = check_if_replace_var_in_str(
+							lst->content, '\0', env);
+				if (is_all_char(lst->content, ' ') && lst->marks == SPACES)
+					lst->type = S_SPACES;
+			}
+		}
+		if (lst)
+			lst = lst->next;
+	}
+}
+

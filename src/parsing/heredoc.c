@@ -31,8 +31,8 @@ void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 	while (!ft_strlen(line) || ft_strncmp(eof->content, line, ft_strlen(line))
 		|| ft_strlen(line) != ft_strlen(eof->content))
 	{
-		if (eof->marks != QUOTE)
-			line = check_if_replace_var(line, env, 0);
+		if (eof->marks == SPACES)
+			line = check_if_replace_var_in_str(line, '\0', env);
 		if (bools == 1)
 		{
 			if (write(fd, line, ft_strlen(line)) < 0)
@@ -94,8 +94,9 @@ int	create_heredoc(t_cmd *lst, t_minish *env)
 	pid_t	pid;
 	int		pipe_fd[2];
 
-	if (lst->next->content[0] == '<'
-		|| lst->next->content[0] == '>' || lst->next->content[0] == '|')
+	if (lst->next->marks == SPACES
+		&& (lst->next->content[0] == '<'
+			|| lst->next->content[0] == '>' || lst->next->content[0] == '|'))
 		return (msg_unexpected_token(lst->next->content[0]), 0);
 	if (pipe(pipe_fd) < 0)
 		return (perror("pipe"), exit(g_return_status), 0);

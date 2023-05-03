@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:57:56 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 13:32:10 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:10:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ char	*remove_quote(char *str)
 			tmp = 0;
 			i++;
 		}
-		if ((str[i] == '\'' || str[i] == '"') && tmp == 0)
-			tmp = str[i++];
-		dest[++x] = str[i];
+		if (str[i] != '\'' && str[i] != '"')
+			dest[++x] = str[i];
 		if (!str[i])
 			break ;
 	}
