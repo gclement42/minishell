@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 11:02:50 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:44:30 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	cd(t_minish *var, char *path)
 		path = search_key(var->env_list, "OLDPWD");
 	if (chdir(path) == -1)
 	{
-		perror("cd");
+		perror("minishelll: cd");
 		g_return_status = 1;
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/25 14:20:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 10:44:57 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	exit_arg(t_minish *var, char **exit_args, long long code)
 		return ;
 	if (code == 0 && (exit_args[0][0] != 0 && exit_args[0][1] != '\0'))
 	{
-		printf("minishell: exit: %s: numeric argument required\n", exit_args[0]);
+		ft_printf("minishell: exit: %s: numeric argument required\n", exit_args[0]);
 		g_return_status = 2;
 		free_2d_array(exit_args);
 		free_cmd_list(var->cmd_lst);
@@ -34,7 +34,7 @@ static void	exit_arg(t_minish *var, char **exit_args, long long code)
 	if (exit_args[1])
 	{
 		free_2d_array(exit_args);
-		printf("exit\nminishell: exit: too many arguments\n");
+		ft_printf("exit\nminishell: exit: too many arguments\n");
 		g_return_status = 1;
 	}
 	else
@@ -53,7 +53,7 @@ char	*exit_num_parsing(t_cmd *lst, t_minish *var)
 		exit_free(var);
 	if (temp)
 	{
-		while (temp)
+		while (temp && temp->type != PIPE)
 		{
 			holder = arg;
 			arg = ft_strjoin(holder, temp->content);
