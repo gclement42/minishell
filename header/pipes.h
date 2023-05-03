@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:07:35 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/25 12:51:34 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 13:31:07 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	close_all(void);
 int		is_redirect(t_cmd *lst, char *redirect);
 
 /* ----- Open ----- */
-int		open_fd_in(t_minish *env, char *filename, t_cmd *lst);
-int		open_fd_out(t_minish *env, char *filename, int redirect);
+int		open_fd_in(t_minish *env, char *filename, t_marks mark, t_cmd *lst);
+int		open_fd_out(t_minish *env, char *filename, t_marks mark, int redirect);
 int		search_if_redirect(t_cmd *lst, t_minish *env);
 int		create_heredoc(t_cmd *lst, t_minish *env);
 

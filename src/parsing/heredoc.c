@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/27 13:06:57 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:35:09 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,9 @@ int	create_heredoc(t_cmd *lst, t_minish *env)
 	pid_t	pid;
 	int		pipe_fd[2];
 
-	if (lst->next->content[0] == '<'
-		|| lst->next->content[0] == '>' || lst->next->content[0] == '|')
+	if (lst->next->marks == SPACES
+		&& (lst->next->content[0] == '<'
+			|| lst->next->content[0] == '>' || lst->next->content[0] == '|'))
 		return (msg_unexpected_token(lst->next->content[0]), 0);
 	if (pipe(pipe_fd) < 0)
 		return (perror("pipe"), exit(g_return_status), 0);
