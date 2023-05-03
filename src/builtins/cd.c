@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 10:44:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 13:20:51 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	cd(t_minish *var, char *path)
 		free (var->oldpwd);
 	var->oldpwd = get_cwd();
 	if (!var->oldpwd)
-		exit_free(var);
+		return (free_cmd_list(var->cmd_lst), exit_free(var));
 	if (!path)
 		return (cd_home(var));
 	if (path && !ft_memcmp(path, "-", ft_strlen(path)))
