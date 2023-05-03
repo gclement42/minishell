@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 10:51:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 13:20:51 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 16:26:28 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,8 @@ static void	cd_home(t_minish *var)
 		update_pwd_home(var, "/nfs/homes/gclement");
 }
 
-void	cd(t_minish *var, char *path)
+static void	exec_cd(t_minish *var, char *path)
 {
-	if (var->oldpwd)
-		free (var->oldpwd);
-	var->oldpwd = get_cwd();
-	if (!var->oldpwd)
-		return (free_cmd_list(var->cmd_lst), exit_free(var));
-	if (!path)
-		return (cd_home(var));
-	if (path && !ft_memcmp(path, "-", ft_strlen(path)))
-		path = search_key(var->env_list, "OLDPWD");
 	if (chdir(path) == -1)
 	{
 		perror("minishelll: cd");
@@ -83,4 +74,28 @@ void	cd(t_minish *var, char *path)
 			exit_free(var);
 		update_pwd(var);
 	}
+}
+
+void	cd(t_minish *var, char *path)
+{
+	if (var->oldpwd)
+		free (var->oldpwd);
+	var->oldpwd = get_cwd();
+	if (!var->oldpwd)
+		return (free_cmd_list(var->cmd_lst), exit_free(var));
+	if (!path)
+	{
+		path = search_key(var->env_list, "HOME");
+		if (!path)
+			return (ft_putstr_fd("minishell: cd: HOME not set\n", 2));
+	}
+	if (path && ft_memcmp(path, "~", strlen(path)) == 0)
+		return (cd_home(var));
+	if (path && !ft_memcmp(path, "-", ft_strlen(path)))
+	{
+		path = search_key(var->env_list, "OLDPWD");
+		if (!path)
+			return (ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2));
+	}
+	exec_cd(var, path);
 }

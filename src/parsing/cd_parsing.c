@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 18:14:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/24 10:48:10 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 16:12:02 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	cd_parsing(t_cmd *lst, int argc, t_minish *var)
 	else if (argc == 0 || lst->content[0] == '\0' || \
 		(lst && ft_strchr(lst->content, '~') != 0) || lst->content[0] == '<')
 	{
-		if (argc == 0 || ft_strchr(lst->content, '~') != 0)
+		if (argc == 0)
 		{
 			cd(var, NULL);
 			return ;
