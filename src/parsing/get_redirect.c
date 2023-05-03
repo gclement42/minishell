@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 10:03:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 10:02:19 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:05:54 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 		}
 		*i += 1;
 	}
-	return (msg_unexpected_token(0), NULL);
+	return (NULL);
 }
 
 void	*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)

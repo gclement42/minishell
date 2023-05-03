@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_variable.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 13:16:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:10:24 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	browse_lst(t_cmd *lst, t_minish *env)
 			else
 			{
 				if (!(!ft_memcmp(lst->content, "$", ft_strlen(lst->content)) \
-					&& ft_strlen(lst->content) == 1 && lst->marks != SPACES) 
+					&& ft_strlen(lst->content) == 1 && lst->marks != SPACES)
 					&& lst->marks != QUOTE)
 					lst->content = check_if_replace_var_in_str(
 							lst->content, '\0', env);
@@ -121,4 +121,3 @@ void	browse_lst(t_cmd *lst, t_minish *env)
 			lst = lst->next;
 	}
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 10:07:55 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:10:49 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "typedef.h"
 
 void		builtins_router(t_cmd *cmd_node, int argc, t_minish *var);
-void	display_lst(t_cmd *lst);
+void		display_lst(t_cmd *lst);
 /* cut cmd*/
 void		get_opt(char *cmd, int *i, t_cmd **lst);
 int			get_frst_word(char *cmd, int *i, t_cmd **lst, t_minish *env);
@@ -74,4 +74,5 @@ char		*exit_num_parsing(t_cmd *lst, t_minish *var);
 void		parsing_env(t_minish *var, t_cmd *arg);
 t_cmd		*prompt_for_pipe(t_minish *env, t_cmd *lst, char *cmd);
 t_cmd		*create_lst_cmd(char *cmd, t_cmd *lst, t_minish *env);
+
 #endif

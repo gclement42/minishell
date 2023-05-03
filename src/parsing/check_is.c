@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_is.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 10:21:11 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 13:55:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:11:03 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,3 @@ int	check_if_unexpected_token(t_cmd *node, t_minish *env)
 	}
 	return (1);
 }
-
-
-

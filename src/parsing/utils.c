@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:25:34 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 13:55:41 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 14:10:55 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,3 @@ void	skip_quote(int *i, char *str, char del)
 	while (str[*i] && str[*i] != del)
 		*i += 1;
 }
-
