@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 13:31:10 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 10:07:55 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 # include "typedef.h"
 
 void		builtins_router(t_cmd *cmd_node, int argc, t_minish *var);
-
+void	display_lst(t_cmd *lst);
 /* cut cmd*/
 void		get_opt(char *cmd, int *i, t_cmd **lst);
-char		*get_frst_word(char *cmd, int *i, t_cmd **lst, t_minish *env);
+int			get_frst_word(char *cmd, int *i, t_cmd **lst, t_minish *env);
 void		*get_word(char *cmd, int *i, size_t *start, t_cmd **lst);
 void		*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
 void		*get_file(char *cmd, int *i, t_cmd **lst);
@@ -56,6 +56,7 @@ char		**ft_ms_split(char const *s, char c);
 void		skip_quote(int *i, char *str, char del);
 int			is_special_char(char c);
 void		msg_unexpected_token(char token);
+char		*delete_dollars(char *cmd);
 
 int			parsing(char *cmd, t_minish *env);
 const char	**init_bultins_arr(void);

@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 17:32:55 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/02 10:22:17 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:30:14 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,9 @@ t_cmd	*prompt_for_pipe(t_minish *env, t_cmd *lst, char *cmd)
 	char	*prompt;
 
 	last = cmd_lst_last(&lst);
-	if ((!ft_memcmp(last->content, "|", 1) && last->marks == SPACES) \
-		|| cmd[ft_strlen(cmd) - 1] == '|')
+	if (((!ft_memcmp(last->content, "|", 1) \
+		&& last->marks == SPACES) \
+		|| cmd[ft_strlen(cmd) - 1] == '|') && last->type != CMD)
 	{
 		prompt = readline(">");
 		if (!prompt)

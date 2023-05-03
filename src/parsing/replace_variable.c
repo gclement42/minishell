@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 09:50:48 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/02 10:55:06 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:16:58 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*check_if_replace_var_in_str(char *str, char del, t_minish *env)
 	{
 		if (str[i] == '$' && (str[i + 1] \
 			&& str[i + 1] != '>' && str[i + 1] != '<' \
-			&& (ft_isalnum(str[i + 1]) || is_special_char(str[i + 1]) \
+			&& (ft_isalnum(str[i + 1]) \
 			|| str[i + 1] == '?' || str[i + 1] == '\'')))
 			str = replace_variable(str, env, &i);
 		i++;
@@ -101,7 +101,22 @@ void	browse_lst(t_cmd *lst, t_minish *env)
 		if (lst->type == REDIRECT && !is_here_doc(lst))
 			lst = lst->next;
 		else
-			lst->content = check_if_replace_var_in_str(lst->content, '\0', env);
+		{
+			if (!ft_memcmp(lst->content, "$", ft_strlen(lst->content))
+				&& ft_strlen(lst->content) == 1 && lst->marks == SPACES
+				&& lst->next && lst->next->marks != SPACES)
+				lst->type = S_SPACES;
+			else
+			{
+				if (!(!ft_memcmp(lst->content, "$", ft_strlen(lst->content)) \
+					&& ft_strlen(lst->content) == 1 && lst->marks != SPACES) 
+					&& lst->marks != QUOTE)
+					lst->content = check_if_replace_var_in_str(
+							lst->content, '\0', env);
+				if (is_all_char(lst->content, ' ') && lst->marks == SPACES)
+					lst->type = S_SPACES;
+			}
+		}
 		if (lst)
 			lst = lst->next;
 	}

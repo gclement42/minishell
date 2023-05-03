@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 10:03:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/02 10:42:58 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:02:19 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 			word = ft_substr(cmd, *i, len);
 			if (!word)
 				return (NULL);
-			if (word[0] == '<' || word[0] == '>')
-				return (msg_unexpected_token(word[0]), NULL);
 			word = remove_quote(word);
 			if (!word)
 				return (NULL);
@@ -52,7 +50,7 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 			if (word)
 				return (new_node_cmd(word, get_marks(cmd[*i - 1]), FILES, lst));
 			else
-				return (msg_unexpected_token(0), NULL);
+				return (NULL);
 		}
 		*i += 1;
 	}

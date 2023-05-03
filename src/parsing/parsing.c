@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/02 10:19:49 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:05:55 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,13 +148,14 @@ int	parsing(char *cmd, t_minish *env)
 	cmd = ft_strdup(cmd);
 	if (!cmd)
 		return (-1);
+	//cmd = delete_dollars(cmd);
 	lst = create_lst_cmd(cmd, lst, env);
 	if (!lst)
 		return (-1);
 	prompt_for_pipe(env, lst, cmd);
+	display_lst(lst);
 	if (cmd)
 		free (cmd);
-	display_lst(lst);
 	browse_lst(lst, env);
 	env->cmd_lst = lst;
 	fork_parsing(lst, env);
