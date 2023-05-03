@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cut_cmd.c                                          :+:      :+:    :+:   */
+/*   get_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 12:25:55 by gclement         ###   ########.fr       */
+/*   Created: 2023/05/02 10:03:57 by gclement          #+#    #+#             */
+/*   Updated: 2023/05/03 10:02:19 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,14 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 			if (!word)
 				return (NULL);
 			*i += len;
-			return (new_node_cmd(word, get_marks(cmd[*i - 1]), FILES, lst));
+			if (word)
+				return (new_node_cmd(word, get_marks(cmd[*i - 1]), FILES, lst));
+			else
+				return (NULL);
 		}
 		*i += 1;
 	}
-	return (NULL);
+	return (msg_unexpected_token(0), NULL);
 }
 
 void	*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
@@ -81,54 +84,4 @@ void	*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start)
 			*i += 1;
 	}
 	return (*i = tmp, lst);
-}
-
-void	*get_word(char *cmd, int *i, size_t *start, t_cmd **lst)
-{
-	size_t	len;
-	char	*word;
-
-	len = count_len(&cmd[*i], cmd[*i]);
-	word = ft_substr(cmd, *i + 1, (len - 1));
-	if (!word)
-		return (NULL);
-	check_is_opt_or_arg(word, cmd[*i], lst);
-	if (!cmd[*i + len])
-		*i += len;
-	else if (cmd[*i + len + 1] != '\''
-		&& cmd[*i + len + 1] != '"')
-		*i += len + 1;
-	else
-		*i += len;
-	*start = *i;
-	return (lst);
-}
-
-void	get_frst_word(char *cmd, int *i, t_cmd **lst)
-{
-	size_t	len;
-	char	*word;
-	char	del;
-
-	while (cmd[*i] && cmd[*i] == ' ')
-		*i += 1;
-	if (!cmd[*i])
-		return ;
-	len = *i;
-	while (cmd[len] && cmd[len] != ' ' && cmd[len] != '>')
-	{
-		if (cmd[len] == '"' || cmd[len] == '\'')
-		{
-			del = cmd[len++];
-			while (cmd[len] && cmd[len] != del)
-				len++;
-		}
-		len++;
-	}
-	word = ft_substr(cmd, *i, len - *i);
-	if (word && is_all_char(word, ' ') == 0)
-		new_node_cmd(word, get_marks(cmd[*i]), CMD, lst);
-	else
-		return ;
-	*i += (len - *i);
 }

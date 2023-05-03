@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 13:30:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 13:55:57 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
+static t_cmd	*parse_cmd(char *cmd, t_cmd **lst, t_minish *env)
 {
 	int		i;
 	size_t	start;
 	char	*word;
 
 	i = 0;
+	cmd = check_if_replace_var_in_str(cmd, ' ', env);
 	get_redirect(cmd, &i, lst, &start);
-	get_frst_word(cmd, &i, lst);
+	if (!get_frst_word(cmd, &i, lst, env))
+		return (NULL);
 	start = i;
 	while (cmd[i])
 	{
@@ -36,10 +38,10 @@ static t_cmd	*parse_cmd(char *cmd, t_cmd **lst)
 			return (NULL);
 		get_word_with_space(word, lst, 1);
 	}
-	return (*lst);
+	return (free(cmd), *lst);
 }
 
-t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
+t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst, t_minish *env)
 {
 	char	**split_by_pipe;
 	int		i;
@@ -56,14 +58,14 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst)
 		return (free(cmd), NULL);
 	while (split_by_pipe[i])
 	{
-		lst = parse_cmd(split_by_pipe[i], &lst);
+		lst = parse_cmd(split_by_pipe[i], &lst, env);
 		if (lst == NULL)
-			return (free_2d_array(split_by_pipe), NULL);
+			return (free(split_by_pipe), NULL);
 		i++;
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
 	}
-	return (free_2d_array(split_by_pipe), lst);
+	return (free(split_by_pipe), lst);
 }
 
 static void	fork_parsing(t_cmd *lst, t_minish *env)
@@ -130,14 +132,16 @@ int	parsing(char *cmd, t_minish *env)
 	lst = NULL;
 	if (!cmd || cmd[0] == '\0')
 		return (g_return_status = 0);
-	cmd = check_if_replace_var(cmd, env, 1);
-	lst = create_lst_cmd(cmd, lst);
+	cmd = ft_strdup(cmd);
+	if (!cmd)
+		return (-1);
+	lst = create_lst_cmd(cmd, lst, env);
 	if (!lst)
 		return (-1);
 	prompt_for_pipe(env, lst, cmd);
 	if (cmd)
 		free (cmd);
-	remove_cmd_quote(lst);
+	browse_lst(lst, env);
 	env->cmd_lst = lst;
 	fork_parsing(lst, env);
 	wait(&env->status_parent);

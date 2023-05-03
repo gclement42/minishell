@@ -6,30 +6,11 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 09:17:44 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 15:01:25 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/02 10:48:49 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-int	check_is_builtins(t_cmd *node, t_minish *env)
-{
-	int		i;
-	size_t	len;
-
-	i = 0;
-	if (!node)
-		return (0);
-	while (env->builtins[i])
-	{
-		len = ft_strlen(node->content);
-		if (ft_strncmp(env->builtins[i], node->content, \
-			len) == 0 && ft_strlen(env->builtins[i]) == len)
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 size_t	count_len(char *cmd, char c)
 {

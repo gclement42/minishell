@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:25:34 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 12:26:19 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:55:41 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
 				return ;
 }
 
-void	remove_cmd_quote(t_cmd *lst)
-{
-	while (lst)
-	{
-		lst->content = remove_quote(lst->content);
-		lst = lst->next;
-	}
+void	skip_quote(int *i, char *str, char del)
+{	
+	*i += 1;
+	while (str[*i] && str[*i] != del)
+		*i += 1;
 }
+

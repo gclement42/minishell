@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:05:53 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/25 12:41:40 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 10:18:06 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	check_opt(t_cmd *opt)
 			i = 1;
 			while (opt->content[i] == 'n')
 				i++;
-			if (opt->content[i] && opt->content[i] != ' ')
+			if (opt->content[i])
 				opt->type = ARG;
 			opt = opt->next;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 13:31:10 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 10:07:55 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 # include "typedef.h"
 
 void		builtins_router(t_cmd *cmd_node, int argc, t_minish *var);
-
+void	display_lst(t_cmd *lst);
 /* cut cmd*/
 void		get_opt(char *cmd, int *i, t_cmd **lst);
-void		get_frst_word(char *cmd, int *i, t_cmd **lst);
+int			get_frst_word(char *cmd, int *i, t_cmd **lst, t_minish *env);
 void		*get_word(char *cmd, int *i, size_t *start, t_cmd **lst);
 void		*get_redirect(char *cmd, int *i, t_cmd **lst, size_t *start);
 void		*get_file(char *cmd, int *i, t_cmd **lst);
@@ -33,7 +33,8 @@ void		parse_router(char *cmd, int *i, size_t *start, t_cmd **lst);
 char		*replace_variable(char *str, t_minish *env, int *i);
 char		**create_arr_exec(t_cmd *cmd);
 int			is_here_doc(t_cmd *lst);
-char		*check_if_replace_var(char *str, t_minish *env, int bskip_quote);
+char		*check_if_replace_var_in_str(char *str, char del, t_minish *env);
+void		browse_lst(t_cmd *lst, t_minish *env);
 
 /* cmd list utils */
 void		*new_node_cmd(char	*word, t_marks marks, t_type type, t_cmd **lst);
@@ -43,7 +44,6 @@ t_cmd		*get_node(t_cmd *lst, t_type type, t_type end);
 
 /* utils */
 int			check_is_builtins(t_cmd *node, t_minish *env);
-void		remove_cmd_quote(t_cmd *lst);
 size_t		count_len(char *cmd, char c);
 t_marks		get_marks(char c);
 char		*search_key(t_env *lst_env, char *key);
@@ -56,6 +56,7 @@ char		**ft_ms_split(char const *s, char c);
 void		skip_quote(int *i, char *str, char del);
 int			is_special_char(char c);
 void		msg_unexpected_token(char token);
+char		*delete_dollars(char *cmd);
 
 int			parsing(char *cmd, t_minish *env);
 const char	**init_bultins_arr(void);
@@ -72,5 +73,5 @@ void		pwd_parsing(t_cmd *lst, t_minish *var);
 char		*exit_num_parsing(t_cmd *lst, t_minish *var);
 void		parsing_env(t_minish *var, t_cmd *arg);
 t_cmd		*prompt_for_pipe(t_minish *env, t_cmd *lst, char *cmd);
-t_cmd		*create_lst_cmd(char *cmd, t_cmd *lst);
+t_cmd		*create_lst_cmd(char *cmd, t_cmd *lst, t_minish *env);
 #endif
