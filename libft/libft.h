@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:24:40 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/12 09:56:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 10:41:52 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ int				ft_put_unsigned_int(unsigned int nbr, int fd);
 int				ft_putstr_and_count(char *s, int fd);
 int				ft_putnbr_and_count(int n, int fd);
 int				str_isdigit(char *arg);
+int				str_isascii(char *arg);
 
 #endif
