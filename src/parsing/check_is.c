@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 10:21:11 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/02 10:22:23 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:55:23 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ int	check_if_unexpected_token(t_cmd *node, t_minish *env)
 		node = node->next;
 	while (node->content && (ft_isalnum(node->content[i]) || \
 		(node->content[i] >= 33 && node->content[i] <= 47) \
-		|| node->content[i] == ' ' || node->content[i] == ')' \
+		|| node->content[i] == ' ' || node->content[i] == '\t' \
+		|| node->content[i] == ')' \
 		|| node->content[i] == '}'))
 		i++;
 	if (node->content[i] || node->type == PIPE)

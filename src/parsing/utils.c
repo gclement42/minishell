@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:25:34 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/02 15:16:08 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:55:41 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,47 +48,3 @@ void	skip_quote(int *i, char *str, char del)
 		*i += 1;
 }
 
-static char	*malloc_dest(char *cmd)
-{
-	int		count;
-	int		i;
-	char	*dest;
-
-	i = 0;
-	count = ft_strlen(cmd);
-	while (cmd[i])
-	{
-		if (cmd[i] == '$'
-			&& (cmd[i + 1] == '\'' || cmd[i + 1] == '"'))
-			count--;
-		i++;
-	}
-	dest = ft_calloc((count + 1), sizeof(char));
-	if (!dest)
-		return (NULL);
-	else
-		return (dest);
-}
-
-char	*delete_dollars(char *cmd)
-{
-	int		i;
-	int		x;
-	char	*dest;
-
-	i = 0;
-	x = 0;
-	dest = malloc_dest(cmd);
-	while (cmd[i])
-	{
-		if (!(cmd[i] == '$' && cmd[i + 1]
-				&& (cmd[i + 1] == '\'' || cmd[i + 1] == '"')))
-		{
-			dest[x] = cmd[i];
-			x++;
-		}
-		i++;
-	}
-	free(cmd);
-	return (dest);
-}

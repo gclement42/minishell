@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 10:05:55 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:55:57 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,19 +125,6 @@ static void	copystd_and_exec_builtins(t_cmd *lst, t_minish *env)
 	}
 }
 
-void	display_lst(t_cmd *lst)
-{
-	(void) lst;
-	while (lst)
-	{
-		printf("content = %s\n", lst->content);
-		printf("type = %d\n", lst->type);
-		printf("marks = %d\n", lst->marks);
-		lst = lst->next;
-	}
-	printf("-------------------------------------------------------\n");
-}
-
 int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
@@ -148,12 +135,10 @@ int	parsing(char *cmd, t_minish *env)
 	cmd = ft_strdup(cmd);
 	if (!cmd)
 		return (-1);
-	//cmd = delete_dollars(cmd);
 	lst = create_lst_cmd(cmd, lst, env);
 	if (!lst)
 		return (-1);
 	prompt_for_pipe(env, lst, cmd);
-	display_lst(lst);
 	if (cmd)
 		free (cmd);
 	browse_lst(lst, env);
