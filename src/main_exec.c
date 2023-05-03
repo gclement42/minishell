@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 14:23:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/04/26 11:37:41 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 11:21:14 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,11 @@ int	main(int argc, char **argv, char *envp[])
 			exit_free(env);
 		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			exit_free(env);
-		env->cmd = readline("\033[1;31m minishell $> \033[0m");
-		if (env->cmd == NULL)
+		env->cmd = readline("minishell $> ");
+		if (env->cmd == NULL || str_isascii(env->cmd) == 0)
 			exit_env(env);
+		add_history(env->cmd);
 		parsing(env->cmd, env);
-		if (ft_strlen(env->cmd) > 0)
-			add_history(env->cmd);
 	}
 	exit_env(env);
 }

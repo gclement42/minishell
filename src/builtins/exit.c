@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:40:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/25 14:20:30 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/03 13:22:15 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@ void	exit_env(t_minish *var)
 	exit_free(var);
 }
 
-static void	exit_arg(t_minish *var, char **exit_args, long long code)
+static void	exit_arg(t_minish *var, char **ex_arg, long long code)
 {
-	if (code == 0 && (exit_args[0][0] == '-' || exit_args[0][0] == '+') \
-		&& exit_args[0][1] == '0' && exit_args[0][2] == '\0')
+	if (code == 0 && (ex_arg[0][0] == '-' || ex_arg[0][0] == '+') \
+		&& ex_arg[0][1] == '0' && ex_arg[0][2] == '\0')
 		return ;
-	if (code == 0 && (exit_args[0][0] != 0 && exit_args[0][1] != '\0'))
+	if (code == 0 && (ex_arg[0][0] != 0 && ex_arg[0][1] != '\0'))
 	{
-		printf("minishell: exit: %s: numeric argument required\n", exit_args[0]);
+		ft_printf("minishell: exit: %s: numeric argument required\n", ex_arg[0]);
 		g_return_status = 2;
-		free_2d_array(exit_args);
+		free_2d_array(ex_arg);
 		free_cmd_list(var->cmd_lst);
 		exit_env(var);
 	}
-	if (exit_args[1])
+	if (ex_arg[1])
 	{
-		free_2d_array(exit_args);
-		printf("exit\nminishell: exit: too many arguments\n");
+		free_2d_array(ex_arg);
+		ft_printf("exit\nminishell: exit: too many arguments\n");
 		g_return_status = 1;
 	}
 	else
@@ -53,7 +53,7 @@ char	*exit_num_parsing(t_cmd *lst, t_minish *var)
 		exit_free(var);
 	if (temp)
 	{
-		while (temp)
+		while (temp && temp->type != PIPE)
 		{
 			holder = arg;
 			arg = ft_strjoin(holder, temp->content);

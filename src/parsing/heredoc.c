@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 13:35:09 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/03 10:47:17 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 	char	*line;
 
 	line = readline(">");
-	if (!line)
-		return (printf("minishell: warning: here-document delimited by end-of-file \
+	if (!line || str_isascii(line) == 0)
+		return (ft_printf("minishell: warning: here-document delimited by end-of-file \
 		(wanted %s)\n", eof->content), free_cmd_list(env->cmd_lst), \
 			exit_free(env));
 	while (!ft_strlen(line) || ft_strncmp(eof->content, line, ft_strlen(line))
@@ -42,8 +42,8 @@ void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 		}
 		free (line);
 		line = readline(">");
-		if (!line)
-			return (printf("minishell: warning: here-document delimited by end-of-file \
+		if (!line || str_isascii(line) == 0)
+			return (ft_printf("minishell: warning: here-document delimited by end-of-file \
 			(wanted %s)\n", eof->content), free_cmd_list(env->cmd_lst), \
 				exit_free(env));
 	}
