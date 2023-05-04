@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:25:34 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/04 10:53:05 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/04 11:24:13 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,17 @@ int	first_check_cmd(char *cmd)
 		i++;
 	}
 	return (1);
+}
+
+void	delete_tab(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\t')
+			str[i] = ' ';
+		i++;
+	}
 }

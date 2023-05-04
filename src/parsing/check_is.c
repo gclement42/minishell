@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_is.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 10:21:11 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/04 09:46:48 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/04 11:53:13 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int	check_is_valid_identifier(char *str, char *cmd)
 
 	i = 0;
 	if (!str[i] || is_special_char(str[i]) || \
-		((str[i] != '$' && str[i] != ' ') && str[i] == '/' && \
+		((str[i] != '$' ) && str[i] == '/' && str[i] == ' ' && \
 		(str[i] == '=' || is_special_char(str[i]))) || str_isdigit(str) == 1)
 	{
-		printf("minishell : %s : `%s' : not a valid identifier\n", \
+		ft_printf("minishell : %s : `%s' : not a valid identifier\n", \
 			cmd, str);
 		return (g_return_status = 1, 0);
 	}
@@ -29,10 +29,9 @@ int	check_is_valid_identifier(char *str, char *cmd)
 	while (str[i])
 	{
 		if ((ft_isalnum(str[i]) == 0 && is_special_char(str[i]))
-			&& str[i] != '/' && \
-		str[i] != '=' && str[i] != ' ' && str[i] != '$')
+			|| str[i] == '/' || str[i] == ' ')
 		{
-			printf("minishell : %s : `%s' : not a valid identifier\n", \
+			ft_printf("minishell : %s : `%s' : not a valid identifier\n", \
 			cmd, str);
 			return (g_return_status = 1, 0);
 		}
