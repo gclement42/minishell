@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:15:40 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/05/03 11:03:55 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/04 12:48:36 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,11 @@ char	**get_path(t_minish *env, char **envp)
 static void	execution(t_minish *env, char *path, char **cmd, char **envp)
 {
 	free(env->pipex->pipefds);
-	close_all();
+	if (env->hdoc == 0)
+		close_all();
 	if (execve(path, cmd, envp) == -1)
-	{
+	{	
+		close_all();
 		perror("exec");
 		free(path);
 		free_2d_array(env->pipex->env_cmd);

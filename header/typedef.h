@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 10:14:44 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/25 14:59:49 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/04 12:41:52 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_minish
 	int				stdout_copy;
 	int				lvl;
 	int				status_parent;
+	int				hdoc;
 	unsigned char	return_status;
 	t_cmd			*cmd_lst;
 }	t_minish;

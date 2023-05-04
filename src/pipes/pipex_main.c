@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 10:56:09 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/05/04 09:57:31 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/04 12:42:08 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static void	init_struct_pipex(t_minish *env, char **envp, t_cmd *lst)
 	env->pipex->env_cmd = NULL;
 	env->pipex->fdin = -1;
 	env->pipex->fdout = -1;
+	env->hdoc = 0;
 	if (env->pipex->numpipes > 0)
 		env->pipex->pipefds = init_pipes(env);
 	if (envp)
@@ -71,10 +72,8 @@ static void	fork_proc(t_minish *env, int fd, t_cmd *lst)
 static void	child_proc(t_minish *env, t_pipex *pipex, t_cmd *lst)
 {
 	int		fd;
-	int		b;
 
 	fd = 0;
-	b = 0;
 	while (lst)
 	{
 		if (get_node(lst, CMD, PIPE))
@@ -85,14 +84,14 @@ static void	child_proc(t_minish *env, t_pipex *pipex, t_cmd *lst)
 		if (!is_here_doc(lst))
 		{
 			wait_id(pipex);
-			b = 1;
+			env->hdoc = 1;
 		}
 		fd += 2;
 		lst = lst_next(lst);
 	}
 	close_pipes(pipex);
 	close_all();
-	if (b == 0)
+	if (env->hdoc == 0)
 		wait_id(pipex);
 }
 

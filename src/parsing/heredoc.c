@@ -6,7 +6,7 @@
 /*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:08 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 10:47:17 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/04 12:52:37 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	write_in_heredoc(int fd, t_cmd *eof, int bools, t_minish *env)
 			if (write(fd, "\n", 1) < 0)
 				perror("write");
 		}
-		free (line);
+		free(line);
 		line = readline(">");
 		if (!line || str_isascii(line) == 0)
 			return (ft_printf("minishell: warning: here-document delimited by end-of-file \
@@ -70,6 +70,7 @@ void	dup_heredoc(t_minish *env, int pipe_fd[2], t_cmd *lst)
 			exit (EXIT_SUCCESS);
 		}
 	}
+	close(pipe_fd[0]);
 }
 
 void	exec_here_doc(int pipe_fd[2], t_minish *env, t_cmd *lst)
