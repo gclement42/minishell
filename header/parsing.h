@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 14:10:49 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/04 10:53:25 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char		**ft_ms_split(char const *s, char c);
 void		skip_quote(int *i, char *str, char del);
 int			is_special_char(char c);
 void		msg_unexpected_token(char token);
-char		*delete_dollars(char *cmd);
+int			first_check_cmd(char *cmd);
 
 int			parsing(char *cmd, t_minish *env);
 const char	**init_bultins_arr(void);

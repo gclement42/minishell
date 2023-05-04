@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 09:33:31 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 13:12:06 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:41:44 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,14 @@ int	get_frst_word(char *cmd, int *i, t_cmd **lst, t_minish *env)
 	if (!word)
 		return (0);
 	word = remove_quote(word);
-	if (word && is_all_char(word, ' ') == 0)
+	if (!word)
+		return (0);
+	if (is_all_char(word, ' ') == 0)
 		new_node_cmd(word, get_marks(cmd[*i]), CMD, lst);
 	else
-		return (0);
+		return (free(word), free(cmd), \
+		ft_putstr_fd("minishell : Command '' not found\n", 2), \
+		g_return_status = 127, 0);
 	*i += (len - *i);
 	return (1);
 }

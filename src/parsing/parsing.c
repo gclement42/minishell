@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 11:11:57 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/04 10:53:01 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst, t_minish *env)
 	i = 0;
 	if (cmd[0] == '\0' || is_all_char(cmd, ' '))
 		return (g_return_status = 0, free(cmd), NULL);
-	if (is_all_char(cmd, '|') || cmd[0] == '|')
-		return (g_return_status = 2, free(cmd), \
-			ft_putstr_fd(
-				"minishell: syntax error near unexpected token `|'\n", 2), NULL);
+	if (!first_check_cmd(cmd))
+		return (NULL);
 	split_by_pipe = ft_ms_split(cmd, '|');
 	if (!split_by_pipe)
 		return (free(cmd), NULL);
@@ -60,7 +58,7 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst, t_minish *env)
 	{
 		lst = parse_cmd(split_by_pipe[i], &lst, env);
 		if (lst == NULL)
-			return (free(split_by_pipe), NULL);
+			return (free(split_by_pipe), free(cmd), NULL);
 		i++;
 		if (split_by_pipe[i])
 			new_node_cmd("|", SPACES, PIPE, &lst);
@@ -125,6 +123,19 @@ static void	copystd_and_exec_builtins(t_cmd *lst, t_minish *env)
 	}
 }
 
+void	display_lst(t_cmd *lst)
+{
+	(void) lst;
+	while (lst)
+	{
+		printf("content = %s\n", lst->content);
+		printf("type = %d\n", lst->type);
+		printf("marks = %d\n", lst->marks);
+		lst = lst->next;
+	}
+	printf("-------------------------------------------------------\n");
+}
+
 int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
@@ -141,6 +152,7 @@ int	parsing(char *cmd, t_minish *env)
 	prompt_for_pipe(env, lst, cmd);
 	if (cmd)
 		free (cmd);
+	display_lst(lst);
 	browse_lst(lst, env);
 	env->cmd_lst = lst;
 	fork_parsing(lst, env);

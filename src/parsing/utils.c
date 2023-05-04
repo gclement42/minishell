@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:25:34 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 14:10:55 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/04 10:53:05 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,32 @@ void	skip_quote(int *i, char *str, char del)
 	*i += 1;
 	while (str[*i] && str[*i] != del)
 		*i += 1;
+}
+
+int	first_check_cmd(char *cmd)
+{
+	int	i;
+	int	b;
+
+	i = 0;
+	b = 0;
+	if (is_all_char(cmd, '|') || cmd[0] == '|')
+		return (g_return_status = 2, free(cmd), \
+			ft_putstr_fd(
+				"minishell: syntax error near unexpected token `|'\n", 2), 0);
+	while (cmd[i])
+	{
+		if (cmd[i] == '|')
+		{
+			if (b == 1)
+				return (g_return_status = 2, free(cmd), \
+				ft_putstr_fd(\
+				"minishell: syntax error near unexpected token `|'\n", 2), 0);
+			b = 1;
+		}
+		else if (cmd[i] != ' ')
+			b = 0;
+		i++;
+	}
+	return (1);
 }
