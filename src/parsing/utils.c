@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:25:34 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/08 10:09:02 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:24:36 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,15 @@ int	skip_quote(int i, char *str, char del)
 {
 	int	len;
 
-	len = 0;
+	len = 1;
+	i++;
 	while (str[i] && str[i] != del)
-	{
-		len ++;
-		i++;
-	}
-	if (str[i] == del)
 	{
 		len++;
 		i++;
 	}
+	if (str[i] == del)
+		len++;
 	return (len);
 }
 

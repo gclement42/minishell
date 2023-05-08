@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 14:58:09 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/04 16:18:25 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:25:51 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	count_len_split(int *bools, const char *s, char c, int i)
 			l += skip_quote(l, (char *)s, s[l]) + 1;
 		else
 			l++;
-		if (!s[l])
+		if (ft_strlen(s) <= (size_t)l)
 			break ;
 		if (s[l] != ' ')
 			*bools = 1;
