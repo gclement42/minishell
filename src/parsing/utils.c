@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:25:34 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/04 11:24:13 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/08 13:24:36 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,20 @@ void	check_is_opt_or_arg(char *word, char marks, t_cmd **lst)
 				return ;
 }
 
-void	skip_quote(int *i, char *str, char del)
-{	
-	*i += 1;
-	while (str[*i] && str[*i] != del)
-		*i += 1;
+int	skip_quote(int i, char *str, char del)
+{
+	int	len;
+
+	len = 1;
+	i++;
+	while (str[i] && str[i] != del)
+	{
+		len++;
+		i++;
+	}
+	if (str[i] == del)
+		len++;
+	return (len);
 }
 
 int	first_check_cmd(char *cmd)

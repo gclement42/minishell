@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 10:03:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 14:05:54 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/08 13:30:25 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 		if (cmd[*i] && (cmd[*i] == '"' || cmd[*i] == '\'' || cmd[*i] != ' '))
 		{
 			len = count_len_file(i, cmd);
-			word = ft_substr(cmd, *i, len);
-			if (!word)
-				return (NULL);
-			word = remove_quote(word);
+			if (get_marks(cmd[*i - 1]) != SPACES)
+				word = ft_substr(cmd, *i, len - 1);
+			else
+				word = ft_substr(cmd, *i, len);
 			if (!word)
 				return (NULL);
 			*i += len;

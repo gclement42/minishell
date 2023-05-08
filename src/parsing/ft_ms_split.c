@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 14:58:09 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/04 10:36:56 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:50:11 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,17 @@ int	count_len_split(int *bools, const char *s, char c, int i)
 {
 	int	l;
 
-	l = 0;
-	while (s[i] && (s[i] != c || *bools == 0))
+	l = i;
+	while (s[l] && (s[l] != c || *bools == 0))
 	{
-		if (s[i] == '\'' || s[i] == '"')
-		{
-			skip_quote(&i, (char *)s, s[i]);
-			l += i - l;
-		}
-		if (!s[i])
+		if (s[l] == '\'' || s[l] == '"')
+			l += skip_quote(l, (char *)s, s[l]);
+		else
+			l++;
+		if (ft_strlen(s) <= (size_t)l)
 			break ;
-		if (s[i] != ' ')
+		if (s[l] != ' ')
 			*bools = 1;
-		l++;
-		i++;
 	}
 	return (l);
 }
@@ -85,7 +82,7 @@ char	**put_value(char **ptr, const char *s, char c, int row)
 		while (s[i] && s[i] == c)
 			i++;
 		l = i;
-		l += count_len_split(&bools, s, c, i);
+		l += count_len_split(&bools, s, c, i) - i;
 		if ((l - i) > 0)
 		{
 			bools = 0;

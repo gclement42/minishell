@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:05:38 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/04 11:24:03 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/04 15:26:36 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			is_all_char(char *word, char c);
 int			check_if_unexpected_token(t_cmd *node, t_minish *env);
 void		msg_invalid_opt(char *str, char *cmd, int ret_v);
 char		**ft_ms_split(char const *s, char c);
-void		skip_quote(int *i, char *str, char del);
+int			skip_quote(int i, char *str, char del);
 int			is_special_char(char c);
 void		msg_unexpected_token(char token);
 int			first_check_cmd(char *cmd);
