@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 14:58:09 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/08 13:25:51 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:50:11 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	count_len_split(int *bools, const char *s, char c, int i)
 	while (s[l] && (s[l] != c || *bools == 0))
 	{
 		if (s[l] == '\'' || s[l] == '"')
-			l += skip_quote(l, (char *)s, s[l]) + 1;
+			l += skip_quote(l, (char *)s, s[l]);
 		else
 			l++;
 		if (ft_strlen(s) <= (size_t)l)
