@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:05:17 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/04 16:20:34 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/08 10:06:11 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_cmd	*create_lst_cmd(char *cmd, t_cmd *lst, t_minish *env)
 		return (free(cmd), NULL);
 	while (split_by_pipe[i])
 	{
+		//printf("%s", split_by_pipe[i]);
 		lst = parse_cmd(split_by_pipe[i], &lst, env);
 		if (lst == NULL)
 			return (free(split_by_pipe), free(cmd), NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 10:03:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 14:05:54 by jlaisne          ###   ########.fr       */
+/*   Updated: 2023/05/08 10:21:43 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ static	int	count_len_file(int *i, char *cmd)
 	size_t	len;
 
 	if (cmd[*i] == '"' || cmd[*i] == '\'')
-	{
 		len = count_len(&cmd[*i], cmd[*i]);
-		*i += 1;
-	}
 	else
 		len = count_len(&cmd[*i], ' ');
 	if (count_len(&cmd[*i], '>') < len)

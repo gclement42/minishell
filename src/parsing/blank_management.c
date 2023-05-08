@@ -6,7 +6,7 @@
 /*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:57:56 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/03 11:10:05 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/08 10:18:08 by gclement         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static char	*malloc_dest(char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if (!(str[i] == '\'' || str[i] == '"'))
-			i += count_len(&str[i], str[i]);
+		if (str[i] == '\'' || str[i] == '"')
+			i += skip_quote(i, str, str[i]);
 		else
 			i++;
 	}
@@ -64,21 +64,19 @@ char	*remove_quote(char *str)
 	int		x;
 	char	tmp;
 
-	i = -1;
+	i = 0;
 	x = -1;
 	tmp = 0;
 	dest = malloc_dest(str);
-	while (dest && str[++i])
+	while (dest && str[i])
 	{
 		if ((str[i] == '\'' || str[i] == '"') && tmp == 0)
-			tmp = str[i++];
-		if (str[i] == tmp)
-		{
+			tmp = str[i];
+		else if (str[i] == tmp)
 			tmp = 0;
-			i++;
-		}
-		if (str[i] != '\'' && str[i] != '"')
+		else if (str[i] != tmp)
 			dest[++x] = str[i];
+		i++;
 		if (!str[i])
 			break ;
 	}
