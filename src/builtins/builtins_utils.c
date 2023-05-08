@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 10:09:47 by jlaisne           #+#    #+#             */
-/*   Updated: 2023/04/20 09:23:06 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:25:06 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	check_key(t_env **lst, char *key)
 	temp = *lst;
 	while (temp)
 	{
-		if (ft_strncmp(key, temp->key, ft_strlen(temp->key)) == 0)
+		if (ft_memcmp(key, temp->key, ft_strlen(key)) == 0)
 			return (0);
 		temp = temp->next;
 	}
