@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gclement <gclement@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlaisne <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 10:03:57 by gclement          #+#    #+#             */
-/*   Updated: 2023/05/08 13:30:25 by gclement         ###   ########.fr       */
+/*   Updated: 2023/05/10 11:23:07 by jlaisne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static	int	count_len_file(int *i, char *cmd)
 
 	len = 0;
 	tmp = *i;
-	while (cmd[*i] && \
-		(cmd[*i] != '>' && cmd[*i] &&'<' && cmd[*i] != ' '))
+	while (cmd[*i] \
+		&& (cmd[*i] != '>' && cmd[*i] && '<' && cmd[*i] != ' '))
 	{
 		len++;
 		*i += 1;
