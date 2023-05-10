@@ -15,18 +15,17 @@
 static	int	count_len_file(int *i, char *cmd)
 {
 	size_t	len;
+	int		tmp;
 
-	if (cmd[*i] == '"' || cmd[*i] == '\'')
+	len = 0;
+	tmp = *i;
+	while (cmd[*i] && \
+		(cmd[*i] != '>' && cmd[*i] &&'<' && cmd[*i] != ' '))
 	{
-		len = count_len(&cmd[*i], cmd[*i]);
+		len++;
 		*i += 1;
 	}
-	else
-		len = count_len(&cmd[*i], ' ');
-	if (count_len(&cmd[*i], '>') < len)
-		len = count_len(&cmd[*i], '>');
-	if (count_len(&cmd[*i], '<') < len)
-		len = count_len(&cmd[*i], '<');
+	*i = tmp;
 	return (len);
 }
 
@@ -44,6 +43,7 @@ void	*get_file(char *cmd, int *i, t_cmd **lst)
 				word = ft_substr(cmd, *i, len - 1);
 			else
 				word = ft_substr(cmd, *i, len);
+			word = remove_quote(word);
 			if (!word)
 				return (NULL);
 			*i += len;

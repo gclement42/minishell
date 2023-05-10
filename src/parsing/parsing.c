@@ -123,6 +123,19 @@ static void	copystd_and_exec_builtins(t_cmd *lst, t_minish *env)
 	}
 }
 
+void	display_lst(t_cmd *lst)
+{
+	(void) lst;
+	while (lst)
+	{
+		printf("content = %s\n", lst->content);
+		printf("type = %d\n", lst->type);
+		printf("marks = %d\n", lst->marks);
+		lst = lst->next;
+	}
+	printf("-------------------------------------------------------\n");
+}
+
 int	parsing(char *cmd, t_minish *env)
 {
 	t_cmd	*lst;
@@ -141,6 +154,7 @@ int	parsing(char *cmd, t_minish *env)
 	if (cmd)
 		free (cmd);
 	browse_lst(lst, env);
+	display_lst(lst);
 	env->cmd_lst = lst;
 	fork_parsing(lst, env);
 	wait(&env->status_parent);
