@@ -1,7 +1,7 @@
 <h1>Minishell</h1>
 
 <h2>Introduction</h2>
-<p>Minishell is a projet make with <a href="https://github.com/JulesLaisne"> JulesLaisne </a>, objectif is create a command-line interface project that allows users to interact with a computer through a user-friendly shell. Developed in C, this project takes inspiration from the historical context when developers sought an alternative to the cumbersome 1/0 switches for computer communication.</p>
+<p>Minishell is a projet make with <a href="https://github.com/JulesLaisne"> JulesLaisne </a>, objectif is create a command-line interface project that allows users to interact with a computer through a user-friendly shell.</p>
 
 <h2>Project Highlights</h2>
 <ul>
